@@ -43,3 +43,7 @@ build/
 ### Secrets & Local envs ###
 .env
 *.log
+
+### Allure ###
+allure-results/
+allure-report/
