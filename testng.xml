@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Book Store Automation Suite" verbose="1">
+
+    <test name="UI Authorization Tests">
+        <classes>
+            <class name="tests.AuthorizationTest"/>
+        </classes>
+    </test>
+
+</suite>

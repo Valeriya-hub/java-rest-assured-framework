@@ -62,7 +62,7 @@ Properties can also be overridden via system properties using `-D` flag.
 
 ### Run all tests:
 ```bash
-mvn test
+mvn clean test
 ```
 
 ### Run specific test class:
@@ -80,7 +80,7 @@ mvn test -Dtest=AuthorizationTest#authorizedUserSeesUsernameAndProfileIcon
 After running tests, generate and view the Allure report:
 
 ```bash
-allure serve allure-results
+mvn allure:serve
 ```
 
 Or generate a static report:
