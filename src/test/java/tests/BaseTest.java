@@ -72,6 +72,10 @@ public abstract class BaseTest {
         Configuration.browserSize = "1920x1080";
         Configuration.timeout = 8000;
 
+        // На CI-runner немає графічного середовища — headless обов'язковий.
+        // Локально, для зручності дебагу, лишаємо звичайний режим з видимим браузером.
+        Configuration.headless = System.getenv("CI") != null;
+
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide().screenshots(true).savePageSource(false));
     }
