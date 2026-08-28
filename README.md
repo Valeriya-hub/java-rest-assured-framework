@@ -1,4 +1,9 @@
 # Book Store Automation Tests
+[![Run Automation Tests](https://github.com/Valeriya-hub/java-rest-assured-framework/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/Valeriya-hub/java-rest-assured-framework/actions/workflows/tests.yml)
+![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)
+![Selenide](https://img.shields.io/badge/Selenide-7.5.1-blue)
+![RestAssured](https://img.shields.io/badge/REST--Assured-5.5.0-green)
+![Allure](https://img.shields.io/badge/Allure-2.29.0-red?logo=qameta)
 
 This project contains automated tests for the Book Store application using a hybrid approach combining UI and API testing.
 
