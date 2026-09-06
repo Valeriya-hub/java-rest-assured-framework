@@ -4,6 +4,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import config.Config;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
 import java.time.Duration;
 
@@ -41,5 +42,11 @@ public class BookStorePage extends BasePage<BookStorePage> {
     @Step("Перевірити наявність чекбоксів для додавання книг у колекцію")
     public boolean areCollectionCheckboxesPresent() {
         return rowCheckboxes.size() > 0;
+    }
+
+    @Step("Натиснути на книгу '{title}'")
+    public BookPage clickOnBook(String title) {
+        $(By.linkText(title)).click();
+        return new BookPage();
     }
 }
