@@ -4,6 +4,7 @@ import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import config.Config;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 
 import java.time.Duration;
 
@@ -17,7 +18,6 @@ public class BookStorePage extends BasePage<BookStorePage> {
     private final ElementsCollection rowCheckboxes = $$(".rt-tr-group input[type='checkbox']");
     private final SelenideElement userIcon = $("#userName-value");
     private final SelenideElement usernameLabel = $("#userName-value");
-    private final SelenideElement gitPocketGuideBook = $("[id='see-book-Git Pocket Guide']");
 
     @Step("Відкрити Book Store")
     public BookStorePage open() {
@@ -44,9 +44,9 @@ public class BookStorePage extends BasePage<BookStorePage> {
         return rowCheckboxes.size() > 0;
     }
 
-    @Step("Натиснути на книгу")
-    public BookPage clickOnBook() {
-        gitPocketGuideBook.click();
+    @Step("Натиснути на книгу '{title}'")
+    public BookPage clickOnBook(String title) {
+        $(By.linkText(title)).click();
         return new BookPage();
     }
 }

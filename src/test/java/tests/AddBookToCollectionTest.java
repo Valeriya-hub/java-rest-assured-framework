@@ -22,7 +22,7 @@ public class AddBookToCollectionTest extends BaseTest {
         testUserToken = profilePage.getAuthTokenFromCookie();
 
         BookStorePage bookStorePage = profilePage.goToBookStore();
-        BookPage bookPage = bookStorePage.clickOnBook();
+        BookPage bookPage = bookStorePage.clickOnBook("Git Pocket Guide");
         bookPage.clickAddToCollectionButton();
         bookPage.dismissAlertIfPresent();
         String addedBookIsbn = bookPage.getIsbn();
