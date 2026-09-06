@@ -17,6 +17,7 @@ public class BookStorePage extends BasePage<BookStorePage> {
     private final ElementsCollection rowCheckboxes = $$(".rt-tr-group input[type='checkbox']");
     private final SelenideElement userIcon = $("#userName-value");
     private final SelenideElement usernameLabel = $("#userName-value");
+    private final SelenideElement gitPocketGuideBook = $("[id='see-book-Git Pocket Guide']");
 
     @Step("Відкрити Book Store")
     public BookStorePage open() {
@@ -41,5 +42,11 @@ public class BookStorePage extends BasePage<BookStorePage> {
     @Step("Перевірити наявність чекбоксів для додавання книг у колекцію")
     public boolean areCollectionCheckboxesPresent() {
         return rowCheckboxes.size() > 0;
+    }
+
+    @Step("Натиснути на книгу")
+    public BookPage clickOnBook() {
+        gitPocketGuideBook.click();
+        return new BookPage();
     }
 }

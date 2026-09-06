@@ -30,13 +30,13 @@ public class LoginPage extends BasePage<LoginPage> {
     }
 
     @Step("Натиснути кнопку Login")
-    public BookStorePage submitLogin() {
+    public ProfilePage submitLogin() {
         loginButton.click();
-        return new BookStorePage();
+        return new ProfilePage();
     }
 
     @Step("Залогінитись під користувачем {username}")
-    public BookStorePage loginAs(String username, String password) {
+    public ProfilePage loginAs(String username, String password) {
         return typeUsername(username)
                 .typePassword(password)
                 .submitLogin();

@@ -3,6 +3,7 @@ package tests;
 import org.testng.annotations.Test;
 import ui.BookStorePage;
 import ui.LoginPage;
+import ui.ProfilePage;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,9 +15,15 @@ public class AuthorizationTest extends BaseTest {
         // сам логін виконується через UI — тест не порушує "тільки UI"
         createTestUserViaApi();
 
-        BookStorePage bookStorePage = new LoginPage()
+        ProfilePage profilePage = new LoginPage()
                 .open()
                 .loginAs(testUserName, testUserPassword);
+
+        assertThat(profilePage.getDisplayedUserName())
+                .as("Логін має завершитись успішно перед переходом на Book Store")
+                .isEqualTo(testUserName);
+
+        BookStorePage bookStorePage = new BookStorePage().open();
 
         assertThat(bookStorePage.isProfileIconVisible())
                 .as("Іконка профілю має бути видима після успішного логіну")

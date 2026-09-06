@@ -43,6 +43,10 @@ public final class Config {
         return uiBaseUrl() + get("ui.path.profile");
     }
 
+    public static String bookSearchUrl(String searchQuery) {
+        return uiBaseUrl() + get("ui.path.books") + "?search=" + searchQuery;
+    }
+
     private static String get(String key) {
         String value = System.getProperty(key, PROPERTIES.getProperty(key));
         if (value == null || value.isBlank()) {
