@@ -4,7 +4,6 @@ import api.model.CreateUserRequest;
 import api.model.CreateUserResponse;
 import config.Config;
 import io.qameta.allure.Step;
-import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -19,7 +18,6 @@ import static org.hamcrest.Matchers.is;
 public class UserApiClient {
     private final RequestSpecification spec = new RequestSpecBuilder()
             .setBaseUri(Config.apiBaseUrl())
-            .addFilter(new AllureRestAssured())
             .build();
     private String userId;
     private String token;
