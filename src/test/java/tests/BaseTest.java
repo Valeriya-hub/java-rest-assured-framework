@@ -5,8 +5,11 @@ import api.model.CreateUserResponse;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import config.Config;
+import config.LoggingConfig;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.qameta.allure.testng.AllureTestNg;
+import io.restassured.RestAssured;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
@@ -16,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Selenide.closeWebDriver;
@@ -24,6 +28,9 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public abstract class BaseTest {
 
     private static final Path ALLURE_RESULTS_DIR = Paths.get("target", "allure-results");
+
+    // Захищає RestAssured.filters(...) від повторного додавання.
+    private static final AtomicBoolean LOGGING_INITIALIZED = new AtomicBoolean(false);
 
     protected final UserApiClient userApiClient = new UserApiClient();
 
@@ -35,16 +42,28 @@ public abstract class BaseTest {
     protected String testUserToken;
 
     /**
-     * Очищує target/allure-results ПЕРЕД стартом усього сьюту.
-     * Виконується один раз, незалежно від кількості тестових класів у сьюті —
-     * гарантія TestNG для @BeforeSuite методів.
-     * Дозволяє запускати `mvn test` (без clean) або тести напряму з IDE
-     * без накопичення застарілих результатів попередніх прогонів.
+     * Єдина точка входу для сетапу всього сьюту.
+     *
+     * Виконується один раз на КОЖЕН тестовий клас, що бере участь у suite
+     * (це особливість TestNG для успадкованих @BeforeSuite методів)
      */
     @BeforeSuite(alwaysRun = true)
-    public void cleanAllureResultsDirectory() {
+    public void suiteSetUp() {
+        cleanAllureResultsDirectory();
+        setupRestAssuredLogging();
+    }
+
+    /**
+     * Очищує target/allure-results перед стартом прогону.
+     *
+     * Перший виклик (для першого класу в suite)
+     * видаляє директорію; кожен наступний виклик (для інших класів) одразу
+     * побачить, що директорії вже немає, і вийде через return —
+     * без побічних ефектів і без помилки.
+     */
+    private void cleanAllureResultsDirectory() {
         if (!Files.exists(ALLURE_RESULTS_DIR)) {
-            return; // нічого чистити — це перший запуск
+            return; // нічого чистити — або перший запуск, або вже очищено попереднім класом
         }
         try (Stream<Path> paths = Files.walk(ALLURE_RESULTS_DIR)) {
             paths.sorted(Comparator.reverseOrder()) // спочатку файли, потім батьківські директорії
@@ -62,6 +81,26 @@ public abstract class BaseTest {
             // Не критично — файл міг бути заблокований антивірусом чи ще відкритий,
             // не варто валити весь прогін тестів через це
             System.err.println("Не вдалося видалити: " + path + " (" + e.getMessage() + ")");
+        }
+    }
+
+    /**
+     * Підключає глобальні фільтри REST Assured: логування запитів/відповідей
+     * через Log4j2 і прикріплення їх до Allure-звіту.
+     *
+     * Guard (LOGGING_INITIALIZED) обов'язковий: RestAssured.filters(...)
+     * ДОДАЄ фільтри до статичного списку, а не замінює його. Без guard'а
+     * кожен тестовий клас у suite додав би свою копію фільтрів —
+     * і кожен запит логувався б і прикріплювався до Allure N разів,
+     * де N — кількість класів у testng.xml.
+     */
+    private void setupRestAssuredLogging() {
+        if (LOGGING_INITIALIZED.compareAndSet(false, true)) {
+            RestAssured.filters(
+                    LoggingConfig.requestFilter(),
+                    LoggingConfig.responseFilter(),
+                    new AllureRestAssured()
+            );
         }
     }
 
