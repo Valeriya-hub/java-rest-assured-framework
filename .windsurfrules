@@ -1,0 +1,36 @@
+# Communication & Language
+- Always respond to the user in Ukrainian.
+- Always write code comments, names of @Step and JavaDoc in Ukrainian.
+- Keep code elements (class names, method names, variables, commit messages) in English.
+
+# Project Overview
+REST API automation project built with Java 21, REST Assured, TestNG, Maven, and Allure.
+
+# Tech Stack & Versions
+- Java: 21 (use modern syntax: records, pattern matching, `var` where appropriate)
+- Build tool: Maven
+- Test Framework: TestNG
+- API Client: REST Assured
+- Reporting: Allure Framework
+
+# Coding & Style Guidelines
+- Follow the Page Object / API Client pattern (clearly separate API requests, POJO/Record models, and test classes).
+- Use Jackson for JSON serialization and deserialization.
+- Create all data models using `record` or Lombok (`@Data`, `@Builder`) where applicable.
+- Do not leave commented-out code or `System.out.println`. Use Log4j2 or REST Assured logging (`.log().all()`) for output.
+
+# Testing & Reporting Rules
+- Every test method must include `@Test`, `@Feature`, `@Story`, and `@Description` annotations.
+- Wrap key test steps in `@Step("Step description")` or `Allure.step(...)`.
+- Write assertions using AssertJ (`assertThat(...)`) or standard TestNG `Assert`.
+
+# Git & Version Control Rules
+- Write all commit messages in English.
+- Follow the Conventional Commits specification (e.g., `test: add auth API coverage`, `feat: implement User client`, `refactor: extract base URL to properties`).
+- Use descriptive and standard branch names (e.g., `feature/api-endpoints`, `fix/login-assertion`, `test/user-creation`).
+- Keep commits atomic: ensure each commit contains only one logical change or feature.
+
+# Do NOTs
+- DO NOT use deprecated libraries (e.g., direct Apache HttpClient usage, JUnit 4).
+- DO NOT hardcode test data or authorization tokens — use `config.properties` or `System.getenv()`.
+- DO NOT modify configuration files like `pom.xml` unless explicitly instructed in the prompt.

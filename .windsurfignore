@@ -1,0 +1,15 @@
+# Build directory
+target/
+
+# IDE settings
+.idea/
+*.iml
+.vscode/
+
+# Allure reports and raw test results
+allure-results/
+allure-report/
+
+# System and log files
+*.log
+.DS_Store

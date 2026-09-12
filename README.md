@@ -7,6 +7,9 @@
 
 This project contains automated tests for the Book Store application using a hybrid approach combining UI and API testing.
 
+## 📊 Test Report
+Latest Allure report: [https://valeriya-hub.github.io/java-rest-assured-framework/](https://valeriya-hub.github.io/java-rest-assured-framework/)
+
 ## Tech Stack
 
 - **Java 21** - Programming language
@@ -80,11 +83,15 @@ mvn test -Dtest=AuthorizationTest
 mvn test -Dtest=AuthorizationTest#authorizedUserSeesUsernameAndProfileIcon
 ```
 
-## Allure Reports
+## Logging & Reporting
+- Request/response logging via Log4j2, configured in `log4j2.xml`
+- Failed requests are logged automatically via `log().ifValidationFails()`
+- Full request/response history attached to Allure reports for every test run
 
 After running tests, generate and view the Allure report:
 
 ```bash
+mvn clean test
 mvn allure:serve
 ```
 
