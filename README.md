@@ -7,6 +7,9 @@
 
 This project contains automated tests for the Book Store application using a hybrid approach combining UI and API testing.
 
+## 📊 Test Report
+Latest Allure report: [https://valeriya-hub.github.io/java-rest-assured-framework/](https://valeriya-hub.github.io/java-rest-assured-framework/)
+
 ## Tech Stack
 
 - **Java 21** - Programming language
