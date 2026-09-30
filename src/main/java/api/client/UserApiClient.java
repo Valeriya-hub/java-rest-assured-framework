@@ -36,22 +36,6 @@ public class UserApiClient {
         return response.as(CreateUserResponse.class);
     }
 
-    @Step("API: генерація токена доступу для {userName}")
-    public String generateToken(String userName, String password) {
-        Response response = given()
-                .spec(spec)
-                .contentType(ContentType.JSON)
-                .body(new CreateUserRequest(userName, password))
-                .when()
-                .post("/Account/v1/GenerateToken")
-                .then()
-                .statusCode(200)
-                .extract()
-                .response();
-
-        return response.path("token");
-    }
-
     @Step("API: генерація токена доступу з повними даними (token + expires) для {userName}")
     public GenerateTokenResponse generateTokenDetails(String userName, String password) {
         Response response = given()
