@@ -9,7 +9,7 @@ import org.openqa.selenium.NoAlertPresentException;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-public class BookPage extends BasePage <BookPage> {
+public class BookPage extends BasePage<BookPage> {
     private final SelenideElement addToCollectionButton = $(".text-right #addNewRecordButton");
     private final SelenideElement bookIsbn = $("#ISBN-wrapper label#userName-value");
 
@@ -32,9 +32,8 @@ public class BookPage extends BasePage <BookPage> {
         }
     }
 
-        @Step("Отримати isbn книги")
-        public String getIsbn () {
-            return bookIsbn.shouldBe(visible).getText();
-        }
-
+    @Step("Отримати isbn книги")
+    public String getIsbn() {
+        return bookIsbn.shouldBe(visible).getText();
     }
+}

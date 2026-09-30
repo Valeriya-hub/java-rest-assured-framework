@@ -2,6 +2,7 @@ package tests;
 
 import api.client.UserApiClient;
 import api.model.CreateUserResponse;
+import api.model.GenerateTokenResponse;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import config.Config;
@@ -40,6 +41,7 @@ public abstract class BaseTest {
     protected String testUserName;
     protected String testUserPassword;
     protected String testUserToken;
+    protected String testUserTokenExpires;
 
     /**
      * Єдина точка входу для сетапу всього сьюту.
@@ -109,7 +111,9 @@ public abstract class BaseTest {
         Configuration.baseUrl = Config.uiBaseUrl();
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
-        Configuration.timeout = 8000;
+        Configuration.timeout = Config.uiTimeoutMs();
+        Configuration.pollingInterval = Config.uiPollingIntervalMs();
+        Configuration.pageLoadTimeout = Config.pageLoadTimeoutMs();
 
         // На CI-runner немає графічного середовища — headless обов'язковий.
         // Локально, для зручності дебагу, лишаємо звичайний режим з видимим браузером.
@@ -129,18 +133,23 @@ public abstract class BaseTest {
         testUserPassword = "StrongPass123!";
 
         CreateUserResponse response = userApiClient.createUser(testUserName, testUserPassword);
-        testUserId = response.getUserID();
-        testUserToken = userApiClient.generateToken(testUserName, testUserPassword);
+        testUserId = response.userID();
+        GenerateTokenResponse tokenResponse = userApiClient.generateTokenDetails(testUserName, testUserPassword);
+        testUserToken = tokenResponse.token();
+        testUserTokenExpires = tokenResponse.expires();
     }
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(ITestResult result) {
         // Post-condition: приберемо тестового юзера, якщо він створювався
-        userApiClient.deleteUser(testUserId, testUserToken);
-
-        closeWebDriver();
+        try {
+            if (testUserId != null) {
+                userApiClient.deleteUser(testUserId, testUserToken);
+            }
+        } finally {
+            closeWebDriver();
+        }
     }
-
 }
 
 

@@ -1,11 +1,11 @@
 package api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateUserResponse {
-    private String userID;
-    private String username;
+public record CreateUserResponse(
+        @JsonProperty("userID") String userID,
+        @JsonProperty("username") String username
+) {
 }

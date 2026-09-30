@@ -4,12 +4,13 @@
 - Keep code elements (class names, method names, variables, commit messages) in English.
 
 # Project Overview
-REST API automation project built with Java 21, REST Assured, TestNG, Maven, and Allure.
+REST API automation project built with Java 21, Selenide, REST Assured, TestNG, Maven, and Allure.
 
 # Tech Stack & Versions
 - Java: 21 (use modern syntax: records, pattern matching, `var` where appropriate)
 - Build tool: Maven
 - Test Framework: TestNG
+- UI Automation: Selenide
 - API Client: REST Assured
 - Reporting: Allure Framework
 
@@ -22,7 +23,7 @@ REST API automation project built with Java 21, REST Assured, TestNG, Maven, and
 # Testing & Reporting Rules
 - Every test method must include `@Test`, `@Feature`, `@Story`, and `@Description` annotations.
 - Wrap key test steps in `@Step("Step description")` or `Allure.step(...)`.
-- Write assertions using AssertJ (`assertThat(...)`) or standard TestNG `Assert`.
+- Write assertions using AssertJ (`assertThat(...)`).
 
 # Git & Version Control Rules
 - Write all commit messages in English.

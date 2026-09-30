@@ -2,6 +2,7 @@ package config;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Properties;
 
 public final class Config {
@@ -21,6 +22,26 @@ public final class Config {
     }
 
     private Config() {
+    }
+
+    /** Глобальний таймаут очікування елементів (мс). Можна перевизначити: -Dui.timeout.ms=10000 */
+    public static long uiTimeoutMs() {
+        return Long.getLong("ui.timeout.ms", 8_000L);
+    }
+
+    /** Інтервал polling-у Selenide (мс). */
+    public static long uiPollingIntervalMs() {
+        return Long.getLong("ui.polling.ms", 200L);
+    }
+
+    /** Таймаут завантаження сторінки (мс). */
+    public static long pageLoadTimeoutMs() {
+        return Long.getLong("ui.pageload.timeout.ms", 30_000L);
+    }
+
+    /** Лише для реально довгих операцій (генерація файлу, важкий async-процес). */
+    public static Duration longOperationTimeout() {
+        return Duration.ofSeconds(20);
     }
 
     public static String uiBaseUrl() {

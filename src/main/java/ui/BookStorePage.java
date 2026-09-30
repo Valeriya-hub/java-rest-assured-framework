@@ -1,47 +1,48 @@
 package ui;
 
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import config.Config;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
-import java.time.Duration;
-
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.webdriver;
+import static com.codeborne.selenide.WebDriverConditions.urlContaining;
 
 public class BookStorePage extends BasePage<BookStorePage> {
 
     private final SelenideElement loginButton = $("#login");
-    private final ElementsCollection rowCheckboxes = $$(".rt-tr-group input[type='checkbox']");
-    private final SelenideElement userIcon = $("#userName-value");
-    private final SelenideElement usernameLabel = $("#userName-value");
+    private final SelenideElement userNameLabel = $("#userName-value");
 
     @Step("Відкрити Book Store")
     public BookStorePage open() {
         return openPage(Config.bookStoreUrl());
     }
 
+    @Step("Перевірити, що відкрита сторінка Book Store")
+    public BookStorePage shouldBeOpened() {
+        webdriver().shouldHave(urlContaining(Config.bookStoreUrl()));
+        return this;
+    }
+
     @Step("Перевірити, що видима кнопка Login (неавторизований стан)")
-    public boolean isLoginButtonVisible() {
-        return loginButton.shouldBe(visible).isDisplayed();
+    public BookStorePage shouldSeeLoginButton() {
+        loginButton.shouldBe(visible.because("Кнопка Login має бути видима для неавторизованого користувача"));
+        return this;
     }
 
-    @Step("Перевірити, що видима іконка профілю (авторизований стан)")
-    public boolean isProfileIconVisible() {
-        return userIcon.shouldBe(visible, Duration.ofSeconds(10)).isDisplayed();
+    @Step("Перевірити, що не видима кнопка Login (авторизований стан)")
+    public BookStorePage shouldNotSeeLoginButton() {
+        loginButton.shouldNotBe(visible.because("Кнопка Login має бути не видима для авторизованого користувача"));
+        return this;
     }
 
-    @Step("Отримати відображене ім'я користувача")
-    public String getDisplayedUserName() {
-        return usernameLabel.shouldBe(visible, Duration.ofSeconds(10)).getText();
-    }
-
-    @Step("Перевірити наявність чекбоксів для додавання книг у колекцію")
-    public boolean areCollectionCheckboxesPresent() {
-        return rowCheckboxes.size() > 0;
+    @Step("Перевірити, що на сторінці Book Store відображається ім'я {expectedUserName}")
+    public BookStorePage shouldSeeUserName(String expectedUserName) {
+        userNameLabel.shouldHave(exactText(expectedUserName).because("Ім'я користувача має збігатись з тим, під яким логінились"));
+        return this;
     }
 
     @Step("Натиснути на книгу '{title}'")

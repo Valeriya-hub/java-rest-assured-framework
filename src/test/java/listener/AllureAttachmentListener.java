@@ -3,6 +3,8 @@ package listener;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Attachment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.logging.LogEntry;
@@ -24,13 +26,20 @@ import org.testng.ITestResult;
  */
 public class AllureAttachmentListener implements ITestListener {
 
+    private static final Logger log = LogManager.getLogger(AllureAttachmentListener.class);
+
     @Override
     public void onTestFailure(ITestResult result) {
         if (WebDriverRunner.hasWebDriverStarted()) {
+            try {
             attachScreenshot();
             attachPageSource();
             attachCurrentUrl();
             attachBrowserConsoleLogs();
+            } catch (Exception e) {
+                log.error("Не вдалося прикріпити діагностичні дані для тесту '{}': {}",
+                        result.getName(), e.getMessage(), e);
+            }
         }
     }
 
