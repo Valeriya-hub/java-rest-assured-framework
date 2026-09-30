@@ -1,1 +1,1 @@
-{"total":4,"items":[]}
+{"total":2,"items":[{"uid":"2e97a01e75f70d92789f18b65b6d8ee6","name":"Автентифікація","statistic":{"failed":0,"broken":0,"skipped":0,"passed":1,"unknown":0,"total":1}},{"uid":"aa4fe7d1bf183156810a0d66fa3940d3","name":"Управління колекцією книг","statistic":{"failed":0,"broken":0,"skipped":0,"passed":1,"unknown":0,"total":1}}]}
