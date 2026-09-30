@@ -18,14 +18,10 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserApiClient {
     private final RequestSpecification spec = new RequestSpecBuilder()
             .setBaseUri(Config.apiBaseUrl())
             .build();
-    private String userId;
-    private String token;
 
     @Step("API: створити тестового користувача {userName}")
     public CreateUserResponse createUser(String userName, String password) {
