@@ -9,7 +9,7 @@ import ui.BookStorePage;
 public class GuestAccessTest extends BaseTest {
     @Feature("Автентифікація")
     @Story("Доступ гостя")
-    @Test(description = "Неавторизований користувач бачить кнопку Login")
+    @Test(description = "Неавторизований користувач бачить кнопку Login", groups = {"smoke", "ui"})
     @Description("""
             Передумова: користувач неавторизований (сесія відсутня).
             UI: відкривається сторінка Book Store.
