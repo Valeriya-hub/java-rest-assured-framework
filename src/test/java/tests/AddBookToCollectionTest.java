@@ -16,7 +16,7 @@ public class AddBookToCollectionTest extends BaseTest {
 
     @Feature("Управління колекцією книг")
     @Story("Додавання книг")
-    @Test(description = "Користувач додає книгу в колекцію")
+    @Test(description = "Користувач додає книгу в колекцію", groups = {"regression", "ui", "e2e"})
     @Description("""
             Передумова: через API створюється користувач, авторизаційні cookie підставляються в браузер.
             UI: відкривається Профіль -> перехід у Book Store -> вибір книги 'Git Pocket Guide' -> 

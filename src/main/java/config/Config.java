@@ -6,18 +6,34 @@ import java.time.Duration;
 import java.util.Properties;
 
 public final class Config {
+    private static final String ENV = System.getProperty("env", "qa");
     private static final Properties PROPERTIES = new Properties();
 
+//    static {
+//        try (InputStream is = Config.class.getClassLoader()
+//                .getResourceAsStream("config.properties")) {
+//            if (is == null) {
+//                throw new IllegalStateException(
+//                        "Файл config.properties не знайдено в classpath (src/test/resources)");
+//            }
+//            PROPERTIES.load(is);
+//        } catch (IOException e) {
+//            throw new IllegalStateException("Не вдалося завантажити config.properties", e);
+//        }
+//    }
+
     static {
+        String resourceName = "config-" + ENV + ".properties";
         try (InputStream is = Config.class.getClassLoader()
-                .getResourceAsStream("config.properties")) {
+                .getResourceAsStream(resourceName)) {
             if (is == null) {
                 throw new IllegalStateException(
-                        "Файл config.properties не знайдено в classpath (src/test/resources)");
+                        "Файл " + resourceName + " не знайдено в classpath (src/test/resources). "
+                                + "Перевірте значення -Denv (поточне: '" + ENV + "').");
             }
             PROPERTIES.load(is);
         } catch (IOException e) {
-            throw new IllegalStateException("Не вдалося завантажити config.properties", e);
+            throw new IllegalStateException("Не вдалося завантажити " + resourceName, e);
         }
     }
 
@@ -72,7 +88,7 @@ public final class Config {
         String value = System.getProperty(key, PROPERTIES.getProperty(key));
         if (value == null || value.isBlank()) {
             throw new IllegalStateException(
-                    "Властивість '" + key + "' не задана ні в config.properties, ні через -D" + key);
+                    "Властивість '" + key + "' не задана ні в config-" + ENV + ".properties, ні через -D" + key);
         }
         return value;
     }

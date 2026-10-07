@@ -5,6 +5,8 @@
         <classes>
             <class name="tests.AuthorizationTest"/>
             <class name="tests.AddBookToCollectionTest"/>
+            <class name="tests.DeleteBookFromCollectionTest"/>
+            <class name="tests.GuestAccessTest"/>
         </classes>
     </test>
 </suite>

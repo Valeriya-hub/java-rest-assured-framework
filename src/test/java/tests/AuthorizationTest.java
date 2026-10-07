@@ -16,7 +16,7 @@ public class AuthorizationTest extends BaseTest {
 
     @Feature("Автентифікація")
     @Story("Логін")
-    @Test(description = "Авторизований користувач бачить своє ім'я та іконку профілю")
+    @Test(description = "Користувач додає книгу в колекцію", groups = {"regression", "ui", "e2e"})
     @Description("""
             Передумова: через API створюється новий тестовий користувач, користувач 
             авторизований (сесія встановлена). UI: відкривається сторінка Book Store.
@@ -49,7 +49,7 @@ public class AuthorizationTest extends BaseTest {
 
     @Feature("Автентифікація")
     @Story("Логін")
-    @Test(description = "Користувач не може залогінитись з невірним паролем")
+    @Test(description = "Користувач не може залогінитись з невірним паролем", groups = {"regression", "ui"})
     @Description("""
             Передумова: через API створюється новий тестовий користувач, користувач не
             авторизований. UI: здійснюється спроба авторизації з невірним паролем.
