@@ -9,19 +9,6 @@ public final class Config {
     private static final String ENV = System.getProperty("env", "qa");
     private static final Properties PROPERTIES = new Properties();
 
-//    static {
-//        try (InputStream is = Config.class.getClassLoader()
-//                .getResourceAsStream("config.properties")) {
-//            if (is == null) {
-//                throw new IllegalStateException(
-//                        "Файл config.properties не знайдено в classpath (src/test/resources)");
-//            }
-//            PROPERTIES.load(is);
-//        } catch (IOException e) {
-//            throw new IllegalStateException("Не вдалося завантажити config.properties", e);
-//        }
-//    }
-
     static {
         String resourceName = "config-" + ENV + ".properties";
         try (InputStream is = Config.class.getClassLoader()

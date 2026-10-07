@@ -15,7 +15,7 @@ public class AuthorizationTest extends BaseTest {
 
     @Feature("Автентифікація")
     @Story("Логін")
-    @Test(description = "Користувач додає книгу в колекцію", groups = {"regression", "ui", "e2e"})
+    @Test(description = "Авторизований користувач бачить своє ім'я та іконку профілю", groups = {"smoke", "ui"})
     @Description("""
             Передумова: через API створюється новий тестовий користувач, користувач 
             авторизований (сесія встановлена). UI: відкривається сторінка Book Store.
