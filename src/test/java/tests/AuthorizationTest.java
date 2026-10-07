@@ -12,7 +12,6 @@ import ui.ProfilePage;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuthorizationTest extends BaseTest {
-    private final String ERROR_MESSAGE = "Invalid username or password!";
 
     @Feature("Автентифікація")
     @Story("Логін")

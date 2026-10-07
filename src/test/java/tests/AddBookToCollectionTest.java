@@ -1,6 +1,5 @@
 package tests;
 
-import api.client.UserApiClient;
 import auth.AuthSession;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
@@ -19,7 +18,7 @@ public class AddBookToCollectionTest extends BaseTest {
     @Test(description = "Користувач додає книгу в колекцію", groups = {"regression", "ui", "e2e"})
     @Description("""
             Передумова: через API створюється користувач, авторизаційні cookie підставляються в браузер.
-            UI: відкривається Профіль -> перехід у Book Store -> вибір книги 'Git Pocket Guide' -> 
+            UI: відкривається Профіль -> перехід у Book Store -> вибір книги 'Git Pocket Guide' ->
             натискання 'Add To Collection' та закриття alert.
             Перевірка: через API (GET /Account/v1/User) перевіряється, що ISBN доданої книги з'явився
             у колекції користувача.
