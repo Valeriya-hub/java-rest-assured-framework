@@ -1,4 +1,4 @@
-package tests;
+package tests.base;
 
 import api.client.UserApiClient;
 import api.model.CreateUserResponse;
@@ -12,7 +12,10 @@ import io.qameta.allure.selenide.AllureSelenide;
 import io.qameta.allure.testng.AllureTestNg;
 import io.restassured.RestAssured;
 import org.testng.ITestResult;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Listeners;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,7 +48,6 @@ public abstract class BaseTest {
 
     /**
      * Єдина точка входу для сетапу всього сьюту.
-     *
      * Виконується один раз на КОЖЕН тестовий клас, що бере участь у suite
      * (це особливість TestNG для успадкованих @BeforeSuite методів)
      */
@@ -57,7 +59,6 @@ public abstract class BaseTest {
 
     /**
      * Очищує target/allure-results перед стартом прогону.
-     *
      * Перший виклик (для першого класу в suite)
      * видаляє директорію; кожен наступний виклик (для інших класів) одразу
      * побачить, що директорії вже немає, і вийде через return —
@@ -89,7 +90,6 @@ public abstract class BaseTest {
     /**
      * Підключає глобальні фільтри REST Assured: логування запитів/відповідей
      * через Log4j2 і прикріплення їх до Allure-звіту.
-     *
      * Guard (LOGGING_INITIALIZED) обов'язковий: RestAssured.filters(...)
      * ДОДАЄ фільтри до статичного списку, а не замінює його. Без guard'а
      * кожен тестовий клас у suite додав би свою копію фільтрів —
