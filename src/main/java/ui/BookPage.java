@@ -13,18 +13,18 @@ public class BookPage extends BasePage<BookPage> {
     private final SelenideElement addToCollectionButton = $(".text-right #addNewRecordButton");
     private final SelenideElement bookIsbn = $("#ISBN-wrapper label#userName-value");
 
-    @Step("Відкрити сторінку книги з параметром пошуку")
+    @Step("Open book page with search parameter")
     public BookPage open(String searchQuery) {
         return openPage(Config.bookSearchUrl(searchQuery));
     }
 
-    @Step("Натиснути на кнопку 'Add to Collection'")
+    @Step("Click 'Add to Collection' button")
     public BookPage clickAddToCollectionButton() {
         addToCollectionButton.click();
         return this;
     }
 
-    @Step("Якщо відображається JavaScript Alert натиснути ОК")
+    @Step("If JavaScript Alert is displayed, click OK")
     public void dismissAlertIfPresent() {
         try {
             Selenide.switchTo().alert().accept();
@@ -32,7 +32,7 @@ public class BookPage extends BasePage<BookPage> {
         }
     }
 
-    @Step("Отримати isbn книги")
+    @Step("Get book ISBN")
     public String getIsbn() {
         return bookIsbn.shouldBe(visible).getText();
     }

@@ -14,17 +14,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AuthorizationTest extends BaseTest {
 
-    @Feature("Автентифікація")
-    @Story("Логін")
+    @Feature("Authentication")
+    @Story("Login")
     @Test(
-            description = "Авторизований користувач бачить своє ім'я та іконку профілю",
+            description = "Authorized user sees their name and profile icon",
             groups = {"smoke", "ui"}
     )
     @Description("""
-            Передумова: через API створюється новий тестовий користувач, користувач 
-            авторизований (сесія встановлена). UI: відкривається сторінка Book Store.
-            Перевірка: кнопка Login є не видимою на сторінці, ім'я користувача на сторінці
-            таке саме з яким логінились.
+            Precondition: a new test user is created via API, user is authorized
+            (session is established). UI: Book Store page is opened.
+            Verification: Login button is not visible on the page, user name on the page
+            matches the one used for login.
             """)
     public void authorizedUserSeesUsernameAndProfileIcon() {
 
@@ -46,21 +46,21 @@ public class AuthorizationTest extends BaseTest {
                 .shouldNotSeeLoginButton();
 
         assertThat(AuthSession.getAuthTokenFromCookie())
-                .as("Після успішного логіну auth-токен має з'явитись в cookie браузера")
+                .as("After successful login, auth token should appear in browser cookie")
                 .isNotBlank();
     }
 
-    @Feature("Автентифікація")
-    @Story("Логін")
+    @Feature("Authentication")
+    @Story("Login")
     @Test(
-            description = "Користувач не може залогінитись з невірним паролем",
+            description = "User cannot login with incorrect password",
             groups = {"regression", "ui"}
     )
     @Description("""
-            Передумова: через API створюється новий тестовий користувач, користувач не
-            авторизований. UI: здійснюється спроба авторизації з невірним паролем.
-            Перевірка: На сторінці з'являється повідомлення про не правильний пароль.
-            Користувач залишається на сторінці логіну.
+            Precondition: a new test user is created via API, user is not authorized.
+            UI: attempt to authorize with incorrect password is made.
+            Verification: incorrect password message appears on the page.
+            User remains on login page.
             """)
     public void userCannotLoginWithWrongPassword() {
         createTestUserViaApi();

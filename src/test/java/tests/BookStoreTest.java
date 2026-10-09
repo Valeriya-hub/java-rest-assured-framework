@@ -14,11 +14,11 @@ public class BookStoreTest extends BaseTest {
     @Feature("Book Store UI")
     @Story("Books Page Layout & Controls")
     @Test(
-            description = "UI-01: Перевірка відображення основних елементів сторінки Books",
+            description = "Verify main elements of Books page are displayed",
             groups = {"ui", "smoke"}
     )
     @Description("""
-            Перевірка URL, заголовка, таблиці книг, пошуку, пагінації та колонок (Title, Author, Publisher)
+            Verification of URL, title, books table, search, pagination and columns (Title, Author, Publisher)
             """)
     public void shouldVerifyBooksPageInitialState() {
 

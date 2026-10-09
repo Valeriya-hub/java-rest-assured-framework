@@ -13,16 +13,16 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 /**
- * TestNG-listener, який при падінні UI-тесту прикріплює до Allure-звіту:
- * - скріншот сторінки в момент фейлу;
+ * TestNG listener that attaches to Allure report when a UI test fails:
+ * - screenshot of the page at the moment of failure;
  * - HTML page source;
- * - поточний URL;
- * - логи браузерної консолі (якщо драйвер їх підтримує).
+ * - current URL;
+ * - browser console logs (if driver supports them).
  * <p>
- * Доповнює io.qameta.allure.selenide.AllureSelenide (який логує кожен
- * Selenide-крок), а не дублює його — тут фіксується стан САМЕ на момент
- * фейлу тесту, включно з випадками, коли тест впав на assert
- * ПІСЛЯ того, як усі Selenide-дії вже відпрацювали успішно.
+ * Complements io.qameta.allure.selenide.AllureSelenide (which logs each
+ * Selenide step), not duplicates it — here the state is captured EXACTLY at the
+ * moment of test failure, including cases when the test failed on assert
+ * AFTER all Selenide actions have already executed successfully.
  */
 public class AllureAttachmentListener implements ITestListener {
 
@@ -37,29 +37,29 @@ public class AllureAttachmentListener implements ITestListener {
             attachCurrentUrl();
             attachBrowserConsoleLogs();
             } catch (Exception e) {
-                log.error("Не вдалося прикріпити діагностичні дані для тесту '{}': {}",
+                log.error("Failed to attach diagnostic data for test '{}': {}",
                         result.getName(), e.getMessage(), e);
             }
         }
     }
 
-    @Attachment(value = "Скріншот у момент падіння", type = "image/png")
+    @Attachment(value = "Screenshot at failure", type = "image/png")
     private byte[] attachScreenshot() {
         return ((TakesScreenshot) WebDriverRunner.getWebDriver())
                 .getScreenshotAs(OutputType.BYTES);
     }
 
-    @Attachment(value = "HTML сторінки в момент падіння", type = "text/html")
+    @Attachment(value = "HTML page at failure", type = "text/html")
     private String attachPageSource() {
         return WebDriverRunner.getWebDriver().getPageSource();
     }
 
-    @Attachment(value = "URL в момент падіння", type = "text/plain")
+    @Attachment(value = "URL at failure", type = "text/plain")
     private String attachCurrentUrl() {
         return Selenide.webdriver().driver().url();
     }
 
-    @Attachment(value = "Логи консолі браузера", type = "text/plain")
+    @Attachment(value = "Browser console logs", type = "text/plain")
     private String attachBrowserConsoleLogs() {
         try {
             StringBuilder logs = new StringBuilder();
@@ -71,8 +71,8 @@ public class AllureAttachmentListener implements ITestListener {
                     .forEach((LogEntry entry) -> logs.append(entry).append(System.lineSeparator()));
             return logs.toString();
         } catch (Exception e) {
-            // Не всі браузери/драйвери підтримують BROWSER logs (напр. Firefox без спец. налаштувань)
-            return "Логи консолі недоступні: " + e.getMessage();
+            // Not all browsers/drivers support BROWSER logs (e.g., Firefox without special settings)
+            return "Console logs unavailable: " + e.getMessage();
         }
     }
 }

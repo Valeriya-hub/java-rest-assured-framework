@@ -33,13 +33,13 @@ public abstract class BaseTest {
 
     private static final Path ALLURE_RESULTS_DIR = Paths.get("target", "allure-results");
 
-    // Захищає RestAssured.filters(...) від повторного додавання.
+    // Protects RestAssured.filters(...) from being added multiple times.
     private static final AtomicBoolean LOGGING_INITIALIZED = new AtomicBoolean(false);
 
     protected final UserApiClient userApiClient = new UserApiClient();
 
-    // Дані тестового юзера — заповнюються тільки якщо конкретний тест
-    // цього потребує (авторизований сценарій)
+    // Test user data — populated only if a specific test
+    // requires it (authorized scenario)
     protected String testUserId;
     protected String testUserName;
     protected String testUserPassword;
@@ -47,9 +47,9 @@ public abstract class BaseTest {
     protected String testUserTokenExpires;
 
     /**
-     * Єдина точка входу для сетапу всього сьюту.
-     * Виконується один раз на КОЖЕН тестовий клас, що бере участь у suite
-     * (це особливість TestNG для успадкованих @BeforeSuite методів)
+     * Single entry point for suite setup.
+     * Executes once for EACH test class participating in the suite
+     * (this is a TestNG feature for inherited @BeforeSuite methods)
      */
     @BeforeSuite(alwaysRun = true)
     public void suiteSetUp() {
@@ -58,22 +58,22 @@ public abstract class BaseTest {
     }
 
     /**
-     * Очищує target/allure-results перед стартом прогону.
-     * Перший виклик (для першого класу в suite)
-     * видаляє директорію; кожен наступний виклик (для інших класів) одразу
-     * побачить, що директорії вже немає, і вийде через return —
-     * без побічних ефектів і без помилки.
+     * Cleans target/allure-results before the test run starts.
+     * First call (for the first class in the suite)
+     * deletes the directory; each subsequent call (for other classes) will
+     * immediately see that the directory is already gone and exit via return —
+     * without side effects and without error.
      */
     private void cleanAllureResultsDirectory() {
         if (!Files.exists(ALLURE_RESULTS_DIR)) {
-            return; // нічого чистити — або перший запуск, або вже очищено попереднім класом
+            return; // nothing to clean — either first run or already cleaned by previous class
         }
         try (Stream<Path> paths = Files.walk(ALLURE_RESULTS_DIR)) {
-            paths.sorted(Comparator.reverseOrder()) // спочатку файли, потім батьківські директорії
+            paths.sorted(Comparator.reverseOrder()) // files first, then parent directories
                     .forEach(this::deleteQuietly);
         } catch (IOException e) {
             throw new IllegalStateException(
-                    "Не вдалося очистити директорію Allure-результатів: " + ALLURE_RESULTS_DIR, e);
+                    "Failed to clean Allure results directory: " + ALLURE_RESULTS_DIR, e);
         }
     }
 
@@ -81,20 +81,20 @@ public abstract class BaseTest {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            // Не критично — файл міг бути заблокований антивірусом чи ще відкритий,
-            // не варто валити весь прогін тестів через це
-            System.err.println("Не вдалося видалити: " + path + " (" + e.getMessage() + ")");
+            // Not critical — file might be locked by antivirus or still open,
+            // don't fail the entire test run because of this
+            System.err.println("Failed to delete: " + path + " (" + e.getMessage() + ")");
         }
     }
 
     /**
-     * Підключає глобальні фільтри REST Assured: логування запитів/відповідей
-     * через Log4j2 і прикріплення їх до Allure-звіту.
-     * Guard (LOGGING_INITIALIZED) обов'язковий: RestAssured.filters(...)
-     * ДОДАЄ фільтри до статичного списку, а не замінює його. Без guard'а
-     * кожен тестовий клас у suite додав би свою копію фільтрів —
-     * і кожен запит логувався б і прикріплювався до Allure N разів,
-     * де N — кількість класів у testng.xml.
+     * Attaches global REST Assured filters: request/response logging
+     * via Log4j2 and attaching them to Allure report.
+     * Guard (LOGGING_INITIALIZED) is mandatory: RestAssured.filters(...)
+     * ADDS filters to a static list, not replaces it. Without the guard,
+     * each test class in the suite would add its own copy of filters —
+     * and each request would be logged and attached to Allure N times,
+     * where N is the number of classes in testng.xml.
      */
     private void setupRestAssuredLogging() {
         if (LOGGING_INITIALIZED.compareAndSet(false, true)) {
@@ -115,8 +115,8 @@ public abstract class BaseTest {
         Configuration.pollingInterval = Config.uiPollingIntervalMs();
         Configuration.pageLoadTimeout = Config.pageLoadTimeoutMs();
 
-        // На CI-runner немає графічного середовища — headless обов'язковий.
-        // Локально, для зручності дебагу, лишаємо звичайний режим з видимим браузером.
+        // CI runner has no graphical environment — headless is mandatory.
+        // Locally, for debugging convenience, we keep normal mode with visible browser.
         Configuration.headless = System.getenv("CI") != null;
 
         SelenideLogger.addListener("AllureSelenide",
@@ -124,9 +124,9 @@ public abstract class BaseTest {
     }
 
     /**
-     * Викликається явно з тесту, якому потрібен заздалегідь створений
-     * авторизований користувач. Юзер створюється через API, логін
-     * в самому тесті все одно виконується через UI.
+     * Called explicitly from a test that needs a pre-created
+     * authorized user. User is created via API, login
+     * in the test itself is still performed via UI.
      */
     protected void createTestUserViaApi() {
         testUserName = "qa_user_" + UUID.randomUUID().toString().substring(0, 8);
@@ -141,7 +141,7 @@ public abstract class BaseTest {
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(ITestResult result) {
-        // Post-condition: приберемо тестового юзера, якщо він створювався
+        // Post-condition: remove test user if one was created
         try {
             if (testUserId != null) {
                 userApiClient.deleteUser(testUserId, testUserToken);

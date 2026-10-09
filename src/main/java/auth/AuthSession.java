@@ -10,27 +10,29 @@ import java.time.Duration;
 import static com.codeborne.selenide.Selenide.open;
 
 /**
- * Дозволяє "залогінити" браузер без проходження UI-форми логіну:
- * підставляємо cookie 'userID', 'token', 'userName' та 'expires',
- * отримані через API, і одразу відкриваємо приватну сторінку профілю.
+ * Allows the browser to be authenticated without going through the UI login form:
+ * we set the 'userID', 'token', 'userName', and 'expires' cookies
+ * obtained via the API, and immediately open the private profile page.
  *
- * NB: сайт виставляє ці cookie не через HTTP-заголовок Set-Cookie,
- * а клієнтським JS (document.cookie) після логіну — на роботу
- * WebDriver.manage().addCookie(...) це не впливає, оскільки для
- * React-застосунку важливий лише кінцевий стан cookie-стора браузера.
+ * NB: The website does not set these cookies via the HTTP Set-Cookie header.
+ * Instead, client-side JavaScript (document.cookie) sets them after login.
+ * This does not affect WebDriver.manage().addCookie(...), because
+ * the React application only cares about the final state of the browser's
+ * cookie store.
  */
 public class AuthSession {
-    @Step("UI: підставити auth cookie (userID, token, userName) для юзера {userId}")
+    @Step("UI: Set authentication cookies (userID, token, userName) for user {userId}")
     public static void injectAuthCookies(String userId, String userName, String token, String expiresIso) {
-        // Cookie можна додати лише для домену, на якому вже "стоїть" браузер,
-        // тому спочатку відкриваємо будь-яку сторінку цього ж домену.
+        // Cookies can only be added for a domain the browser is already on,
+        // so we first open any page on the same domain.
         open("/");
 
         addCookieIfPresent("userID", userId);
         addCookieIfPresent("userName", userName);
         addCookieIfPresent("token", token);
-        // 'expires' у застосунку — це саме значення cookie (ISO-рядок), а не TTL самої cookie:
-        // на реальній сесії Selenide/Selenium-кука теж лишається "Session" (без setExpiry).
+        // In the application, 'expires' is the cookie value itself (an ISO string),
+        // not the cookie's TTL. In a real Selenide/Selenium session, the cookie
+        // also remains a session cookie (without setExpiry).
         addCookieIfPresent("expires", expiresIso);
     }
 
@@ -41,7 +43,7 @@ public class AuthSession {
         WebDriverRunner.getWebDriver().manage().addCookie(new Cookie(name, value));
     }
 
-    @Step("UI: отримати токен авторизації з cookie браузера")
+    @Step("UI: get the authorization token from the browser cookie")
     public static String getAuthTokenFromCookie() {
         Cookie tokenCookie = Selenide.Wait()
                 .withTimeout(Duration.ofSeconds(10))
