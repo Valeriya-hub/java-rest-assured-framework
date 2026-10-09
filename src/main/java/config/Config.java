@@ -75,7 +75,7 @@ public final class Config {
         String value = System.getProperty(key, PROPERTIES.getProperty(key));
         if (value == null || value.isBlank()) {
             throw new IllegalStateException(
-                    "Property '" + key + "' не задана ні в config-" + ENV + ".properties, ні через -D" + key);
+                    "Property '" + key + "' is not set in config-" + ENV + ".properties, or via -D" + key);
         }
         return value;
     }
