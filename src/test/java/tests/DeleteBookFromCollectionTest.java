@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.testng.annotations.Test;
+import tests.base.BaseTest;
 import ui.ProfilePage;
 
 import java.util.List;
@@ -18,7 +19,10 @@ public class DeleteBookFromCollectionTest extends BaseTest {
 
     @Feature("Управління колекцією книг")
     @Story("Видалення книг")
-    @Test(description = "Авторизований користувач видаляє книгу з колекції", groups = {"regression", "ui", "e2e"})
+    @Test(
+            description = "Авторизований користувач видаляє книгу з колекції",
+            groups = {"regression", "ui", "e2e"}
+    )
     @Description("""
             Передумова: через API створюється юзер, генерується токен, в колекцію додається 1 книга.
             UI: профіль відкривається через cookie injection, книга видаляється через іконку Trash

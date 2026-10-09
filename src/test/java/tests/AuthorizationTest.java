@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.testng.annotations.Test;
+import tests.base.BaseTest;
 import ui.BookStorePage;
 import ui.LoginPage;
 import ui.ProfilePage;
@@ -15,7 +16,10 @@ public class AuthorizationTest extends BaseTest {
 
     @Feature("Автентифікація")
     @Story("Логін")
-    @Test(description = "Авторизований користувач бачить своє ім'я та іконку профілю", groups = {"smoke", "ui"})
+    @Test(
+            description = "Авторизований користувач бачить своє ім'я та іконку профілю",
+            groups = {"smoke", "ui"}
+    )
     @Description("""
             Передумова: через API створюється новий тестовий користувач, користувач 
             авторизований (сесія встановлена). UI: відкривається сторінка Book Store.
@@ -48,7 +52,10 @@ public class AuthorizationTest extends BaseTest {
 
     @Feature("Автентифікація")
     @Story("Логін")
-    @Test(description = "Користувач не може залогінитись з невірним паролем", groups = {"regression", "ui"})
+    @Test(
+            description = "Користувач не може залогінитись з невірним паролем",
+            groups = {"regression", "ui"}
+    )
     @Description("""
             Передумова: через API створюється новий тестовий користувач, користувач не
             авторизований. UI: здійснюється спроба авторизації з невірним паролем.
