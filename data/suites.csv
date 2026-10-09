@@ -1,28 +1,28 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Fri Oct 09 09:48:36 UTC 2026","Fri Oct 09 09:48:38 UTC 2026","2044","Book Store Automation Suite","UI Tests","tests.GuestAccessTest","tests.GuestAccessTest","unauthorizedUserSeesLoginButton","Неавторизований користувач бачить кнопку Login","Передумова: користувач неавторизований (сесія відсутня).
-UI: відкривається сторінка Book Store.
-Перевірка: кнопка Login є видимою на сторінці.
+"passed","Fri Oct 09 11:26:10 UTC 2026","Fri Oct 09 11:26:19 UTC 2026","8360","Book Store Automation Suite","UI Tests","tests.DeleteBookFromCollectionTest","tests.DeleteBookFromCollectionTest","deleteBookFromCollection","Авторизований користувач видаляє книгу з колекції","Передумова: через API створюється юзер, генерується токен, в колекцію додається 1 книга.
+UI: профіль відкривається через cookie injection, книга видаляється через іконку Trash
+з підтвердженням в модальному вікні.
+Очікування: книга зникає з таблиці на UI, а масив books в GET /User стає порожнім.
 "
-"passed","Fri Oct 09 09:48:09 UTC 2026","Fri Oct 09 09:48:16 UTC 2026","6864","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","userCannotLoginWithWrongPassword","Користувач не може залогінитись з невірним паролем","Передумова: через API створюється новий тестовий користувач, користувач не
-авторизований. UI: здійснюється спроба авторизації з невірним паролем.
-Перевірка: На сторінці з'являється повідомлення про не правильний пароль.
-Користувач залишається на сторінці логіну.
-"
-"passed","Fri Oct 09 09:47:50 UTC 2026","Fri Oct 09 09:48:09 UTC 2026","18218","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Авторизований користувач бачить своє ім'я та іконку профілю","Передумова: через API створюється новий тестовий користувач, користувач
+"passed","Fri Oct 09 11:25:37 UTC 2026","Fri Oct 09 11:25:54 UTC 2026","16669","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Авторизований користувач бачить своє ім'я та іконку профілю","Передумова: через API створюється новий тестовий користувач, користувач
 авторизований (сесія встановлена). UI: відкривається сторінка Book Store.
 Перевірка: кнопка Login є не видимою на сторінці, ім'я користувача на сторінці
 таке саме з яким логінились.
 "
-"passed","Fri Oct 09 09:48:38 UTC 2026","Fri Oct 09 09:48:40 UTC 2026","2480","Book Store Automation Suite","UI Tests","tests.BookStoreTest","tests.BookStoreTest","shouldVerifyBooksPageInitialState","UI-01: Перевірка відображення основних елементів сторінки Books","Перевірка URL, заголовка, таблиці книг, пошуку, пагінації та колонок (Title, Author, Publisher)
+"passed","Fri Oct 09 11:26:21 UTC 2026","Fri Oct 09 11:26:24 UTC 2026","2359","Book Store Automation Suite","UI Tests","tests.BookStoreTest","tests.BookStoreTest","shouldVerifyBooksPageInitialState","UI-01: Перевірка відображення основних елементів сторінки Books","Перевірка URL, заголовка, таблиці книг, пошуку, пагінації та колонок (Title, Author, Publisher)
 "
-"passed","Fri Oct 09 09:48:18 UTC 2026","Fri Oct 09 09:48:25 UTC 2026","6966","Book Store Automation Suite","UI Tests","tests.AddBookToCollectionTest","tests.AddBookToCollectionTest","userAddBookToCollection","Користувач додає книгу в колекцію","Передумова: через API створюється користувач, авторизаційні cookie підставляються в браузер.
+"passed","Fri Oct 09 11:25:55 UTC 2026","Fri Oct 09 11:26:01 UTC 2026","6157","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","userCannotLoginWithWrongPassword","Користувач не може залогінитись з невірним паролем","Передумова: через API створюється новий тестовий користувач, користувач не
+авторизований. UI: здійснюється спроба авторизації з невірним паролем.
+Перевірка: На сторінці з'являється повідомлення про не правильний пароль.
+Користувач залишається на сторінці логіну.
+"
+"passed","Fri Oct 09 11:26:02 UTC 2026","Fri Oct 09 11:26:10 UTC 2026","7265","Book Store Automation Suite","UI Tests","tests.AddBookToCollectionTest","tests.AddBookToCollectionTest","userAddBookToCollection","Користувач додає книгу в колекцію","Передумова: через API створюється користувач, авторизаційні cookie підставляються в браузер.
 UI: відкривається Профіль -> перехід у Book Store -> вибір книги 'Git Pocket Guide' ->
 натискання 'Add To Collection' та закриття alert.
 Перевірка: через API (GET /Account/v1/User) перевіряється, що ISBN доданої книги з'явився
 у колекції користувача.
 "
-"passed","Fri Oct 09 09:48:26 UTC 2026","Fri Oct 09 09:48:35 UTC 2026","9064","Book Store Automation Suite","UI Tests","tests.DeleteBookFromCollectionTest","tests.DeleteBookFromCollectionTest","deleteBookFromCollection","Авторизований користувач видаляє книгу з колекції","Передумова: через API створюється юзер, генерується токен, в колекцію додається 1 книга.
-UI: профіль відкривається через cookie injection, книга видаляється через іконку Trash
-з підтвердженням в модальному вікні.
-Очікування: книга зникає з таблиці на UI, а масив books в GET /User стає порожнім.
+"passed","Fri Oct 09 11:26:20 UTC 2026","Fri Oct 09 11:26:21 UTC 2026","1801","Book Store Automation Suite","UI Tests","tests.GuestAccessTest","tests.GuestAccessTest","unauthorizedUserSeesLoginButton","Неавторизований користувач бачить кнопку Login","Передумова: користувач неавторизований (сесія відсутня).
+UI: відкривається сторінка Book Store.
+Перевірка: кнопка Login є видимою на сторінці.
 "
