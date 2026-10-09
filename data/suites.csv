@@ -1,28 +1,28 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Fri Oct 09 11:26:10 UTC 2026","Fri Oct 09 11:26:19 UTC 2026","8360","Book Store Automation Suite","UI Tests","tests.DeleteBookFromCollectionTest","tests.DeleteBookFromCollectionTest","deleteBookFromCollection","Авторизований користувач видаляє книгу з колекції","Передумова: через API створюється юзер, генерується токен, в колекцію додається 1 книга.
-UI: профіль відкривається через cookie injection, книга видаляється через іконку Trash
-з підтвердженням в модальному вікні.
-Очікування: книга зникає з таблиці на UI, а масив books в GET /User стає порожнім.
+"passed","Fri Oct 09 12:19:43 UTC 2026","Fri Oct 09 12:20:13 UTC 2026","30482","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Authorized user sees their name and profile icon","Precondition: a new test user is created via API, user is authorized
+(session is established). UI: Book Store page is opened.
+Verification: Login button is not visible on the page, user name on the page
+matches the one used for login.
 "
-"passed","Fri Oct 09 11:25:37 UTC 2026","Fri Oct 09 11:25:54 UTC 2026","16669","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Авторизований користувач бачить своє ім'я та іконку профілю","Передумова: через API створюється новий тестовий користувач, користувач
-авторизований (сесія встановлена). UI: відкривається сторінка Book Store.
-Перевірка: кнопка Login є не видимою на сторінці, ім'я користувача на сторінці
-таке саме з яким логінились.
+"passed","Fri Oct 09 12:20:34 UTC 2026","Fri Oct 09 12:20:42 UTC 2026","8319","Book Store Automation Suite","UI Tests","tests.DeleteBookFromCollectionTest","tests.DeleteBookFromCollectionTest","deleteBookFromCollection","Authorized user deletes a book from collection","Precondition: user is created via API, token is generated, 1 book is added to collection.
+UI: profile is opened via cookie injection, book is deleted via Trash icon
+with confirmation in modal window.
+Expected: book disappears from table on UI, and books array in GET /User becomes empty.
 "
-"passed","Fri Oct 09 11:26:21 UTC 2026","Fri Oct 09 11:26:24 UTC 2026","2359","Book Store Automation Suite","UI Tests","tests.BookStoreTest","tests.BookStoreTest","shouldVerifyBooksPageInitialState","UI-01: Перевірка відображення основних елементів сторінки Books","Перевірка URL, заголовка, таблиці книг, пошуку, пагінації та колонок (Title, Author, Publisher)
+"passed","Fri Oct 09 12:20:45 UTC 2026","Fri Oct 09 12:20:48 UTC 2026","2769","Book Store Automation Suite","UI Tests","tests.BookStoreTest","tests.BookStoreTest","shouldVerifyBooksPageInitialState","Verify main elements of Books page are displayed","Verification of URL, title, books table, search, pagination and columns (Title, Author, Publisher)
 "
-"passed","Fri Oct 09 11:25:55 UTC 2026","Fri Oct 09 11:26:01 UTC 2026","6157","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","userCannotLoginWithWrongPassword","Користувач не може залогінитись з невірним паролем","Передумова: через API створюється новий тестовий користувач, користувач не
-авторизований. UI: здійснюється спроба авторизації з невірним паролем.
-Перевірка: На сторінці з'являється повідомлення про не правильний пароль.
-Користувач залишається на сторінці логіну.
+"passed","Fri Oct 09 12:20:14 UTC 2026","Fri Oct 09 12:20:21 UTC 2026","6963","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","userCannotLoginWithWrongPassword","User cannot login with incorrect password","Precondition: a new test user is created via API, user is not authorized.
+UI: attempt to authorize with incorrect password is made.
+Verification: incorrect password message appears on the page.
+User remains on login page.
 "
-"passed","Fri Oct 09 11:26:02 UTC 2026","Fri Oct 09 11:26:10 UTC 2026","7265","Book Store Automation Suite","UI Tests","tests.AddBookToCollectionTest","tests.AddBookToCollectionTest","userAddBookToCollection","Користувач додає книгу в колекцію","Передумова: через API створюється користувач, авторизаційні cookie підставляються в браузер.
-UI: відкривається Профіль -> перехід у Book Store -> вибір книги 'Git Pocket Guide' ->
-натискання 'Add To Collection' та закриття alert.
-Перевірка: через API (GET /Account/v1/User) перевіряється, що ISBN доданої книги з'явився
-у колекції користувача.
+"passed","Fri Oct 09 12:20:24 UTC 2026","Fri Oct 09 12:20:33 UTC 2026","8819","Book Store Automation Suite","UI Tests","tests.AddBookToCollectionTest","tests.AddBookToCollectionTest","userAddBookToCollection","User adds a book to collection","Precondition: user is created via API, auth cookies are injected into browser.
+UI: Profile is opened -> navigate to Book Store -> select book 'Git Pocket Guide' ->
+click 'Add To Collection' and close alert.
+Verification: via API (GET /Account/v1/User) verify that the ISBN of the added book
+appeared in the user's collection.
 "
-"passed","Fri Oct 09 11:26:20 UTC 2026","Fri Oct 09 11:26:21 UTC 2026","1801","Book Store Automation Suite","UI Tests","tests.GuestAccessTest","tests.GuestAccessTest","unauthorizedUserSeesLoginButton","Неавторизований користувач бачить кнопку Login","Передумова: користувач неавторизований (сесія відсутня).
-UI: відкривається сторінка Book Store.
-Перевірка: кнопка Login є видимою на сторінці.
+"passed","Fri Oct 09 12:20:43 UTC 2026","Fri Oct 09 12:20:45 UTC 2026","2277","Book Store Automation Suite","UI Tests","tests.GuestAccessTest","tests.GuestAccessTest","unauthorizedUserSeesLoginButton","Unauthorized user sees Login button","Precondition: user is unauthorized (no session).
+UI: Book Store page is opened.
+Verification: Login button is visible on the page.
 "
