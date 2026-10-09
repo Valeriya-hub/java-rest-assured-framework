@@ -15,60 +15,60 @@ public class LoginPage extends BasePage<LoginPage> {
     private final SelenideElement loginButton = $("#login");
     private final SelenideElement errorMessageLabel = $("#name");
 
-    @Step("Відкрити сторінку логіну")
+    @Step("Open login page")
     public LoginPage open() {
         return openPage(Config.loginUrl());
     }
 
-    @Step("Ввести userName: {userName}")
+    @Step("Enter userName: {userName}")
     public LoginPage typeUserName(String userName) {
         userNameInput.shouldBe(visible).setValue(userName);
         return this;
     }
 
-    @Step("Ввести пароль")
+    @Step("Enter password")
     public LoginPage typePassword(String password) {
         passwordInput.setValue(password);
         return this;
     }
 
-    @Step("Натиснути кнопку Login")
+    @Step("Click Login button")
     public ProfilePage submitLogin() {
         loginButton.click();
         return new ProfilePage();
     }
 
-    @Step("Залогінитись під користувачем {userName}")
+    @Step("Login as user {userName}")
     public ProfilePage loginAs(String userName, String password) {
         return typeUserName(userName)
                 .typePassword(password)
                 .submitLogin();
     }
 
-    @Step("Спроба логіну під користувачем {username}")
+    @Step("Attempt login as user {username}")
     public LoginPage attemptLoginAs(String userName, String password) {
         return typeUserName(userName)
                 .typePassword(password)
                 .clickLogin();
     }
 
-    @Step("Натиснути кнопку Login")
+    @Step("Click Login button")
     private LoginPage clickLogin() {
         loginButton.click();
         return this;
     }
 
-    @Step("Перевірити відображення помилки про невірні облікові дані")
+    @Step("Verify invalid credentials error is displayed")
     public LoginPage shouldSeeInvalidCredentialsError() {
         errorMessageLabel.shouldHave(
                 text(INVALID_CREDENTIALS)
-                        .because("При невірному паролі має відображатися відповідне повідомлення")
+                        .because("Appropriate message should be displayed for incorrect password")
         );
         return this;
     }
 
-    @Step("Перевірити, що користувач залишається на сторінці логіну")
+    @Step("Verify that user remains on login page")
     public void verifyIsStillOnLoginPage() {
-        userNameInput.shouldBe(visible.because("Користувач має лишитись на сторінці логіну після невдалої спроби"));
+        userNameInput.shouldBe(visible.because("User should remain on login page after failed attempt"));
     }
 }

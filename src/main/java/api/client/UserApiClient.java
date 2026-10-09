@@ -21,7 +21,7 @@ public class UserApiClient {
             .setBaseUri(Config.apiBaseUrl())
             .build();
 
-    @Step("API: створити тестового користувача {userName}")
+    @Step("API: Create a test user {userName}")
     public CreateUserResponse createUser(String userName, String password) {
         Response response = given()
                 .spec(spec)
@@ -36,7 +36,7 @@ public class UserApiClient {
         return response.as(CreateUserResponse.class);
     }
 
-    @Step("API: генерація токена доступу з повними даними (token + expires) для {userName}")
+    @Step("API: Generate an access token with full details (token + expires) for {userName}")
     public GenerateTokenResponse generateTokenDetails(String userName, String password) {
         Response response = given()
                 .spec(spec)
@@ -52,10 +52,10 @@ public class UserApiClient {
         return response.as(GenerateTokenResponse.class);
     }
 
-    @Step("API: видалити тестового користувача {userId}")
+    @Step("API: Delete the test user {userId}")
     public void deleteUser(String userId, String token) {
         if (userId == null) {
-            return; // нічого видаляти — юзер не створювався (кейс "неавторизований користувач")
+            return; // nothing to delete — user was not created ("unauthorized user" case)
         }
         given()
                 .spec(spec)
@@ -63,11 +63,11 @@ public class UserApiClient {
                 .when()
                 .delete("/Account/v1/User/{userId}", userId)
                 .then()
-                // 204 — успішне видалення, 401 — токен вже невалідний/юзер вже видалений
+                // 204 — successful deletion, 401 — token already invalid/user already deleted
                 .statusCode(anyOf(is(204), is(401)));
     }
 
-    @Step("API: отримати список книг користувача")
+    @Step("API: Retrieve the user's book collection")
     public List<String> getUserBookIsbns(String userId, String token) {
         return given()
                 .spec(spec)

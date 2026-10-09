@@ -17,17 +17,17 @@ public class DeleteBookFromCollectionTest extends BaseTest {
 
     private final BookApiClient bookApiClient = new BookApiClient();
 
-    @Feature("Управління колекцією книг")
-    @Story("Видалення книг")
+    @Feature("Book collection management")
+    @Story("Deleting books")
     @Test(
-            description = "Авторизований користувач видаляє книгу з колекції",
+            description = "Authorized user deletes a book from collection",
             groups = {"regression", "ui", "e2e"}
     )
     @Description("""
-            Передумова: через API створюється юзер, генерується токен, в колекцію додається 1 книга.
-            UI: профіль відкривається через cookie injection, книга видаляється через іконку Trash
-            з підтвердженням в модальному вікні.
-            Очікування: книга зникає з таблиці на UI, а масив books в GET /User стає порожнім.
+            Precondition: user is created via API, token is generated, 1 book is added to collection.
+            UI: profile is opened via cookie injection, book is deleted via Trash icon
+            with confirmation in modal window.
+            Expected: book disappears from table on UI, and books array in GET /User becomes empty.
             """)
     public void deleteBookFromCollection() {
         createTestUserViaApi();
@@ -47,11 +47,11 @@ public class DeleteBookFromCollectionTest extends BaseTest {
         List<String> booksAfterDeletion = userApiClient.getUserBookIsbns(testUserId, testUserToken);
 
         assertThat(booksAfterDeletion)
-                .as("Книга з ISBN %s має зникнути з колекції користувача після видалення через UI", isbn)
+                .as("Book with ISBN %s should disappear from user collection after deletion via UI", isbn)
                 .doesNotContain(isbn);
 
         assertThat(booksAfterDeletion)
-                .as("Масив books користувача має бути порожнім — до видалення в колекції була лише 1 книга (ISBN %s)", isbn)
+                .as("User books array should be empty — only 1 book (ISBN %s) was in collection before deletion", isbn)
                 .isEmpty();
     }
 }

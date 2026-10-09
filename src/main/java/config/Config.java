@@ -15,34 +15,34 @@ public final class Config {
                 .getResourceAsStream(resourceName)) {
             if (is == null) {
                 throw new IllegalStateException(
-                        "Файл " + resourceName + " не знайдено в classpath (src/test/resources). "
-                                + "Перевірте значення -Denv (поточне: '" + ENV + "').");
+                        "File " + resourceName + " not found in classpath (src/test/resources). "
+                                + "Check -Denv value (current: '" + ENV + "').");
             }
             PROPERTIES.load(is);
         } catch (IOException e) {
-            throw new IllegalStateException("Не вдалося завантажити " + resourceName, e);
+            throw new IllegalStateException("Failed to load " + resourceName, e);
         }
     }
 
     private Config() {
     }
 
-    /** Глобальний таймаут очікування елементів (мс). Можна перевизначити: -Dui.timeout.ms=10000 */
+    /** Global timeout for waiting for elements (ms). Can be overridden with: -Dui.timeout.ms=10000 */
     public static long uiTimeoutMs() {
         return Long.getLong("ui.timeout.ms", 8_000L);
     }
 
-    /** Інтервал polling-у Selenide (мс). */
+    /** Selenide polling interval (ms). */
     public static long uiPollingIntervalMs() {
         return Long.getLong("ui.polling.ms", 200L);
     }
 
-    /** Таймаут завантаження сторінки (мс). */
+    /** Page load timeout (ms). */
     public static long pageLoadTimeoutMs() {
         return Long.getLong("ui.pageload.timeout.ms", 30_000L);
     }
 
-    /** Лише для реально довгих операцій (генерація файлу, важкий async-процес). */
+    /** Only for genuinely long-running operations (file generation, heavy async processes). */
     public static Duration longOperationTimeout() {
         return Duration.ofSeconds(20);
     }
@@ -75,7 +75,7 @@ public final class Config {
         String value = System.getProperty(key, PROPERTIES.getProperty(key));
         if (value == null || value.isBlank()) {
             throw new IllegalStateException(
-                    "Властивість '" + key + "' не задана ні в config-" + ENV + ".properties, ні через -D" + key);
+                    "Property '" + key + "' не задана ні в config-" + ENV + ".properties, ні через -D" + key);
         }
         return value;
     }

@@ -14,18 +14,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AddBookToCollectionTest extends BaseTest {
 
-    @Feature("Управління колекцією книг")
-    @Story("Додавання книг")
+    @Feature("Book collection management")
+    @Story("Adding books")
     @Test(
-            description = "Користувач додає книгу в колекцію",
+            description = "User adds a book to collection",
             groups = {"regression", "ui", "e2e"}
     )
     @Description("""
-            Передумова: через API створюється користувач, авторизаційні cookie підставляються в браузер.
-            UI: відкривається Профіль -> перехід у Book Store -> вибір книги 'Git Pocket Guide' ->
-            натискання 'Add To Collection' та закриття alert.
-            Перевірка: через API (GET /Account/v1/User) перевіряється, що ISBN доданої книги з'явився
-            у колекції користувача.
+            Precondition: user is created via API, auth cookies are injected into browser.
+            UI: Profile is opened -> navigate to Book Store -> select book 'Git Pocket Guide' ->
+            click 'Add To Collection' and close alert.
+            Verification: via API (GET /Account/v1/User) verify that the ISBN of the added book
+            appeared in the user's collection.
             """)
     public void userAddBookToCollection() {
         createTestUserViaApi();
@@ -45,7 +45,7 @@ public class AddBookToCollectionTest extends BaseTest {
         String addedBookIsbn = bookPage.getIsbn();
 
         assertThat(userApiClient.getUserBookIsbns(testUserId, testUserToken))
-                .as("Книга з ISBN %s має з'явитись в колекції користувача після додавання через UI", addedBookIsbn)
+                .as("Book with ISBN %s should appear in user collection after adding via UI", addedBookIsbn)
                 .contains(addedBookIsbn);
     }
 }

@@ -30,85 +30,85 @@ public class BookStorePage extends BasePage<BookStorePage> {
     private final SelenideElement nextButton = $x("//button[text()='Next']");
     private final SelenideElement pagePaginationCounter = $x("//span[contains(text(),'Page')]");
 
-    @Step("Відкрити Book Store")
+    @Step("Open Book Store")
     public BookStorePage open() {
         return openPage(Config.bookStoreUrl());
     }
 
-    @Step("Перевірити, що відкрита сторінка Book Store")
+    @Step("Verify that Book Store page is opened")
     public BookStorePage shouldBeOpened() {
         webdriver().shouldHave(urlContaining(Config.bookStoreUrl()));
         return this;
     }
 
-    @Step("Перевірити, що точний URL відповідає значенням з Config")
+    @Step("Verify that exact URL matches Config values")
     public BookStorePage verifyPageUrl() {
         webdriver().shouldHave(WebDriverConditions.url(Config.bookStoreUrl()));
         return this;
     }
 
-    @Step("Перевірити назву вкладки браузера")
+    @Step("Verify browser tab title")
     public BookStorePage verifyTabTitle(String expectedTitle) {
         webdriver().shouldHave(WebDriverConditions.title(expectedTitle));
         return this;
     }
 
-    @Step("Перевірити видимість логотипа у шапці сторінки")
+    @Step("Verify header logo visibility")
     public BookStorePage verifyHeaderLogoVisible() {
-        headerLogo.shouldBe(visible.because("Логотип TOOLS QA у шапці має бути видимим"));
+        headerLogo.shouldBe(visible.because("TOOLS QA logo in header should be visible"));
         return this;
     }
 
-    @Step("Перевірити, що видима кнопка Login (неавторизований стан)")
+    @Step("Verify that Login button is visible (unauthorized state)")
     public BookStorePage shouldSeeLoginButton() {
-        loginButton.shouldBe(visible.because("Кнопка Login має бути видима для неавторизованого користувача"));
+        loginButton.shouldBe(visible.because("Login button should be visible for unauthorized user"));
         return this;
     }
 
-    @Step("Перевірити, що не видима кнопка Login (авторизований стан)")
+    @Step("Verify that Login button is not visible (authorized state)")
     public BookStorePage shouldNotSeeLoginButton() {
-        loginButton.shouldNotBe(visible.because("Кнопка Login має бути не видима для авторизованого користувача"));
+        loginButton.shouldNotBe(visible.because("Login button should not be visible for authorized user"));
         return this;
     }
 
-    @Step("Перевірити, що на сторінці Book Store відображається ім'я {expectedUserName}")
+    @Step("Verify that user name {expectedUserName} is displayed on Book Store page")
     public BookStorePage shouldSeeUserName(String expectedUserName) {
-        userNameLabel.shouldHave(exactText(expectedUserName).because("Ім'я користувача має збігатись з тим, під яким логінились"));
+        userNameLabel.shouldHave(exactText(expectedUserName).because("User name should match the one used for login"));
         return this;
     }
 
-    @Step("Перевірити, що видиме поле пошуку")
+    @Step("Verify that search input is visible")
     public BookStorePage shouldSearchInputVisible() {
-        searchInput.shouldBe(visible.because("Поле пошуку мусить бути видимим"));
+        searchInput.shouldBe(visible.because("Search input must be visible"));
         return this;
     }
 
-    @Step("Перевірити, що видима таблиця книг")
+    @Step("Verify that books table is visible")
     public BookStorePage shouldBooksTableVisible() {
-        tableBooksInput.shouldBe(visible.because("Таблиця книг мусить бути видимима"));
+        tableBooksInput.shouldBe(visible.because("Books table must be visible"));
         return this;
     }
 
-    @Step("Перевірити, що кожна книга в таблиці має Title, Author та Publisher")
+    @Step("Verify that each book in the table has Title, Author and Publisher")
     public BookStorePage verifyEveryBookHasRequiredDetails() {
 
         tableHeaders.shouldHave(exactTexts("Image", "Title", "Author", "Publisher")
-                .because("Колонки таблиці мають іти в порядку Image, Title, Author, Publisher — "
-                        + "від цього залежать позиційні локатори комірок"));
+                .because("Table columns must be in order Image, Title, Author, Publisher — "
+                        + "cell positional locators depend on this"));
 
         bookRows.shouldHave(sizeGreaterThan(0)
-                .because("У таблиці має відображатися хоча б одна книга"));
+                .because("At least one book should be displayed in the table"));
         int booksCount = bookRows.size();
 
-        // У кожного рядка є всі три комірки (кількість збігається з кількістю рядків).
+        // Each row has all three cells (count matches row count).
         bookTitles.shouldHave(size(booksCount)
-                .because("Кожен із " + booksCount + " рядків має містити Title (посилання на книгу)"));
+                .because("Each of " + booksCount + " rows must contain Title (book link)"));
         bookAuthors.shouldHave(size(booksCount)
-                .because("Кожен із " + booksCount + " рядків має містити комірку Author"));
+                .because("Each of " + booksCount + " rows must contain Author cell"));
         bookPublishers.shouldHave(size(booksCount)
-                .because("Кожен із " + booksCount + " рядків має містити комірку Publisher"));
+                .because("Each of " + booksCount + " rows must contain Publisher cell"));
 
-        // Жодна з комірок не порожня.
+        // None of the cells are empty.
         shouldAllBeNonBlank(bookTitles, "Title");
         shouldAllBeNonBlank(bookAuthors, "Author");
         shouldAllBeNonBlank(bookPublishers, "Publisher");
@@ -116,31 +116,31 @@ public class BookStorePage extends BasePage<BookStorePage> {
     }
 
     private void shouldAllBeNonBlank(ElementsCollection column, String columnName) {
-        column.shouldHave(allMatch(columnName + " не порожній",
+        column.shouldHave(allMatch(columnName + " is not blank",
                 cell -> !cell.getText().isBlank())
-                .because("Кожна книга в таблиці має мати непорожнє значення " + columnName));
+                .because("Each book in the table must have a non-blank " + columnName));
     }
 
-    @Step("Натиснути на книгу '{title}'")
+    @Step("Click on book '{title}'")
     public BookPage clickOnBook(String title) {
         $(By.linkText(title)).click();
         return new BookPage();
     }
 
-    @Step("Перевірити контролери пагінації (Previous, Next та 'Page 1 of 1')")
+    @Step("Verify pagination controls (Previous, Next and 'Page 1 of 1')")
     public BookStorePage verifyPaginationControlsVisible() {
 
         previousButton
-                .shouldBe(visible.because("Кнопка 'Previous' має бути видимою"))
-                .shouldBe(disabled.because("Кнопка 'Previous' має бути неактивною, коли відкрита перша сторінка"));
+                .shouldBe(visible.because("'Previous' button should be visible"))
+                .shouldBe(disabled.because("'Previous' button should be disabled when first page is opened"));
 
         nextButton
-                .shouldBe(visible.because("Кнопка 'Next' має бути видимою"))
-                .shouldBe(disabled.because("Кнопка 'Next' має бути неактивною, коли немає наступних сторінок"));
+                .shouldBe(visible.because("'Next' button should be visible"))
+                .shouldBe(disabled.because("'Next' button should be disabled when there are no next pages"));
 
         pagePaginationCounter
-                .shouldBe(visible.because("Індикатор сторінки має бути видимим"))
-                .shouldHave(exactText("Page 1 of 1").because("Текст пагінації має відповідати початковому стану 'Page 1 of 1'"));
+                .shouldBe(visible.because("Page indicator should be visible"))
+                .shouldHave(exactText("Page 1 of 1").because("Pagination text should match initial state 'Page 1 of 1'"));
 
         return this;
     }

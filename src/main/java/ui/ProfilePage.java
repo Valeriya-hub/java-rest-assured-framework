@@ -19,24 +19,24 @@ public class ProfilePage extends BasePage<ProfilePage> {
     private static final String BOOK_ROW_XPATH_TEMPLATE =
             "//div[@class='action-buttons']//a[contains(@href, '%s')]/ancestor::tr[1]";
 
-    @Step("Відкрити сторінку профілю")
+    @Step("Open profile page")
     public ProfilePage open() {
         return openPage(Config.profileUrl());
     }
 
-    @Step("Перевірити, що відкрита сторінка профілю")
+    @Step("Verify that profile page is opened")
     public ProfilePage shouldBeOpened() {
         webdriver().shouldHave(urlContaining(Config.profileUrl()));
         return this;
     }
 
-    @Step("Перевірити, що на сторінці профілю відображається ім'я {expectedUserName}")
+    @Step("Verify that user name {expectedUserName} is displayed on profile page")
     public ProfilePage shouldSeeUserName(String expectedUserName) {
-        userNameLabel.shouldHave(exactText(expectedUserName).because("Ім'я користувача має збігатись з тим, під яким логінились"));
+        userNameLabel.shouldHave(exactText(expectedUserName).because("User name should match the one used for login"));
         return this;
     }
 
-    @Step("Перейти на Book Store зі сторінки профілю")
+    @Step("Navigate to Book Store from profile page")
     public BookStorePage clickGoToBookStoreButton() {
         goToBookStoreButton.click();
         return new BookStorePage();
@@ -47,13 +47,13 @@ public class ProfilePage extends BasePage<ProfilePage> {
         return $x(xpath);
     }
 
-    @Step("Перевірити, що книга з ISBN {isbn} відображається в таблиці")
+    @Step("Verify that book with ISBN {isbn} is displayed in the table")
     public ProfilePage shouldBookVisible(String isbn) {
         bookRow(isbn).shouldBe(Condition.visible);
         return this;
     }
 
-    @Step("Перевірити, що книги з ISBN {isbn} немає в таблиці")
+    @Step("Verify that book with ISBN {isbn} is not in the table")
     public ProfilePage shouldBookNotBeVisible(String isbn) {
         bookRow(isbn).shouldNot(Condition.exist);
         return this;
@@ -63,7 +63,7 @@ public class ProfilePage extends BasePage<ProfilePage> {
         return $("#delete-record-" + isbn);
     }
 
-    @Step("Видалити книгу з ISBN {isbn} через іконку Trash з підтвердженням")
+    @Step("Delete book with ISBN {isbn} via Trash icon with confirmation")
     public ProfilePage deleteBook(String isbn) {
         deleteIconInRow(isbn).click();
         okButtonOnModal.shouldBe(Condition.visible).click();
@@ -71,9 +71,9 @@ public class ProfilePage extends BasePage<ProfilePage> {
         return this;
     }
 
-    @Step("Перевірити, що видима кнопка Logout")
+    @Step("Verify that Logout button is visible")
     public ProfilePage shouldSeeLogoutButton() {
-        logoutButton.shouldBe(visible.because("Кнопка Logout має бути видима після успішного логіну"));
+        logoutButton.shouldBe(visible.because("Logout button should be visible after successful login"));
         return this;
     }
 }

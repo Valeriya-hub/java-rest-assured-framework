@@ -8,16 +8,16 @@ import tests.base.BaseTest;
 import ui.BookStorePage;
 
 public class GuestAccessTest extends BaseTest {
-    @Feature("Автентифікація")
-    @Story("Доступ гостя")
+    @Feature("Authentication")
+    @Story("Guest access")
     @Test(
-            description = "Неавторизований користувач бачить кнопку Login",
+            description = "Unauthorized user sees Login button",
             groups = {"smoke", "ui"}
     )
     @Description("""
-            Передумова: користувач неавторизований (сесія відсутня).
-            UI: відкривається сторінка Book Store.
-            Перевірка: кнопка Login є видимою на сторінці.
+            Precondition: user is unauthorized (no session).
+            UI: Book Store page is opened.
+            Verification: Login button is visible on the page.
             """)
     public void unauthorizedUserSeesLoginButton() {
 
