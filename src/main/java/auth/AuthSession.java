@@ -1,11 +1,8 @@
 package auth;
 
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Cookie;
-
-import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.open;
 
@@ -45,9 +42,7 @@ public class AuthSession {
 
     @Step("UI: get the authorization token from the browser cookie")
     public static String getAuthTokenFromCookie() {
-        Cookie tokenCookie = Selenide.Wait()
-                .withTimeout(Duration.ofSeconds(10))
-                .until(driver -> WebDriverRunner.getWebDriver().manage().getCookieNamed("token"));
-        return tokenCookie.getValue();
+        Cookie tokenCookie = WebDriverRunner.getWebDriver().manage().getCookieNamed("token");
+        return tokenCookie != null ? tokenCookie.getValue() : "";
     }
 }

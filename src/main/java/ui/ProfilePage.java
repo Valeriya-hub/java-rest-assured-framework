@@ -5,19 +5,21 @@ import com.codeborne.selenide.SelenideElement;
 import config.Config;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.urlContaining;
 
 public class ProfilePage extends BasePage<ProfilePage> {
+    private static final String BOOK_ROW_XPATH_TEMPLATE =
+            "//div[@class='action-buttons']//a[contains(@href, '%s')]/ancestor::tr[1]";
     private final SelenideElement userNameLabel = $("#userName-value");
     private final SelenideElement goToBookStoreButton = $("#gotoStore");
     private final SelenideElement okButtonOnModal = $("#closeSmallModal-ok");
     private final SelenideElement logoutButton = $x("//button[text()='Logout']");
-
-    private static final String BOOK_ROW_XPATH_TEMPLATE =
-            "//div[@class='action-buttons']//a[contains(@href, '%s')]/ancestor::tr[1]";
+    private final SelenideElement notLoggedInWrapper = $("#notLoggin-wrapper");
+    private final SelenideElement notLoggedInLabel = $("#notLoggin-label");
+    private final SelenideElement loginLink = $("#notLoggin-label a[href='/login']");
+    private final SelenideElement registerLink = $("#notLoggin-label a[href='/register']");
 
     @Step("Open profile page")
     public ProfilePage open() {
@@ -71,7 +73,30 @@ public class ProfilePage extends BasePage<ProfilePage> {
     }
 
     @Step("Verify that Logout button is visible")
-    public void shouldSeeLogoutButton() {
+    public ProfilePage shouldSeeLogoutButton() {
         logoutButton.shouldBe(visible.because("Logout button should be visible after successful login"));
+        return this;
+    }
+
+    @Step("Click on Logout button and redirect to Login page")
+    public LoginPage clickLogoutButton() {
+        logoutButton.click();
+        return new LoginPage();
+    }
+
+    @Step("Verify unauthorized user message and links on Profile page")
+    public void shouldSeeUnauthenticatedState() {
+        notLoggedInWrapper.shouldBe(visible
+                .because("Unauthorized warning wrapper should be displayed on /profile"));
+
+        notLoggedInLabel.shouldHave(text("Currently you are not logged into the Book Store application")
+                .because("Text informing that user is not logged in should be visible"));
+
+        loginLink.shouldBe(visible
+                .because("Link to Login page should be displayed inside warning text"));
+
+        registerLink.shouldBe(visible
+                .because("Link to Register page should be displayed inside warning text"));
+
     }
 }
