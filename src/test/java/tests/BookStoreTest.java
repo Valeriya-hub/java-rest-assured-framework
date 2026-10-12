@@ -18,6 +18,7 @@ public class BookStoreTest extends BaseTest {
             groups = {"ui", "smoke"}
     )
     @Description("""
+            Preconditions: The user is not logged in, and the Book Store page is open.
             Verification of URL, title, books table, search, pagination and columns (Title, Author, Publisher)
             """)
     public void shouldVerifyBooksPageInitialState() {
