@@ -9,6 +9,7 @@
             <class name="tests.GuestAccessTest"/>
             <class name="tests.BookStoreTest"/>
             <class name="tests.BookSearchTest"/>
+            <class name="tests.BookDetailsTest"/>
         </classes>
     </test>
 </suite>

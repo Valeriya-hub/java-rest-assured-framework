@@ -12,9 +12,6 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 
 public class BookApiClient {
-    // ISBN of a book from the public demoqa BookStore catalog ("Git Pocket Guide").
-    // Fixed because the book catalog on demoqa is static and does not change between test runs.
-    public static final String DEFAULT_ISBN = "9781449325862";
     private final RequestSpecification spec = new RequestSpecBuilder()
             .setBaseUri(Config.apiBaseUrl())
             .build();

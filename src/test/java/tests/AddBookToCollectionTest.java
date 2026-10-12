@@ -1,6 +1,7 @@
 package tests;
 
 import auth.AuthSession;
+import data.Books;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -22,7 +23,7 @@ public class AddBookToCollectionTest extends BaseTest {
     )
     @Description("""
             Precondition: user is created via API, auth cookies are injected into browser.
-            UI: Profile is opened -> navigate to Book Store -> select book 'Git Pocket Guide' ->
+            UI: Profile is opened -> navigate to Book Store -> select book ->
             click 'Add To Collection' and close alert.
             Verification: via API (GET /Account/v1/User) verify that the ISBN of the added book
             appeared in the user's collection.
@@ -38,7 +39,7 @@ public class AddBookToCollectionTest extends BaseTest {
                 .clickGoToBookStoreButton();
 
         BookPage bookPage = bookStorePage
-                .clickOnBook("Git Pocket Guide")
+                .clickOnBook(Books.GIT_POCKET_GUIDE.title())
                 .clickAddToCollectionButton();
 
         bookPage.dismissAlertIfPresent();

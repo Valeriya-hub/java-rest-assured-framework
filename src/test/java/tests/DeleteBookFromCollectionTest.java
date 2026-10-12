@@ -2,6 +2,8 @@ package tests;
 
 import api.client.BookApiClient;
 import auth.AuthSession;
+import data.Book;
+import data.Books;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -32,26 +34,25 @@ public class DeleteBookFromCollectionTest extends BaseTest {
     public void deleteBookFromCollection() {
         createTestUserViaApi();
 
-        String isbn = BookApiClient.DEFAULT_ISBN;
-
+        Book book = Books.GIT_POCKET_GUIDE;
         AuthSession.injectAuthCookies(testUserId, testUserName, testUserToken, testUserTokenExpires);
-        bookApiClient.addBookToUser(testUserId, testUserToken, isbn);
+        bookApiClient.addBookToUser(testUserId, testUserToken, book.isbn());
 
         new ProfilePage()
                 .open()
                 .shouldBeOpened()
-                .shouldBookVisible(isbn)
-                .deleteBook(isbn)
-                .shouldBookNotBeVisible(isbn);
+                .shouldBookVisible(book.isbn())
+                .deleteBook(book.isbn())
+                .shouldBookNotBeVisible(book.isbn());
 
         List<String> booksAfterDeletion = userApiClient.getUserBookIsbns(testUserId, testUserToken);
 
         assertThat(booksAfterDeletion)
-                .as("Book with ISBN %s should disappear from user collection after deletion via UI", isbn)
-                .doesNotContain(isbn);
+                .as("Book with ISBN %s should disappear from user collection after deletion via UI", book.isbn())
+                .doesNotContain(book.isbn());
 
         assertThat(booksAfterDeletion)
-                .as("User books array should be empty — only 1 book (ISBN %s) was in collection before deletion", isbn)
+                .as("User books array should be empty — only 1 book (ISBN %s) was in collection before deletion", book.isbn())
                 .isEmpty();
     }
 }
