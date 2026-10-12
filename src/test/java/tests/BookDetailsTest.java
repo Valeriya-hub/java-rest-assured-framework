@@ -20,7 +20,7 @@ public class BookDetailsTest extends BaseTest {
     @Description("""
             Preconditions: User is not logged in; the Book Store page is open.
             UI: Click on the book in the table.
-            Verification: The page for that specific book opens (check URL); the title, author, publisher, 
+            Verification: The page for that specific book opens (check URL); the title, author, publisher,
             a non-empty description, and ISBN are displayed.
             """)
     public void shouldVerifyBooksDetails() {

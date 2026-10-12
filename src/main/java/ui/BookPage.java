@@ -10,7 +10,6 @@ import org.openqa.selenium.NoAlertPresentException;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.webdriver;
-import static com.codeborne.selenide.WebDriverConditions.urlContaining;
 
 public class BookPage extends BasePage<BookPage> {
     private final SelenideElement addToCollectionButton = $(".text-right #addNewRecordButton");
@@ -80,9 +79,8 @@ public class BookPage extends BasePage<BookPage> {
     }
 
     @Step("Verify that the book ISBN is '{expectedIsbn}'")
-    public BookPage shouldHaveIsbn(String expectedIsbn) {
+    public void shouldHaveIsbn(String expectedIsbn) {
         bookIsbn.shouldHave(exactText(expectedIsbn)
                 .because("Book ISBN on the details page should match the selected book"));
-        return this;
     }
 }
