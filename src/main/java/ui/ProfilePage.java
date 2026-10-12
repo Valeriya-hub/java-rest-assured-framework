@@ -54,9 +54,8 @@ public class ProfilePage extends BasePage<ProfilePage> {
     }
 
     @Step("Verify that book with ISBN {isbn} is not in the table")
-    public ProfilePage shouldBookNotBeVisible(String isbn) {
+    public void shouldBookNotBeVisible(String isbn) {
         bookRow(isbn).shouldNot(Condition.exist);
-        return this;
     }
 
     private SelenideElement deleteIconInRow(String isbn) {
@@ -72,8 +71,7 @@ public class ProfilePage extends BasePage<ProfilePage> {
     }
 
     @Step("Verify that Logout button is visible")
-    public ProfilePage shouldSeeLogoutButton() {
+    public void shouldSeeLogoutButton() {
         logoutButton.shouldBe(visible.because("Logout button should be visible after successful login"));
-        return this;
     }
 }

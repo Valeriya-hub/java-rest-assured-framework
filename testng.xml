@@ -8,6 +8,7 @@
             <class name="tests.DeleteBookFromCollectionTest"/>
             <class name="tests.GuestAccessTest"/>
             <class name="tests.BookStoreTest"/>
+            <class name="tests.BookSearchTest"/>
         </classes>
     </test>
 </suite>

@@ -21,6 +21,7 @@ public class BookStorePage extends BasePage<BookStorePage> {
     private final SelenideElement tableBooksInput = $("table");
 
     private final ElementsCollection bookRows = $$("table tbody tr");
+    private final ElementsCollection bookTitleLinks = $$("table tbody a");
     private final ElementsCollection tableHeaders = $$("table thead tr > *");
     private final ElementsCollection bookTitles = $$("table tbody tr td:nth-child(2) a");
     private final ElementsCollection bookAuthors = $$("table tbody tr td:nth-child(3)");
@@ -55,20 +56,20 @@ public class BookStorePage extends BasePage<BookStorePage> {
 
     @Step("Verify header logo visibility")
     public BookStorePage verifyHeaderLogoVisible() {
-        headerLogo.shouldBe(visible.because("TOOLS QA logo in header should be visible"));
+        headerLogo.shouldBe(visible
+                .because("TOOLS QA logo in header should be visible"));
         return this;
     }
 
     @Step("Verify that Login button is visible (unauthorized state)")
-    public BookStorePage shouldSeeLoginButton() {
-        loginButton.shouldBe(visible.because("Login button should be visible for unauthorized user"));
-        return this;
+    public void shouldSeeLoginButton() {
+        loginButton.shouldBe(visible
+                .because("Login button should be visible for unauthorized user"));
     }
 
     @Step("Verify that Login button is not visible (authorized state)")
-    public BookStorePage shouldNotSeeLoginButton() {
+    public void shouldNotSeeLoginButton() {
         loginButton.shouldNotBe(visible.because("Login button should not be visible for authorized user"));
-        return this;
     }
 
     @Step("Verify that user name {expectedUserName} is displayed on Book Store page")
@@ -128,7 +129,7 @@ public class BookStorePage extends BasePage<BookStorePage> {
     }
 
     @Step("Verify pagination controls (Previous, Next and 'Page 1 of 1')")
-    public BookStorePage verifyPaginationControlsVisible() {
+    public void verifyPaginationControlsVisible() {
 
         previousButton
                 .shouldBe(visible.because("'Previous' button should be visible"))
@@ -141,7 +142,62 @@ public class BookStorePage extends BasePage<BookStorePage> {
         pagePaginationCounter
                 .shouldBe(visible.because("Page indicator should be visible"))
                 .shouldHave(exactText("Page 1 of 1").because("Pagination text should match initial state 'Page 1 of 1'"));
+    }
 
+    @Step("Search for a book by its full title")
+    public BookStorePage searchBookByTitle(String bookTitle) {
+        searchInput.shouldBe(visible).setValue(bookTitle);
         return this;
+    }
+
+    @Step("Verify that only book with {0} title is displayed in the table")
+    public BookStorePage shouldShowOnlyBook(String bookTitle) {
+        bookRows.shouldHave(size(1)
+                .because("Only one book should be displayed in the table"));
+        bookTitleLinks.shouldHave(exactTexts(bookTitle)
+                .because("Only the book with the " + bookTitle + "title will be displayed in the table."));
+        return this;
+    }
+
+    @Step("Verify that book with {0} title is not displayed in the table")
+    public void shouldNotShowBook(String bookTitle) {
+        $(By.linkText(bookTitle)).shouldNot(exist
+                .because("The book with the " + bookTitle + " title should not be displayed in the table."));
+    }
+
+    @Step("Verify that each displayed book contains '{text}' and the result is not empty.")
+    public BookStorePage shouldShowOnlyBooksContaining(String text) {
+        String expected = text.toLowerCase();
+        bookRows.shouldHave(allMatch("each line contains '" + text + "'",
+                row -> row.getText().toLowerCase().contains(expected))
+                .because("Every displayed book in the search results must contain text '" + text + "'"));
+        bookRows.shouldHave(sizeGreaterThan(0)
+                .because("Search result table should contain at least one book for query '" + text + "'"));
+        return this;
+    }
+
+    @Step("Verify that the book '{title}' is displayed in the table.")
+    public BookStorePage shouldShowBook(String title) {
+        $(By.linkText(title)).shouldBe(visible);
+        return this;
+    }
+
+    @Step("Verify that multiple books with '{partialTitle}' in their titles are displayed.")
+    public void shouldShowSeveralBooksWithTitleContaining(String partialTitle) {
+        String expected = partialTitle.toLowerCase();
+
+        // First, we wait for the filter to be applied: each displayed name contains the text.
+        bookTitles.shouldHave(allMatch("title contains '" + partialTitle + "'",
+                title -> title.getText().toLowerCase().contains(expected))
+                .because("Each displayed book must contain '" + partialTitle + "' in the title"));
+
+        // And only then do we verify that there are several books (rather than one or none).
+        bookTitles.shouldHave(sizeGreaterThan(1)
+                .because("Search by part of the title '" + partialTitle + "' has to return a few books"));
+    }
+
+    @Step("Verify that no books are displayed.")
+    public void shouldShowNoBooks() {
+        bookTitleLinks.shouldHave(size(0));
     }
 }
