@@ -71,4 +71,68 @@ public class AuthorizationTest extends BaseTest {
                 .shouldSeeInvalidCredentialsError()
                 .verifyIsStillOnLoginPage();
     }
+
+    @Feature("Authentication")
+    @Story("Login")
+    @Test(
+            description = "User cannot login with empty password",
+            groups = {"regression", "ui"}
+    )
+    @Description("""
+            Precondition: a new test user is created via API, user is not authorized.
+            UI: attempt to authorize with empty password is made.
+            Verification: The password input is highlighted with a red border.
+            User remains on login page.
+            """)
+    public void userCannotLoginWithEmptyPassword() {
+        createTestUserViaApi();
+
+        new LoginPage()
+                .open()
+                .attemptLoginAs(testUserName, "")
+                .shouldSeeInvalidPasswordInput()
+                .verifyIsStillOnLoginPage();
+    }
+
+    @Feature("Authentication")
+    @Story("Logout")
+    @Test(
+            description = "Authorized user can successfully log out",
+            groups = {"smoke", "ui"}
+    )
+    @Description("""
+            Precondition: A new test user is created via API, user is authorized.
+            UI: User clicks the Logout button on the Profile page.
+            Verification: User is redirected to the Login page, check that the 'token' 
+            cookie is cleared/empty. Re-open Profile page directly via URL. Verify that 
+            application shows unauthenticated state (warning message with Login and Register links).
+            Verify that the 'token' cookie remains empty and session was not restored.
+            """)
+    public void authorizedUserCanLogout() {
+        createTestUserViaApi();
+
+        AuthSession.injectAuthCookies(testUserId, testUserName, testUserToken, testUserTokenExpires);
+        new ProfilePage()
+                .open()
+                .shouldBeOpened()
+                .shouldSeeUserName(testUserName)
+                .shouldSeeLogoutButton()
+                .clickLogoutButton()
+                .shouldBeOpened()
+                .shouldSeeLoginButton();
+
+        assertThat(AuthSession.getAuthTokenFromCookie())
+                .as("After logout, auth token cookie should be empty or deleted")
+                .isBlank();
+
+        // Try to access Profile again after logout
+        new ProfilePage().open()
+                .shouldBeOpened()
+                .shouldSeeUnauthenticatedState();
+
+        // Verify that the auth token cookie remains cleared
+        assertThat(AuthSession.getAuthTokenFromCookie())
+                .as("Accessing Profile after logout must not restore the auth token")
+                .isBlank();
+    }
 }
