@@ -1,41 +1,46 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Mon Oct 12 08:25:59 UTC 2026","Mon Oct 12 08:26:02 UTC 2026","2980","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchNonExistingBook","Search with non-existing book","The user is not logged in; the Book Store page is open.
-UI: Non-existing book, 'Ruby', is entered into the search field.
-Verification: The result is empty.
-"
-"passed","Mon Oct 12 08:26:02 UTC 2026","Mon Oct 12 08:26:05 UTC 2026","3382","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","shouldVerifyBooksPageInitialState","Search for a book by its full title","Preconditions: The user is not logged in, and the Book Store page is open.
-UI: The full book title 'Learning JavaScript Design Patterns' is entered into the search field.
+"passed","Mon Oct 12 12:49:41 UTC 2026","Mon Oct 12 12:49:44 UTC 2026","2413","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchBookByFullTitle","Search for a book by its full title","Preconditions: The user is not logged in, and the Book Store page is open.
+UI: The full book title is entered into the search field.
 Verification: Only this book remains in the table; no other books are displayed.
 "
-"passed","Mon Oct 12 08:24:37 UTC 2026","Mon Oct 12 08:25:06 UTC 2026","28099","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Authorized user sees their name and profile icon","Precondition: a new test user is created via API, user is authorized
+"passed","Mon Oct 12 12:49:36 UTC 2026","Mon Oct 12 12:49:38 UTC 2026","2140","Book Store Automation Suite","UI Tests","tests.GuestAccessTest","tests.GuestAccessTest","unauthorizedUserSeesLoginButton","Unauthorized user sees Login button","Precondition: user is unauthorized (no session).
+UI: Book Store page is opened.
+Verification: Login button is visible on the page.
+"
+"passed","Mon Oct 12 12:48:26 UTC 2026","Mon Oct 12 12:49:13 UTC 2026","47312","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Authorized user sees their name and profile icon","Precondition: a new test user is created via API, user is authorized
 (session is established). UI: Book Store page is opened.
 Verification: Login button is not visible on the page, user name on the page
 matches the one used for login.
 "
-"passed","Mon Oct 12 08:25:28 UTC 2026","Mon Oct 12 08:25:48 UTC 2026","19706","Book Store Automation Suite","UI Tests","tests.DeleteBookFromCollectionTest","tests.DeleteBookFromCollectionTest","deleteBookFromCollection","Authorized user deletes a book from collection","Precondition: user is created via API, token is generated, 1 book is added to collection.
+"passed","Mon Oct 12 12:49:29 UTC 2026","Mon Oct 12 12:49:36 UTC 2026","6683","Book Store Automation Suite","UI Tests","tests.DeleteBookFromCollectionTest","tests.DeleteBookFromCollectionTest","deleteBookFromCollection","Authorized user deletes a book from collection","Precondition: user is created via API, token is generated, 1 book is added to collection.
 UI: profile is opened via cookie injection, book is deleted via Trash icon
 with confirmation in modal window.
 Expected: book disappears from table on UI, and books array in GET /User becomes empty.
 "
-"passed","Mon Oct 12 08:25:07 UTC 2026","Mon Oct 12 08:25:15 UTC 2026","7959","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","userCannotLoginWithWrongPassword","User cannot login with incorrect password","Precondition: a new test user is created via API, user is not authorized.
-UI: attempt to authorize with incorrect password is made.
-Verification: incorrect password message appears on the page.
-User remains on login page.
-"
-"passed","Mon Oct 12 08:25:16 UTC 2026","Mon Oct 12 08:25:27 UTC 2026","10795","Book Store Automation Suite","UI Tests","tests.AddBookToCollectionTest","tests.AddBookToCollectionTest","userAddBookToCollection","User adds a book to collection","Precondition: user is created via API, auth cookies are injected into browser.
-UI: Profile is opened -> navigate to Book Store -> select book 'Git Pocket Guide' ->
+"passed","Mon Oct 12 12:49:21 UTC 2026","Mon Oct 12 12:49:28 UTC 2026","7310","Book Store Automation Suite","UI Tests","tests.AddBookToCollectionTest","tests.AddBookToCollectionTest","userAddBookToCollection","User adds a book to collection","Precondition: user is created via API, auth cookies are injected into browser.
+UI: Profile is opened -> navigate to Book Store -> select book ->
 click 'Add To Collection' and close alert.
 Verification: via API (GET /Account/v1/User) verify that the ISBN of the added book
 appeared in the user's collection.
 "
-"passed","Mon Oct 12 08:25:56 UTC 2026","Mon Oct 12 08:25:59 UTC 2026","3302","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchBookByPartialText","Search by part of the title","The user is not logged in; the Book Store page is open.
-UI: Part of the title, 'Web', is entered into the search field.
-Verification: The result is not empty; every displayed book contains the entered text;
-'Git Pocket Guide' is among the results.
+"passed","Mon Oct 12 12:49:13 UTC 2026","Mon Oct 12 12:49:20 UTC 2026","6486","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","userCannotLoginWithWrongPassword","User cannot login with incorrect password","Precondition: a new test user is created via API, user is not authorized.
+UI: attempt to authorize with incorrect password is made.
+Verification: incorrect password message appears on the page.
+User remains on login page.
 "
-"passed","Mon Oct 12 08:25:50 UTC 2026","Mon Oct 12 08:25:52 UTC 2026","2656","Book Store Automation Suite","UI Tests","tests.GuestAccessTest","tests.GuestAccessTest","unauthorizedUserSeesLoginButton","Unauthorized user sees Login button","Precondition: user is unauthorized (no session).
-UI: Book Store page is opened.
-Verification: Login button is visible on the page.
+"passed","Mon Oct 12 12:49:49 UTC 2026","Mon Oct 12 12:49:51 UTC 2026","2568","Book Store Automation Suite","UI Tests","tests.BookDetailsTest","tests.BookDetailsTest","shouldVerifyBooksDetails","Verify book details page content and URL","Preconditions: User is not logged in; the Book Store page is open.
+UI: Click on the book in the table.
+Verification: The page for that specific book opens (check URL); the title, author, publisher,
+a non-empty description, and ISBN are displayed.
 "
-"passed","Mon Oct 12 08:25:52 UTC 2026","Mon Oct 12 08:25:56 UTC 2026","3143","Book Store Automation Suite","UI Tests","tests.BookStoreTest","tests.BookStoreTest","shouldVerifyBooksPageInitialState","Verify main elements of Books page are displayed","Verification of URL, title, books table, search, pagination and columns (Title, Author, Publisher)
+"passed","Mon Oct 12 12:49:44 UTC 2026","Mon Oct 12 12:49:46 UTC 2026","2592","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchBookByPartialText","Search by part of the title","The user is not logged in; the Book Store page is open.
+UI: Part of the title is entered into the search field.
+Verification: The result is not empty; every displayed book contains the entered text.
+"
+"passed","Mon Oct 12 12:49:46 UTC 2026","Mon Oct 12 12:49:49 UTC 2026","2348","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchNonExistingBook","Search with non-existing book","The user is not logged in; the Book Store page is open.
+UI: Non-existing book is entered into the search field.
+Verification: The result is empty.
+"
+"passed","Mon Oct 12 12:49:38 UTC 2026","Mon Oct 12 12:49:41 UTC 2026","2587","Book Store Automation Suite","UI Tests","tests.BookStoreTest","tests.BookStoreTest","shouldVerifyBooksPageInitialState","Verify main elements of Books page are displayed","Preconditions: The user is not logged in, and the Book Store page is open.
+Verification of URL, title, books table, search, pagination and columns (Title, Author, Publisher)
 "
