@@ -5,28 +5,35 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 
 public class LoggingConfig {
     private static final Logger log = LogManager.getLogger("RestAssured");
 
     public static PrintStream loggerPrintStream() {
         OutputStream out = new OutputStream() {
-            private final StringBuilder buffer = new StringBuilder();
+
+// One buffer per thread, so parallel tests can never mix their characters.
+// Bytes are collected first and decoded as UTF-8 once a whole line is complete.
+            private final ThreadLocal<ByteArrayOutputStream> buffer =
+                    ThreadLocal.withInitial(ByteArrayOutputStream::new);
 
             @Override
             public void write(int b) {
+                ByteArrayOutputStream current = buffer.get();
                 if (b == '\n') {
-                    log.info(buffer.toString());
-                    buffer.setLength(0);
+                    log.info(current.toString(StandardCharsets.UTF_8));
+                    current.reset();
                 } else {
-                    buffer.append((char) b);
+                    current.write(b);
                 }
             }
         };
 
-        return new PrintStream(out, true);
+        return new PrintStream(out, true, StandardCharsets.UTF_8);
     }
 
     public static RequestLoggingFilter requestFilter() {
