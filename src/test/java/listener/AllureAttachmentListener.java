@@ -32,10 +32,10 @@ public class AllureAttachmentListener implements ITestListener {
     public void onTestFailure(ITestResult result) {
         if (WebDriverRunner.hasWebDriverStarted()) {
             try {
-            attachScreenshot();
-            attachPageSource();
-            attachCurrentUrl();
-            attachBrowserConsoleLogs();
+                attachScreenshot();
+                attachPageSource();
+                attachCurrentUrl();
+                attachBrowserConsoleLogs();
             } catch (Exception e) {
                 log.error("Failed to attach diagnostic data for test '{}': {}",
                         result.getName(), e.getMessage(), e);

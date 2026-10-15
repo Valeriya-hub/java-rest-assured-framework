@@ -21,19 +21,43 @@ public class UserApiClient {
             .setBaseUri(Config.apiBaseUrl())
             .build();
 
-    @Step("API: Create a test user {userName}")
-    public CreateUserResponse createUser(String userName, String password) {
-        Response response = given()
+    /**
+     * Raw call: sends the request and returns the response WITHOUT any assertions.
+     * Use it in API tests that verify status codes and bodies (including negative scenarios).
+     */
+    @Step("API: Send create user request")
+    public Response sendCreateUserRequest(CreateUserRequest request) {
+        return given()
                 .spec(spec)
                 .contentType(ContentType.JSON)
-                .body(new CreateUserRequest(userName, password))
+                .body(request)
                 .when()
-                .post("/Account/v1/User")
+                .post("/Account/v1/User");
+    }
+
+
+    @Step("API: Send create user request with custom JSON body")
+    public Response sendCreateUserRequestBody(Object requestBody) {
+        return given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .post("/Account/v1/User");
+    }
+
+    /**
+     * Precondition-style call: expects success (201) and returns the parsed body.
+     * Use it when creating a user is only test setup, not the behaviour under test.
+     */
+    @Step("API: Create a test user {userName}")
+    public CreateUserResponse createUser(String userName, String password) {
+
+        return sendCreateUserRequest(new CreateUserRequest(userName, password))
                 .then()
                 .statusCode(201)
-                .extract().response();
-
-        return response.as(CreateUserResponse.class);
+                .extract()
+                .as(CreateUserResponse.class);
     }
 
     @Step("API: Generate an access token with full details (token + expires) for {userName}")

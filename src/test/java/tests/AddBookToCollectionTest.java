@@ -2,6 +2,7 @@ package tests;
 
 import auth.AuthSession;
 import data.Books;
+import data.TestUser;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -30,8 +31,9 @@ public class AddBookToCollectionTest extends BaseTest {
             """)
     public void userAddBookToCollection() {
         createTestUserViaApi();
+        TestUser user = testUser();
 
-        AuthSession.injectAuthCookies(testUserId, testUserName, testUserToken, testUserTokenExpires);
+        AuthSession.injectAuthCookies(user.id(), user.name(), user.token(), user.tokenExpires());
 
         BookStorePage bookStorePage = new ProfilePage()
                 .open()
@@ -45,7 +47,7 @@ public class AddBookToCollectionTest extends BaseTest {
         bookPage.dismissAlertIfPresent();
         String addedBookIsbn = bookPage.getIsbn();
 
-        assertThat(userApiClient.getUserBookIsbns(testUserId, testUserToken))
+        assertThat(userApiClient.getUserBookIsbns(user.id(), user.token()))
                 .as("Book with ISBN %s should appear in user collection after adding via UI", addedBookIsbn)
                 .contains(addedBookIsbn);
     }

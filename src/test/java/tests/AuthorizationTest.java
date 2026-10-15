@@ -1,6 +1,8 @@
 package tests;
 
 import auth.AuthSession;
+import data.TestUser;
+import data.UserFactory;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -29,25 +31,31 @@ public class AuthorizationTest extends BaseTest {
     public void authorizedUserSeesUsernameAndProfileIcon() {
 
         createTestUserViaApi();
+        TestUser user = testUser();
 
         ProfilePage profilePage = new LoginPage()
                 .open()
-                .loginAs(testUserName, testUserPassword);
+                .loginAs(user.name(), user.password());
 
         profilePage
                 .shouldBeOpened()
-                .shouldSeeUserName(testUserName)
+                .shouldSeeUserName(user.name())
                 .shouldSeeLogoutButton();
 
         new BookStorePage()
                 .open()
                 .shouldBeOpened()
-                .shouldSeeUserName(testUserName)
+                .shouldSeeUserName(user.name())
                 .shouldNotSeeLoginButton();
 
-        assertThat(AuthSession.getAuthTokenFromCookie())
+        String sessionToken = AuthSession.getAuthTokenFromCookie();
+        assertThat(sessionToken)
                 .as("After successful login, auth token should appear in browser cookie")
                 .isNotBlank();
+
+        // The UI login issues a new token, and demoqa may invalidate the previous one.
+        // Cleanup in tearDown must use the token that is valid now.
+        updateTestUserToken(sessionToken, user.tokenExpires());
     }
 
     @Feature("Authentication")
@@ -64,10 +72,11 @@ public class AuthorizationTest extends BaseTest {
             """)
     public void userCannotLoginWithWrongPassword() {
         createTestUserViaApi();
+        TestUser user = testUser();
 
         new LoginPage()
                 .open()
-                .attemptLoginAs(testUserName, "WrongPassword123!")
+                .attemptLoginAs(user.name(), UserFactory.WRONG_PASSWORD)
                 .shouldSeeInvalidCredentialsError()
                 .verifyIsStillOnLoginPage();
     }
@@ -86,10 +95,11 @@ public class AuthorizationTest extends BaseTest {
             """)
     public void userCannotLoginWithEmptyPassword() {
         createTestUserViaApi();
+        TestUser user = testUser();
 
         new LoginPage()
                 .open()
-                .attemptLoginAs(testUserName, "")
+                .attemptLoginAs(user.name(), "")
                 .shouldSeeInvalidPasswordInput()
                 .verifyIsStillOnLoginPage();
     }
@@ -110,12 +120,13 @@ public class AuthorizationTest extends BaseTest {
             """)
     public void authorizedUserCanLogout() {
         createTestUserViaApi();
+        TestUser user = testUser();
 
-        AuthSession.injectAuthCookies(testUserId, testUserName, testUserToken, testUserTokenExpires);
+        AuthSession.injectAuthCookies(user.id(), user.name(), user.token(), user.tokenExpires());
         new ProfilePage()
                 .open()
                 .shouldBeOpened()
-                .shouldSeeUserName(testUserName)
+                .shouldSeeUserName(user.name())
                 .shouldSeeLogoutButton()
                 .clickLogoutButton()
                 .shouldBeOpened()

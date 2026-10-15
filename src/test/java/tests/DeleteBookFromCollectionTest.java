@@ -4,6 +4,7 @@ import api.client.BookApiClient;
 import auth.AuthSession;
 import data.Book;
 import data.Books;
+import data.TestUser;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -33,10 +34,11 @@ public class DeleteBookFromCollectionTest extends BaseTest {
             """)
     public void deleteBookFromCollection() {
         createTestUserViaApi();
+        TestUser user = testUser();
 
         Book book = Books.GIT_POCKET_GUIDE;
-        AuthSession.injectAuthCookies(testUserId, testUserName, testUserToken, testUserTokenExpires);
-        bookApiClient.addBookToUser(testUserId, testUserToken, book.isbn());
+        AuthSession.injectAuthCookies(user.id(), user.name(), user.token(), user.tokenExpires());
+        bookApiClient.addBookToUser(user.id(), user.token(), book.isbn());
 
         new ProfilePage()
                 .open()
@@ -45,7 +47,7 @@ public class DeleteBookFromCollectionTest extends BaseTest {
                 .deleteBook(book.isbn())
                 .shouldBookNotBeVisible(book.isbn());
 
-        List<String> booksAfterDeletion = userApiClient.getUserBookIsbns(testUserId, testUserToken);
+        List<String> booksAfterDeletion = userApiClient.getUserBookIsbns(user.id(), user.token());
 
         assertThat(booksAfterDeletion)
                 .as("Book with ISBN %s should disappear from user collection after deletion via UI", book.isbn())

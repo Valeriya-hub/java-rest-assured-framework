@@ -1,12 +1,15 @@
 package tests.base;
 
 import api.client.UserApiClient;
+import api.model.CreateUserRequest;
 import api.model.CreateUserResponse;
 import api.model.GenerateTokenResponse;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import config.Config;
 import config.LoggingConfig;
+import data.TestUser;
+import data.UserFactory;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.qameta.allure.selenide.AllureSelenide;
 import io.qameta.allure.testng.AllureTestNg;
@@ -22,7 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
@@ -33,23 +35,24 @@ public abstract class BaseTest {
 
     private static final Path ALLURE_RESULTS_DIR = Paths.get("target", "allure-results");
 
-    // Protects RestAssured.filters(...) from being added multiple times.
+    // Guards RestAssured.filters(...) against being added more than once
     private static final AtomicBoolean LOGGING_INITIALIZED = new AtomicBoolean(false);
 
+    /**
+     * The user of the test running on the current thread.
+     *
+     * TestNG uses ONE instance of a test class for all its methods, so instance fields
+     * would be shared by tests that run in parallel. A ThreadLocal gives every running
+     * test its own user. A thread runs one test at a time, and @BeforeMethod/@AfterMethod
+     * run on the same thread as the test method.
+     */
+    private static final ThreadLocal<TestUser> CURRENT_USER = new ThreadLocal<>();
+
+    // Stateless, so it is safe to share between threads.
     protected final UserApiClient userApiClient = new UserApiClient();
 
-    // Test user data — populated only if a specific test
-    // requires it (authorized scenario)
-    protected String testUserId;
-    protected String testUserName;
-    protected String testUserPassword;
-    protected String testUserToken;
-    protected String testUserTokenExpires;
-
     /**
-     * Single entry point for suite setup.
-     * Executes once for EACH test class participating in the suite
-     * (this is a TestNG feature for inherited @BeforeSuite methods)
+     * Single entry point of the suite setup. TestNG runs it before any test of the suite starts.
      */
     @BeforeSuite(alwaysRun = true)
     public void suiteSetUp() {
@@ -58,22 +61,19 @@ public abstract class BaseTest {
     }
 
     /**
-     * Cleans target/allure-results before the test run starts.
-     * First call (for the first class in the suite)
-     * deletes the directory; each subsequent call (for other classes) will
-     * immediately see that the directory is already gone and exit via return —
-     * without side effects and without error.
+     * Cleans target/allure-results before the run. If the directory does not exist
+     *  (first run, or already cleaned by another invocation), it simply returns.
      */
     private void cleanAllureResultsDirectory() {
         if (!Files.exists(ALLURE_RESULTS_DIR)) {
-            return; // nothing to clean — either first run or already cleaned by previous class
+            return;
         }
         try (Stream<Path> paths = Files.walk(ALLURE_RESULTS_DIR)) {
             paths.sorted(Comparator.reverseOrder()) // files first, then parent directories
                     .forEach(this::deleteQuietly);
         } catch (IOException e) {
             throw new IllegalStateException(
-                    "Failed to clean Allure results directory: " + ALLURE_RESULTS_DIR, e);
+                    "Failed to clean the Allure results directory: " + ALLURE_RESULTS_DIR, e);
         }
     }
 
@@ -81,20 +81,19 @@ public abstract class BaseTest {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            // Not critical — file might be locked by antivirus or still open,
-            // don't fail the entire test run because of this
+            // Not critical: the file may be locked by an antivirus or still open.
+            // A whole test run should not fail because of this.
             System.err.println("Failed to delete: " + path + " (" + e.getMessage() + ")");
         }
     }
 
     /**
-     * Attaches global REST Assured filters: request/response logging
-     * via Log4j2 and attaching them to Allure report.
-     * Guard (LOGGING_INITIALIZED) is mandatory: RestAssured.filters(...)
-     * ADDS filters to a static list, not replaces it. Without the guard,
-     * each test class in the suite would add its own copy of filters —
-     * and each request would be logged and attached to Allure N times,
-     * where N is the number of classes in testng.xml.
+     * Registers global REST Assured filters: request/response logging via Log4j2
+     * and attaching them to the Allure report.
+     *
+     * The guard is required: RestAssured.filters(...) ADDS filters to a static list
+     * instead of replacing it. Without the guard every test class would add its own copy
+     * and each request would be logged and attached N times.
      */
     private void setupRestAssuredLogging() {
         if (LOGGING_INITIALIZED.compareAndSet(false, true)) {
@@ -115,8 +114,8 @@ public abstract class BaseTest {
         Configuration.pollingInterval = Config.uiPollingIntervalMs();
         Configuration.pageLoadTimeout = Config.pageLoadTimeoutMs();
 
-        // CI runner has no graphical environment — headless is mandatory.
-        // Locally, for debugging convenience, we keep normal mode with visible browser.
+        // A CI runner has no graphical environment, so headless is required there.
+        // Locally the browser stays visible, which is easier for debugging.
         Configuration.headless = System.getenv("CI") != null;
 
         SelenideLogger.addListener("AllureSelenide",
@@ -124,29 +123,60 @@ public abstract class BaseTest {
     }
 
     /**
-     * Called explicitly from a test that needs a pre-created
-     * authorized user. User is created via API, login
-     * in the test itself is still performed via UI.
+     * Returns the user of the current test.
+     * Fails with a clear message if the test did not create one.
+     */
+    protected TestUser testUser() {
+        TestUser user = CURRENT_USER.get();
+        if (user == null) {
+            throw new IllegalStateException(
+                    "No test user for this test: call createTestUserViaApi() "
+                            + "or registerCreatedUserForCleanup() first");
+        }
+        return user;
+    }
+
+    protected void setTestUser(TestUser user) {
+        CURRENT_USER.set(user);
+    }
+
+    /**
+     * Replaces the token of the current test user, e.g. after a new token was generated
+     * (demoqa may invalidate the previous one), so that cleanup uses a valid token.
+     */
+    protected void updateTestUserToken(String token, String tokenExpires) {
+        setTestUser(testUser().withToken(token, tokenExpires));
+    }
+
+    /**
+     * Called explicitly by a test that needs a pre-created user.
+     * The user is created via API; the login itself is still done through the UI in the test.
+
      */
     protected void createTestUserViaApi() {
-        testUserName = "qa_user_" + UUID.randomUUID().toString().substring(0, 8);
-        testUserPassword = "StrongPass123!";
+        CreateUserRequest credentials = UserFactory.randomCredentials();
 
-        CreateUserResponse response = userApiClient.createUser(testUserName, testUserPassword);
-        testUserId = response.userID();
-        GenerateTokenResponse tokenResponse = userApiClient.generateTokenDetails(testUserName, testUserPassword);
-        testUserToken = tokenResponse.token();
-        testUserTokenExpires = tokenResponse.expires();
+        CreateUserResponse created = userApiClient.createUser(credentials.userName(), credentials.password());
+        // Register right after creation, so the user is cleaned up even if token generation fails.
+        setTestUser(new TestUser(created.userID(), credentials.userName(), credentials.password(), null, null));
+
+        GenerateTokenResponse tokenResponse =
+                userApiClient.generateTokenDetails(credentials.userName(), credentials.password());
+        updateTestUserToken(tokenResponse.token(), tokenResponse.expires());
     }
 
     @AfterMethod(alwaysRun = true)
     public void tearDown(ITestResult result) {
-        // Post-condition: remove test user if one was created
+        // Post-condition: remove the test user if the test created one.
         try {
-            if (testUserId != null) {
-                userApiClient.deleteUser(testUserId, testUserToken);
+            TestUser user = CURRENT_USER.get();
+            if (user != null) {
+                userApiClient.deleteUser(user.id(), user.token());
             }
         } finally {
+            // TestNG reuses threads, so the value must be removed, otherwise the next
+            // test on this thread would inherit this user.
+            CURRENT_USER.remove();
             closeWebDriver();
         }
     }
