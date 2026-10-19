@@ -14,16 +14,35 @@ REST API automation project built with Java 21, Selenide, REST Assured, TestNG, 
 - API Client: REST Assured
 - Reporting: Allure Framework
 
-# Coding & Style Guidelines
-- Follow the Page Object / API Client pattern (clearly separate API requests, POJO/Record models, and test classes).
-- Use Jackson for JSON serialization and deserialization.
-- Create all data models using `record` or Lombok (`@Data`, `@Builder`) where applicable.
-- Do not leave commented-out code or `System.out.println`. Use Log4j2 or REST Assured logging (`.log().all()`) for output.
+# General Principles
+- Code Style: Follow standard Java coding conventions.
+- Clean code: Avoid code duplication (DRY), use meaningful variable names, and avoid magic numbers/strings (use constants or configuration files).
 
-# Testing & Reporting Rules
-- Every test method must include `@Test`, `@Feature`, `@Story`, and `@Description` annotations.
-- Wrap key test steps in `@Step("Step description")` or `Allure.step(...)`.
-- Write assertions using AssertJ (`assertThat(...)`).
+# UI Automation Standards (Selenide & TestNG)
+- **Architecture:** Strictly enforce the **Page Object Model (POM)** pattern. Page elements and locators must be encapsulated inside Page Object classes, never inside test classes.
+- **Waiting Strategy:**
+  - **NEVER** use Thread.sleep().
+  - Rely exclusively on Selenide's built-in intelligent waiting ('shouldBe(visible)', 'appear', 'webdriver().shouldHave(...)').
+- **Locators:**
+  - Prioritize resilient locators in the following order: '[data-testid]', 'id', 'name', and robust CSS selectors. Avoid brittle absolute XPaths.
+- **Test Structure:**
+  - Use TestNG annotations ('@Test', @BeforeMethod, @AfterMethod, etc.).
+  - Test method names must be expressive and describe the business behavior (e.g., 'shouldSuccessfullyCompleteCheckoutProcess').
+
+# API Client Standards (REST Assured)
+- **Specifications:** Reuse common configurations by initializing base 'RequestSpecification' and 'ResponseSpecification' builders.
+- **Data Modeling:** Create all data models using `record` or Lombok (`@Data`, `@Builder`) where applicable
+- **Assertions:** Use AssertJ (`assertThat(...)`) for fluent, readable, and detailed API response validations.
+- **Separation:** Keep API clients/endpoints logic separated from the test execution classes.
+- **Serialization:** Use Jackson for JSON serialization and deserialization.
+
+# Reporting & Logging (Allure Framework)
+- **Annotations:** Every test method must include Allure annotations to ensure comprehensive reporting:
+  - '@Feature("Feature Name")'
+  - '@Story("User Story Name")'
+  - '@Description("Description of the test")'
+- **Steps:** Wrap significant actions inside Page Objects and API utility clients with '@Step("Description of the action")'.
+- **Attachments:** Ensure failure listeners automatically capture and attach screenshots (for UI) and request/response logs (for API) to Allure reports.
 
 # Git & Version Control Rules
 - Write all commit messages in English.
@@ -33,5 +52,6 @@ REST API automation project built with Java 21, Selenide, REST Assured, TestNG, 
 
 # Do NOTs
 - DO NOT use deprecated libraries (e.g., direct Apache HttpClient usage, JUnit 4).
-- DO NOT hardcode test data or authorization tokens — use `config.properties` or `System.getenv()`.
+- DO NOT hardcode test data, secrets, URLs, credentials, or authorization tokens — use `config.properties`, or environment variables, or `System.getenv()`.
 - DO NOT modify configuration files like `pom.xml` unless explicitly instructed in the prompt.
+- DO NOT use `System.out.println` or `System.err.println` for output. Use Log4j2 or REST Assured logging (`.log().all()`) for output.

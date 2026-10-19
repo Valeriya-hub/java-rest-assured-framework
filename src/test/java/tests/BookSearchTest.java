@@ -1,7 +1,6 @@
 package tests;
 
 import data.Book;
-import data.Books;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -23,14 +22,14 @@ public class BookSearchTest extends BaseTest {
             Verification: Only this book remains in the table; no other books are displayed.
             """)
     public void searchBookByFullTitle() {
-        Book book = Books.LEARNING_JAVASCRIPT_DESIGN_PATTERNS;
+        Book book = Book.LEARNING_JAVASCRIPT_DESIGN_PATTERNS;
 
         new BookStorePage()
                 .open()
                 .shouldBeOpened()
                 .searchBookByTitle(book.title())
                 .shouldShowOnlyBook(book.title())
-                .shouldNotShowBook(Books.SPEAKING_JAVASCRIPT.title());
+                .shouldNotShowBook(Book.SPEAKING_JAVASCRIPT.title());
     }
 
     @Feature("Book Store UI")
@@ -46,7 +45,7 @@ public class BookSearchTest extends BaseTest {
             """)
     public void searchBookByPartialText() {
         String partialTitleForOneBook = "Web";
-        Book bookWithWebInTitle = Books.DESIGNING_EVOLVABLE_WEB_APIS;
+        Book bookWithWebInTitle = Book.DESIGNING_EVOLVABLE_WEB_APIS;
         String partialTitleForFewBook = "JavaScript";
 
         new BookStorePage()
