@@ -1,15 +1,13 @@
 package ui;
 
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverConditions;
 import config.Config;
 import io.qameta.allure.Step;
-import org.openqa.selenium.NoAlertPresentException;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.webdriver;
+import static com.codeborne.selenide.Selenide.*;
+import static config.constants.UIConstants.BOOK_ADDED_ALERT;
 
 public class BookPage extends BasePage<BookPage> {
     private final SelenideElement addToCollectionButton = $(".text-right #addNewRecordButton");
@@ -30,18 +28,21 @@ public class BookPage extends BasePage<BookPage> {
         return this;
     }
 
-    @Step("Click 'Add to Collection' button")
-    public BookPage clickAddToCollectionButton() {
+    @Step("Add book to collection and confirm alert")
+    public BookPage addBookToCollection() {
         addToCollectionButton.click();
+        acceptBookAddedAlert();
         return this;
     }
 
-    @Step("If JavaScript Alert is displayed, click OK")
-    public void dismissAlertIfPresent() {
-        try {
-            Selenide.switchTo().alert().accept();
-        } catch (NoAlertPresentException e) {
-        }
+    /**
+     * The app reports the result with a native JS alert. It must be accepted explicitly:
+     * confirm() waits for the alert, checks its text and clicks OK. Otherwise the alert
+     * can pop up in the middle of the next command and break it.
+     */
+    @Step("Accept the browser alert about the added book")
+    private void acceptBookAddedAlert() {
+        confirm(BOOK_ADDED_ALERT);
     }
 
     @Step("Get book ISBN")

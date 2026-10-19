@@ -3,7 +3,6 @@ package tests;
 import api.client.BookApiClient;
 import auth.AuthSession;
 import data.Book;
-import data.Books;
 import data.TestUser;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
@@ -36,7 +35,7 @@ public class DeleteBookFromCollectionTest extends BaseTest {
         createTestUserViaApi();
         TestUser user = testUser();
 
-        Book book = Books.GIT_POCKET_GUIDE;
+        Book book = Book.GIT_POCKET_GUIDE;
         AuthSession.injectAuthCookies(user.id(), user.name(), user.token(), user.tokenExpires());
         bookApiClient.addBookToUser(user.id(), user.token(), book.isbn());
 

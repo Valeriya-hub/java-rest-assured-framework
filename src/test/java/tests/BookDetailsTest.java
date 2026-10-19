@@ -1,7 +1,6 @@
 package tests;
 
 import data.Book;
-import data.Books;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -24,7 +23,7 @@ public class BookDetailsTest extends BaseTest {
             a non-empty description, and ISBN are displayed.
             """)
     public void shouldVerifyBooksDetails() {
-        Book book = Books.SPEAKING_JAVASCRIPT;
+        Book book = Book.SPEAKING_JAVASCRIPT;
 
         new BookStorePage()
                 .open()

@@ -11,6 +11,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.anyOf;
@@ -27,23 +28,17 @@ public class UserApiClient {
      */
     @Step("API: Send create user request")
     public Response sendCreateUserRequest(CreateUserRequest request) {
-        return given()
-                .spec(spec)
-                .contentType(ContentType.JSON)
-                .body(request)
-                .when()
-                .post("/Account/v1/User");
+        return postJson("/Account/v1/User", request);
     }
 
-
-    @Step("API: Send create user request with custom JSON body")
-    public Response sendCreateUserRequestBody(Object requestBody) {
-        return given()
-                .spec(spec)
-                .contentType(ContentType.JSON)
-                .body(requestBody)
-                .when()
-                .post("/Account/v1/User");
+    /**
+     * Raw call with an arbitrary JSON body. Needed for negative tests where the body
+     * cannot be expressed with CreateUserRequest, e.g. a field is missing altogether
+     * (a record would send it as null instead of omitting it).
+     */
+    @Step("API: Send create user request with a custom body")
+    public Response sendCreateUserRequest(Map<String, ?> body) {
+        return postJson("/Account/v1/User", body);
     }
 
     /**
@@ -60,20 +55,21 @@ public class UserApiClient {
                 .as(CreateUserResponse.class);
     }
 
+    /**
+     * Raw call: sends the generate token request and returns the response WITHOUT any assertions.
+     */
+    @Step("API: Send generate token request")
+    public Response sendGenerateTokenRequest(CreateUserRequest credentials) {
+        return postJson("/Account/v1/GenerateToken", credentials);
+    }
+
     @Step("API: Generate an access token with full details (token + expires) for {userName}")
     public GenerateTokenResponse generateTokenDetails(String userName, String password) {
-        Response response = given()
-                .spec(spec)
-                .contentType(ContentType.JSON)
-                .body(new CreateUserRequest(userName, password))
-                .when()
-                .post("/Account/v1/GenerateToken")
+        return sendGenerateTokenRequest(new CreateUserRequest(userName, password))
                 .then()
                 .statusCode(200)
                 .extract()
-                .response();
-
-        return response.as(GenerateTokenResponse.class);
+                .as(GenerateTokenResponse.class);
     }
 
     @Step("API: Delete the test user {userId}")
@@ -104,5 +100,14 @@ public class UserApiClient {
                 .extract()
                 .jsonPath()
                 .getList("books.isbn", String.class);
+    }
+
+    private Response postJson(String path, Object body) {
+        return given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .body(body)
+                .when()
+                .post(path);
     }
 }

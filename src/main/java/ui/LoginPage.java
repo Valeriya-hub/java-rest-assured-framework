@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.webdriver;
 import static com.codeborne.selenide.WebDriverConditions.urlContaining;
-import static config.constants.UIErrorMessages.INVALID_CREDENTIALS;
+import static config.constants.UIConstants.INVALID_CREDENTIALS;
 
 public class LoginPage extends BasePage<LoginPage> {
     private final SelenideElement userNameInput = $("#userName");

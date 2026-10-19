@@ -1,7 +1,7 @@
 package tests;
 
 import auth.AuthSession;
-import data.Books;
+import data.Book;
 import data.TestUser;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
@@ -41,10 +41,9 @@ public class AddBookToCollectionTest extends BaseTest {
                 .clickGoToBookStoreButton();
 
         BookPage bookPage = bookStorePage
-                .clickOnBook(Books.GIT_POCKET_GUIDE.title())
-                .clickAddToCollectionButton();
+                .clickOnBook(Book.GIT_POCKET_GUIDE.title())
+                .addBookToCollection();
 
-        bookPage.dismissAlertIfPresent();
         String addedBookIsbn = bookPage.getIsbn();
 
         assertThat(userApiClient.getUserBookIsbns(user.id(), user.token()))
