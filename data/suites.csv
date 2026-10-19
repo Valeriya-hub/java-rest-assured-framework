@@ -1,101 +1,101 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Mon Oct 19 08:42:28 UTC 2026","Mon Oct 19 08:42:35 UTC 2026","7093","Book Store Automation Suite","UI Tests","tests.DeleteBookFromCollectionTest","tests.DeleteBookFromCollectionTest","deleteBookFromCollection","Authorized user deletes a book from collection","Precondition: user is created via API, token is generated, 1 book is added to collection.
-UI: profile is opened via cookie injection, book is deleted via Trash icon
-with confirmation in modal window.
-Expected: book disappears from table on UI, and books array in GET /User becomes empty.
+"passed","Mon Oct 19 08:44:52 UTC 2026","Mon Oct 19 08:44:55 UTC 2026","3093","Book Store Automation Suite","API Tests","tests.api.GenerateTokenApiTest","tests.api.GenerateTokenApiTest","generateTokenWithValidCredentials","Generate a token with valid credentials","Precondition: a user is created via API.
+Request: POST /Account/v1/GenerateToken with the user's credentials.
+Verification: status 200; the body contains a token, status 'Success'
+and the result 'User authorized successfully.'.
 "
-"passed","Mon Oct 19 08:42:47 UTC 2026","Mon Oct 19 08:42:48 UTC 2026","277","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
-Verification: the request is rejected with status 400 and the
-'UserName and Password required' error.
-"
-"passed","Mon Oct 19 08:42:49 UTC 2026","Mon Oct 19 08:42:52 UTC 2026","3454","Book Store Automation Suite","API Tests","tests.api.GenerateTokenApiTest","tests.api.GenerateTokenApiTest","generateTokenWithInvalidPassword","Generating a token with an invalid password fails","Precondition: a user is created via API.
-Request: POST /Account/v1/GenerateToken with the correct username and a wrong password.
-Verification: authorization fails: status 'Failed', result 'User authorization failed.',
-and no token is issued.
-"
-"passed","Mon Oct 19 08:42:47 UTC 2026","Mon Oct 19 08:42:47 UTC 2026","259","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
-Verification: the request is rejected with status 400 and the
-'UserName and Password required' error.
-"
-"passed","Mon Oct 19 08:42:48 UTC 2026","Mon Oct 19 08:42:48 UTC 2026","284","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
-Verification: the request is rejected with status 400 and the
-'UserName and Password required' error.
-"
-"passed","Mon Oct 19 08:42:47 UTC 2026","Mon Oct 19 08:42:47 UTC 2026","272","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
-Verification: the request is rejected with status 400 and the
-'UserName and Password required' error.
-"
-"passed","Mon Oct 19 08:42:18 UTC 2026","Mon Oct 19 08:42:23 UTC 2026","4892","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","userCannotLoginWithEmptyPassword","User cannot login with empty password","Precondition: a new test user is created via API, user is not authorized.
-UI: attempt to authorize with empty password is made.
-Verification: The password input is highlighted with a red border.
-User remains on login page.
-"
-"passed","Mon Oct 19 08:42:48 UTC 2026","Mon Oct 19 08:42:48 UTC 2026","257","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
-Verification: the request is rejected with status 400 and the
-'UserName and Password required' error.
-"
-"passed","Mon Oct 19 08:42:39 UTC 2026","Mon Oct 19 08:42:42 UTC 2026","3291","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchBookByPartialText","Search by part of the title","The user is not logged in; the Book Store page is open.
-UI: Part of the title is entered into the search field.
-Verification: The result is not empty; every displayed book contains the entered text.
-"
-"passed","Mon Oct 19 08:42:41 UTC 2026","Mon Oct 19 08:42:43 UTC 2026","2905","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchNonExistingBook","Search with non-existing book","The user is not logged in; the Book Store page is open.
-UI: Non-existing book is entered into the search field.
-Verification: The result is empty.
-"
-"passed","Mon Oct 19 08:42:25 UTC 2026","Mon Oct 19 08:42:34 UTC 2026","8946","Book Store Automation Suite","UI Tests","tests.AddBookToCollectionTest","tests.AddBookToCollectionTest","userAddBookToCollection","User adds a book to collection","Precondition: user is created via API, auth cookies are injected into browser.
+"passed","Mon Oct 19 08:44:21 UTC 2026","Mon Oct 19 08:44:30 UTC 2026","8970","Book Store Automation Suite","UI Tests","tests.AddBookToCollectionTest","tests.AddBookToCollectionTest","userAddBookToCollection","User adds a book to collection","Precondition: user is created via API, auth cookies are injected into browser.
 UI: Profile is opened -> navigate to Book Store -> select book ->
 click 'Add To Collection' and close alert.
 Verification: via API (GET /Account/v1/User) verify that the ISBN of the added book
 appeared in the user's collection.
 "
-"passed","Mon Oct 19 08:42:46 UTC 2026","Mon Oct 19 08:42:47 UTC 2026","1878","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithDuplicateUsername","Creating a user with an already taken username is rejected","Precondition: a user is created via API.
+"passed","Mon Oct 19 08:44:33 UTC 2026","Mon Oct 19 08:44:37 UTC 2026","3356","Book Store Automation Suite","UI Tests","tests.BookStoreTest","tests.BookStoreTest","shouldVerifyBooksPageInitialState","Verify main elements of Books page are displayed","Preconditions: The user is not logged in, and the Book Store page is open.
+Verification of URL, title, books table, search, pagination and columns (Title, Author, Publisher)
+"
+"passed","Mon Oct 19 08:44:45 UTC 2026","Mon Oct 19 08:44:46 UTC 2026","382","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
+Verification: the request is rejected with status 400 and the
+'UserName and Password required' error.
+"
+"passed","Mon Oct 19 08:44:46 UTC 2026","Mon Oct 19 08:44:46 UTC 2026","384","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
+Verification: the request is rejected with status 400 and the
+'UserName and Password required' error.
+"
+"passed","Mon Oct 19 08:44:44 UTC 2026","Mon Oct 19 08:44:46 UTC 2026","2389","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithDuplicateUsername","Creating a user with an already taken username is rejected","Precondition: a user is created via API.
 Request: POST /Account/v1/User again with the same username.
 Verification: the request is rejected with the 'User exists' error
 (status, error code and message).
 "
-"passed","Mon Oct 19 08:41:58 UTC 2026","Mon Oct 19 08:42:17 UTC 2026","19401","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Authorized user sees their name and profile icon","Precondition: a new test user is created via API, user is authorized
+"passed","Mon Oct 19 08:44:47 UTC 2026","Mon Oct 19 08:44:47 UTC 2026","385","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
+Verification: the request is rejected with status 400 and the
+'UserName and Password required' error.
+"
+"passed","Mon Oct 19 08:44:14 UTC 2026","Mon Oct 19 08:44:19 UTC 2026","5277","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","userCannotLoginWithEmptyPassword","User cannot login with empty password","Precondition: a new test user is created via API, user is not authorized.
+UI: attempt to authorize with empty password is made.
+Verification: The password input is highlighted with a red border.
+User remains on login page.
+"
+"passed","Mon Oct 19 08:44:02 UTC 2026","Mon Oct 19 08:44:14 UTC 2026","12481","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Authorized user sees their name and profile icon","Precondition: a new test user is created via API, user is authorized
 (session is established). UI: Book Store page is opened.
 Verification: Login button is not visible on the page, user name on the page
 matches the one used for login.
 "
-"passed","Mon Oct 19 08:41:58 UTC 2026","Mon Oct 19 08:42:16 UTC 2026","18088","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","authorizedUserCanLogout","Authorized user can successfully log out","Precondition: A new test user is created via API, user is authorized.
+"passed","Mon Oct 19 08:44:38 UTC 2026","Mon Oct 19 08:44:41 UTC 2026","3215","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchNonExistingBook","Search with non-existing book","The user is not logged in; the Book Store page is open.
+UI: Non-existing book is entered into the search field.
+Verification: The result is empty.
+"
+"passed","Mon Oct 19 08:44:31 UTC 2026","Mon Oct 19 08:44:34 UTC 2026","3041","Book Store Automation Suite","UI Tests","tests.GuestAccessTest","tests.GuestAccessTest","unauthorizedUserSeesLoginButton","Unauthorized user sees Login button","Precondition: user is unauthorized (no session).
+UI: Book Store page is opened.
+Verification: Login button is visible on the page.
+"
+"passed","Mon Oct 19 08:44:37 UTC 2026","Mon Oct 19 08:44:40 UTC 2026","3652","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchBookByPartialText","Search by part of the title","The user is not logged in; the Book Store page is open.
+UI: Part of the title is entered into the search field.
+Verification: The result is not empty; every displayed book contains the entered text.
+"
+"passed","Mon Oct 19 08:44:24 UTC 2026","Mon Oct 19 08:44:33 UTC 2026","8504","Book Store Automation Suite","UI Tests","tests.DeleteBookFromCollectionTest","tests.DeleteBookFromCollectionTest","deleteBookFromCollection","Authorized user deletes a book from collection","Precondition: user is created via API, token is generated, 1 book is added to collection.
+UI: profile is opened via cookie injection, book is deleted via Trash icon
+with confirmation in modal window.
+Expected: book disappears from table on UI, and books array in GET /User becomes empty.
+"
+"passed","Mon Oct 19 08:44:15 UTC 2026","Mon Oct 19 08:44:22 UTC 2026","6729","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","userCannotLoginWithWrongPassword","User cannot login with incorrect password","Precondition: a new test user is created via API, user is not authorized.
+UI: attempt to authorize with incorrect password is made.
+Verification: incorrect password message appears on the page.
+User remains on login page.
+"
+"passed","Mon Oct 19 08:44:47 UTC 2026","Mon Oct 19 08:44:47 UTC 2026","372","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
+Verification: the request is rejected with status 400 and the
+'UserName and Password required' error.
+"
+"passed","Mon Oct 19 08:44:02 UTC 2026","Mon Oct 19 08:44:13 UTC 2026","11425","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","authorizedUserCanLogout","Authorized user can successfully log out","Precondition: A new test user is created via API, user is authorized.
 UI: User clicks the Logout button on the Profile page.
 Verification: User is redirected to the Login page, check that the 'token'
 cookie is cleared/empty. Re-open Profile page directly via URL. Verify that
 application shows unauthenticated state (warning message with Login and Register links).
 Verify that the 'token' cookie remains empty and session was not restored.
 "
-"passed","Mon Oct 19 08:42:35 UTC 2026","Mon Oct 19 08:42:37 UTC 2026","2273","Book Store Automation Suite","UI Tests","tests.GuestAccessTest","tests.GuestAccessTest","unauthorizedUserSeesLoginButton","Unauthorized user sees Login button","Precondition: user is unauthorized (no session).
-UI: Book Store page is opened.
-Verification: Login button is visible on the page.
+"passed","Mon Oct 19 08:44:34 UTC 2026","Mon Oct 19 08:44:38 UTC 2026","3384","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchBookByFullTitle","Search for a book by its full title","Preconditions: The user is not logged in, and the Book Store page is open.
+UI: The full book title is entered into the search field.
+Verification: Only this book remains in the table; no other books are displayed.
 "
-"passed","Mon Oct 19 08:42:48 UTC 2026","Mon Oct 19 08:42:50 UTC 2026","2011","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithValidCredentials","Create a user with valid credentials","Request: POST /Account/v1/User with a unique username and a valid password.
-Verification: status 201; the body contains a userID in UUID format
-and the username that was sent. The userID is stored for cleanup.
+"passed","Mon Oct 19 08:44:44 UTC 2026","Mon Oct 19 08:44:45 UTC 2026","1430","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
+Verification: the request is rejected with status 400 and the
+'UserName and Password required' error.
 "
-"passed","Mon Oct 19 08:42:53 UTC 2026","Mon Oct 19 08:42:56 UTC 2026","2988","Book Store Automation Suite","API Tests","tests.api.GenerateTokenApiTest","tests.api.GenerateTokenApiTest","generateTokenWithValidCredentials","Generate a token with valid credentials","Precondition: a user is created via API.
-Request: POST /Account/v1/GenerateToken with the user's credentials.
-Verification: status 200; the body contains a token, status 'Success'
-and the result 'User authorized successfully.'.
-"
-"passed","Mon Oct 19 08:42:18 UTC 2026","Mon Oct 19 08:42:25 UTC 2026","6709","Book Store Automation Suite","UI Tests","tests.AuthorizationTest","tests.AuthorizationTest","userCannotLoginWithWrongPassword","User cannot login with incorrect password","Precondition: a new test user is created via API, user is not authorized.
-UI: attempt to authorize with incorrect password is made.
-Verification: incorrect password message appears on the page.
-User remains on login page.
-"
-"passed","Mon Oct 19 08:42:43 UTC 2026","Mon Oct 19 08:42:45 UTC 2026","2924","Book Store Automation Suite","UI Tests","tests.BookDetailsTest","tests.BookDetailsTest","shouldVerifyBooksDetails","Verify book details page content and URL","Preconditions: User is not logged in; the Book Store page is open.
+"passed","Mon Oct 19 08:44:41 UTC 2026","Mon Oct 19 08:44:44 UTC 2026","3295","Book Store Automation Suite","UI Tests","tests.BookDetailsTest","tests.BookDetailsTest","shouldVerifyBooksDetails","Verify book details page content and URL","Preconditions: User is not logged in; the Book Store page is open.
 UI: Click on the book in the table.
 Verification: The page for that specific book opens (check URL); the title, author, publisher,
 a non-empty description, and ISBN are displayed.
 "
-"passed","Mon Oct 19 08:42:46 UTC 2026","Mon Oct 19 08:42:47 UTC 2026","1325","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
+"passed","Mon Oct 19 08:44:47 UTC 2026","Mon Oct 19 08:44:51 UTC 2026","3587","Book Store Automation Suite","API Tests","tests.api.GenerateTokenApiTest","tests.api.GenerateTokenApiTest","generateTokenWithInvalidPassword","Generating a token with an invalid password fails","Precondition: a user is created via API.
+Request: POST /Account/v1/GenerateToken with the correct username and a wrong password.
+Verification: authorization fails: status 'Failed', result 'User authorization failed.',
+and no token is issued.
+"
+"passed","Mon Oct 19 08:44:47 UTC 2026","Mon Oct 19 08:44:50 UTC 2026","2717","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithValidCredentials","Create a user with valid credentials","Request: POST /Account/v1/User with a unique username and a valid password.
+Verification: status 201; the body contains a userID in UUID format
+and the username that was sent. The userID is stored for cleanup.
+"
+"passed","Mon Oct 19 08:44:46 UTC 2026","Mon Oct 19 08:44:47 UTC 2026","383","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
 Verification: the request is rejected with status 400 and the
 'UserName and Password required' error.
-"
-"passed","Mon Oct 19 08:42:36 UTC 2026","Mon Oct 19 08:42:39 UTC 2026","3448","Book Store Automation Suite","UI Tests","tests.BookStoreTest","tests.BookStoreTest","shouldVerifyBooksPageInitialState","Verify main elements of Books page are displayed","Preconditions: The user is not logged in, and the Book Store page is open.
-Verification of URL, title, books table, search, pagination and columns (Title, Author, Publisher)
-"
-"passed","Mon Oct 19 08:42:37 UTC 2026","Mon Oct 19 08:42:40 UTC 2026","3160","Book Store Automation Suite","UI Tests","tests.BookSearchTest","tests.BookSearchTest","searchBookByFullTitle","Search for a book by its full title","Preconditions: The user is not logged in, and the Book Store page is open.
-UI: The full book title is entered into the search field.
-Verification: Only this book remains in the table; no other books are displayed.
 "
