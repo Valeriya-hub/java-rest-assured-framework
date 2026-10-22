@@ -1,4 +1,4 @@
-package tests;
+package tests.e2e;
 
 import auth.AuthSession;
 import data.Book;

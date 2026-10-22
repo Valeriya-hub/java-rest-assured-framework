@@ -1,4 +1,4 @@
-package tests;
+package tests.e2e;
 
 import api.client.BookApiClient;
 import auth.AuthSession;

@@ -185,3 +185,17 @@ This approach ensures:
 - Isolated test scenarios
 - Realistic UI testing for the actual user journey
 - Clean test environment after each run
+
+## Findings in the application under test
+
+While automating the demoqa API, the following behaviours were observed.
+They are application defects (or deviations from common API conventions),
+not framework problems.
+
+| # | Endpoint | Observation | Why it matters | How the framework handles it |
+|---|----------|-------------|----------------|------------------------------|
+| 1 | `POST /Account/v1/Login` | The response body contains the user's password in plain text. | Sensitive data exposure (OWASP API3:2023, Broken Object Property Level Authorization). An API must never return passwords. | `LoginResponse` deliberately does not map `password`; the test `loginResponseDoesNotExposePassword` asserts the desired behaviour via `KnownIssue.expectFailure` (skipped while the defect exists, fails once it is fixed). |
+| 2 | `DELETE /Account/v1/User/{id}` for an already deleted user | Responds with HTTP 200 and an error body (code 1207) instead of a 4xx status. | Clients cannot rely on status codes to detect errors. | Cleanup treats only 204 and 401 as expected and fails on anything else. |
+| 3 | `POST /Account/v1/User` with an existing username | Responds with 406 Not Acceptable; 409 Conflict would be conventional. | Non-standard status codes complicate client code. | `ApiErrors.USER_EXISTS` documents the actual contract. |
+| 4 | `POST /Account/v1/Login` with empty fields | Responds with HTTP 200 OK and an empty body instead of a 4xx validation error status. | Masks validation errors behind a success status code, making standard error handling impossible. | Tests explicitly assert HTTP 200 and a blank response body for these invalid payload scenarios. |
+| 5 | `POST /Account/v1/Login` with a missing field | Responds with HTTP 500 and an HTML page containing a stack trace: internal file paths, the ORM and database in use, and the failing query condition. | Unhandled exception on malformed input and information disclosure (CWE-209, OWASP API8:2023). `POST /Account/v1/User` handles the same input correctly (400), so validation is inconsistent. | The test asserts the desired behaviour inside `KnownIssue.expectFailure(...)`: it is reported as skipped while the defect exists and fails once it is fixed. |
