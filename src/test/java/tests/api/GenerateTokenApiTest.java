@@ -1,7 +1,7 @@
 package tests.api;
 
-import api.model.CreateUserRequest;
-import api.model.CreateUserResponse;
+import api.model.CredentialsRequest;
+import api.model.CredentialsResponse;
 import api.model.GenerateTokenResponse;
 import config.constants.AuthResult;
 import data.UserFactory;
@@ -30,8 +30,8 @@ public class GenerateTokenApiTest extends BaseApiTest {
             and the result 'User authorized successfully.'.
             """)
     public void generateTokenWithValidCredentials() {
-        CreateUserRequest user = UserFactory.randomCredentials();
-        CreateUserResponse created = userApiClient.createUser(user.userName(), user.password());
+        CredentialsRequest user = UserFactory.randomCredentials();
+        CredentialsResponse created = userApiClient.createUser(user.userName(), user.password());
         registerCreatedUserForCleanup(created.userID(), user.userName(), user.password());
 
         Response response = userApiClient.sendGenerateTokenRequest(user);
@@ -43,7 +43,7 @@ public class GenerateTokenApiTest extends BaseApiTest {
 
         GenerateTokenResponse body = response.as(GenerateTokenResponse.class);
 
-        // demoqa may invalidate the previous token when a new one is generated,
+        // A successful GenerateToken call issues a new token and replaces the previous one
         // so cleanup in tearDown must use the token from this response.
         if (body.token() != null) {
             updateTestUserToken(body.token(), body.expires());
@@ -75,12 +75,12 @@ public class GenerateTokenApiTest extends BaseApiTest {
             and no token is issued.
             """)
     public void generateTokenWithInvalidPassword() {
-        CreateUserRequest user = UserFactory.randomCredentials();
-        CreateUserResponse created = userApiClient.createUser(user.userName(), user.password());
+        CredentialsRequest user = UserFactory.randomCredentials();
+        CredentialsResponse created = userApiClient.createUser(user.userName(), user.password());
         registerCreatedUserForCleanup(created.userID(), user.userName(), user.password());
 
         Response response = userApiClient.sendGenerateTokenRequest(
-                new CreateUserRequest(user.userName(), UserFactory.WRONG_PASSWORD));
+                new CredentialsRequest(user.userName(), UserFactory.WRONG_PASSWORD));
         GenerateTokenResponse body = response.as(GenerateTokenResponse.class);
 
         assertSoftly(softly -> {

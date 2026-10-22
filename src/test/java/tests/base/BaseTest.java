@@ -1,8 +1,8 @@
 package tests.base;
 
 import api.client.UserApiClient;
-import api.model.CreateUserRequest;
-import api.model.CreateUserResponse;
+import api.model.CredentialsRequest;
+import api.model.CredentialsResponse;
 import api.model.GenerateTokenResponse;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
@@ -154,9 +154,9 @@ public abstract class BaseTest {
 
      */
     protected void createTestUserViaApi() {
-        CreateUserRequest credentials = UserFactory.randomCredentials();
+        CredentialsRequest credentials = UserFactory.randomCredentials();
 
-        CreateUserResponse created = userApiClient.createUser(credentials.userName(), credentials.password());
+        CredentialsResponse created = userApiClient.createUser(credentials.userName(), credentials.password());
         // Register right after creation, so the user is cleaned up even if token generation fails.
         setTestUser(new TestUser(created.userID(), credentials.userName(), credentials.password(), null, null));
 

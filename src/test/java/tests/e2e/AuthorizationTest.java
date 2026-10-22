@@ -1,4 +1,4 @@
-package tests;
+package tests.e2e;
 
 import auth.AuthSession;
 import data.TestUser;
@@ -20,7 +20,7 @@ public class AuthorizationTest extends BaseTest {
     @Story("Login")
     @Test(
             description = "Authorized user sees their name and profile icon",
-            groups = {"smoke", "ui"}
+            groups = {"smoke", "e2e"}
     )
     @Description("""
             Precondition: a new test user is created via API, user is authorized

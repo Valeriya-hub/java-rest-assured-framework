@@ -1,22 +1,21 @@
 package tests.api;
 
-import api.model.CreateUserRequest;
-import api.model.CreateUserResponse;
+import api.model.CredentialsRequest;
+import api.model.CredentialsResponse;
 import config.constants.ApiError;
 import data.UserFactory;
-import data.UserPayloads;
+import data.UserPayloadProviders;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import tests.base.BaseApiTest;
 
 import java.util.Map;
 
-import static assertions.ApiAssertions.assertApiError;
-import static assertions.ApiAssertions.assertValidUserId;
+import static api.assertions.ApiAssertions.assertApiError;
+import static api.assertions.ApiAssertions.assertValidUserId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -34,7 +33,7 @@ public class CreateUserApiTest extends BaseApiTest {
             and the username that was sent. The userID is stored for cleanup.
             """)
     public void createUserWithValidCredentials() {
-        CreateUserRequest user = UserFactory.randomCredentials();
+        CredentialsRequest user = UserFactory.randomCredentials();
 
         Response response = userApiClient.sendCreateUserRequest(user);
 
@@ -43,7 +42,7 @@ public class CreateUserApiTest extends BaseApiTest {
                 .as("Status code of the create user request")
                 .isEqualTo(201);
 
-        CreateUserResponse created = response.as(CreateUserResponse.class);
+        CredentialsResponse created = response.as(CredentialsResponse.class);
 
         // Stores userID (testUserId) and registers the user for deletion in tearDown.
         // Done BEFORE the remaining checks, so a failing check does not leave the user behind.
@@ -70,10 +69,10 @@ public class CreateUserApiTest extends BaseApiTest {
             (status, error code and message).
             """)
     public void createUserWithDuplicateUsername() {
-        CreateUserRequest user = UserFactory.randomCredentials();
+        CredentialsRequest user = UserFactory.randomCredentials();
 
         // Precondition: not the behaviour under test, so the asserting client method is used.
-        CreateUserResponse firstUser = userApiClient.createUser(user.userName(), user.password());
+        CredentialsResponse firstUser = userApiClient.createUser(user.userName(), user.password());
         registerCreatedUserForCleanup(firstUser.userID(), user.userName(), user.password());
 
         Response duplicateResponse = userApiClient.sendCreateUserRequest(user);
@@ -88,6 +87,7 @@ public class CreateUserApiTest extends BaseApiTest {
     @Test(
             description = "Creating a user without a required field is rejected",
             dataProvider = "missingFieldPayloads",
+            dataProviderClass = UserPayloadProviders.class,
             groups = {"api", "regression"}
     )
     @Description("""
@@ -108,6 +108,7 @@ public class CreateUserApiTest extends BaseApiTest {
     @Test(
             description = "Creating a user with an empty field value is rejected",
             dataProvider = "emptyValuePayloads",
+            dataProviderClass = UserPayloadProviders.class,
             groups = {"api", "regression"}
     )
     @Description("""
@@ -120,23 +121,5 @@ public class CreateUserApiTest extends BaseApiTest {
         Response response = userApiClient.sendCreateUserRequest(body);
 
         assertApiError(response, ApiError.USER_NAME_AND_PASSWORD_REQUIRED);
-    }
-
-    @DataProvider(name = "missingFieldPayloads")
-    public static Object[][] missingFieldPayloads() {
-        return new Object[][]{
-                {"userName is missing", UserPayloads.withoutUserName()},
-                {"password is missing", UserPayloads.withoutPassword()},
-                {"both fields are missing", UserPayloads.withoutAnyField()}
-        };
-    }
-
-    @DataProvider(name = "emptyValuePayloads")
-    public static Object[][] emptyValuePayloads() {
-        return new Object[][]{
-                {"userName is empty", UserPayloads.withEmptyUserName()},
-                {"password is empty", UserPayloads.withEmptyPassword()},
-                {"both values are empty", UserPayloads.withEmptyFields()}
-        };
     }
 }

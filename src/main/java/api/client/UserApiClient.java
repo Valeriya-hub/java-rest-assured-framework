@@ -1,7 +1,7 @@
 package api.client;
 
-import api.model.CreateUserRequest;
-import api.model.CreateUserResponse;
+import api.model.CredentialsRequest;
+import api.model.CredentialsResponse;
 import api.model.GenerateTokenResponse;
 import config.Config;
 import io.qameta.allure.Step;
@@ -27,7 +27,7 @@ public class UserApiClient {
      * Use it in API tests that verify status codes and bodies (including negative scenarios).
      */
     @Step("API: Send create user request")
-    public Response sendCreateUserRequest(CreateUserRequest request) {
+    public Response sendCreateUserRequest(CredentialsRequest request) {
         return postJson("/Account/v1/User", request);
     }
 
@@ -46,30 +46,45 @@ public class UserApiClient {
      * Use it when creating a user is only test setup, not the behaviour under test.
      */
     @Step("API: Create a test user {userName}")
-    public CreateUserResponse createUser(String userName, String password) {
+    public CredentialsResponse createUser(String userName, String password) {
 
-        return sendCreateUserRequest(new CreateUserRequest(userName, password))
+        return sendCreateUserRequest(new CredentialsRequest(userName, password))
                 .then()
                 .statusCode(201)
                 .extract()
-                .as(CreateUserResponse.class);
+                .as(CredentialsResponse.class);
     }
 
     /**
      * Raw call: sends the generate token request and returns the response WITHOUT any assertions.
      */
     @Step("API: Send generate token request")
-    public Response sendGenerateTokenRequest(CreateUserRequest credentials) {
+    public Response sendGenerateTokenRequest(CredentialsRequest credentials) {
         return postJson("/Account/v1/GenerateToken", credentials);
     }
 
     @Step("API: Generate an access token with full details (token + expires) for {userName}")
     public GenerateTokenResponse generateTokenDetails(String userName, String password) {
-        return sendGenerateTokenRequest(new CreateUserRequest(userName, password))
+        return sendGenerateTokenRequest(new CredentialsRequest(userName, password))
                 .then()
                 .statusCode(200)
                 .extract()
                 .as(GenerateTokenResponse.class);
+    }
+
+    @Step("API: Send login request")
+    public Response sendLoginRequest(CredentialsRequest credentials) {
+        return postJson("/Account/v1/Login", credentials);
+    }
+
+    @Step("API: Send login request with a custom body")
+    public Response sendLoginRequest(Map<String, ?> body) {
+        return given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .body(body)
+                .when()
+                .post("/Account/v1/Login");
     }
 
     @Step("API: Delete the test user {userId}")
