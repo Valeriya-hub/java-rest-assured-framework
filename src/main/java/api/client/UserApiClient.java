@@ -117,6 +117,16 @@ public class UserApiClient {
                 .getList("books.isbn", String.class);
     }
 
+    @Step("API: Send get user request for {userId}")
+    public Response sendGetUserRequest(String userID, String token) {
+        return given()
+                .spec(spec)
+                .header("Authorization", "Bearer " + token)
+                .cookie("token", token)
+                .when()
+                .get("/Account/v1/User/{userId}", userID);
+    }
+
     private Response postJson(String path, Object body) {
         return given()
                 .spec(spec)
