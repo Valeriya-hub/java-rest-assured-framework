@@ -186,6 +186,14 @@ This approach ensures:
 - Realistic UI testing for the actual user journey
 - Clean test environment after each run
 
+## Dependency security
+
+Dependencies are scanned by IntelliJ (Mend.io) and Dependabot. Direct dependencies are kept
+up to date. Remaining warnings come from transitive libraries of Selenium/Selenide, RestAssured
+and Allure; the framework is a test tool that runs against a public demo application and does
+not process untrusted XML or polymorphic JSON, so the practical risk is low. Dependabot PRs
+are verified by the CI suite before merging.
+
 ## Findings in the application under test
 
 While automating the demoqa API, the following behaviours were observed.
