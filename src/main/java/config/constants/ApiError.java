@@ -12,4 +12,10 @@ public record ApiError(int status, String code, String message) {
 
     public static final ApiError USER_NAME_AND_PASSWORD_REQUIRED =
             new ApiError(400, "1200", "UserName and Password required.");
+
+    public static final ApiError USER_NOT_AUTHORIZED =
+            new ApiError(401, "1200", "User not authorized!");
+
+    public static final ApiError USER_NOT_FOUND =
+            new ApiError(401, "1207", "User not found!");
 }

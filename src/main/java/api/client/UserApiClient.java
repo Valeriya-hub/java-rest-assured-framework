@@ -127,6 +127,14 @@ public class UserApiClient {
                 .get("/Account/v1/User/{userId}", userID);
     }
 
+    @Step("API: Send get user request without authorization")
+    public Response sendGetUserRequestWithoutToken(String userId) {
+        return given()
+                .spec(spec)
+                .when()
+                .get("/Account/v1/User/{userId}", userId);
+    }
+
     private Response postJson(String path, Object body) {
         return given()
                 .spec(spec)
