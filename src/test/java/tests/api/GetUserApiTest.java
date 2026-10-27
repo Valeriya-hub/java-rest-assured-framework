@@ -5,7 +5,9 @@ import api.model.BookResponse;
 import api.model.CredentialsRequest;
 import api.model.CredentialsResponse;
 import api.model.UserDetailsResponse;
+import config.constants.ApiError;
 import data.Book;
+import data.TestUser;
 import data.UserFactory;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
@@ -14,6 +16,9 @@ import io.restassured.response.Response;
 import org.testng.annotations.Test;
 import tests.base.BaseApiTest;
 
+import java.util.UUID;
+
+import static api.assertions.ApiAssertions.assertApiError;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -99,5 +104,86 @@ public class GetUserApiTest extends BaseApiTest {
                     .isNotNull()
                     .isEmpty();
         });
+    }
+
+    @Feature("User account API")
+    @Story("Get user - negative scenarios")
+    @Test(
+            description = "Get user information without a token is rejected",
+            groups = {"api", "regression"}
+    )
+    @Description("""
+            Precondition: a user is created via API.
+            Request: GET /Account/v1/User/{userId} without any authorization.
+            Verification: the request is rejected with 401, code 1200, 'User not authorized!'.
+            """)
+    public void getUserWithoutTokenIsRejected() {
+        CredentialsRequest user = UserFactory.randomCredentials();
+        CredentialsResponse created = userApiClient.createUser(user.userName(), user.password());
+        registerCreatedUserForCleanup(created.userID(), user.userName(), user.password());
+
+        // The id is valid, so the missing token is the only reason for the rejection.
+        Response response = userApiClient.sendGetUserRequestWithoutToken(created.userID());
+
+        assertApiError(response, ApiError.USER_NOT_AUTHORIZED);
+    }
+
+    // The two scenarios below return an identical response, so the API neither leaks the data
+    // of another user nor reveals whether an id exists. The status 401 (instead of 403 or 404)
+    // is a known deviation, see README, Findings.
+
+    @Feature("User account API")
+    @Story("Get user - negative scenarios")
+    @Test(
+            description = "A user cannot get the information of another user",
+            groups = {"api", "regression"}
+    )
+    @Description("""
+            Precondition: two users are created via API.
+            Request: GET /Account/v1/User/{userId} with the token of the first user and the id of the second.
+            Verification: the request is rejected with 401, code 1207, 'User not found!',
+            and nothing about the second user is returned.
+            
+            Known deviation: 401 instead of 403 or 404 (README, Findings).
+            """)
+    public void getAnotherUsersInformationIsRejected() {
+        CredentialsRequest user = UserFactory.randomCredentials();
+        CredentialsResponse created = userApiClient.createUser(user.userName(), user.password());
+        registerCreatedUserForCleanup(created.userID(), user.userName(), user.password());
+        TestUser otherUser = createExtraUser();
+
+        // An authenticated user asks for the data of ANOTHER user.
+        Response response = userApiClient.sendGetUserRequest(otherUser.id(), testUser().token());
+
+        assertApiError(response, ApiError.USER_NOT_AUTHORIZED);
+        assertThat(response.asString())
+                .as("Response must not contain any data of the other user")
+                .doesNotContain(otherUser.name());
+    }
+
+    @Feature("User account API")
+    @Story("Get user - negative scenarios")
+    @Test(
+            description = "Get information of a non-existing user is rejected",
+            groups = {"api", "regression"}
+    )
+    @Description("""
+            Precondition: a user is created via API.
+            Request: GET /Account/v1/User/{userId} with a valid token and an id that does not exist.
+            Verification: the request is rejected with 401, code 1207, 'User not found!'.
+            
+            Known deviation: 401 instead of 404 (README, Findings).
+            """)
+    public void getNonExistingUserIsRejected() {
+        CredentialsRequest user = UserFactory.randomCredentials();
+        CredentialsResponse created = userApiClient.createUser(user.userName(), user.password());
+        registerCreatedUserForCleanup(created.userID(), user.userName(), user.password());
+
+        // A well-formed UUID that was never registered.
+        String unknownUserId = UUID.randomUUID().toString();
+
+        Response response = userApiClient.sendGetUserRequest(unknownUserId, testUser().token());
+
+        assertApiError(response, ApiError.USER_NOT_FOUND);
     }
 }
