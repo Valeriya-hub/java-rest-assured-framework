@@ -83,6 +83,11 @@ mvn test -Dtest=AuthorizationTest
 mvn test -Dtest=AuthorizationTest#authorizedUserSeesUsernameAndProfileIcon
 ```
 
+## Run tests in Headless mode:
+```bash
+mvn clean test -Dheadless=true
+```
+
 ## Test Groups
 
 Tests are organized into TestNG groups so they can be run selectively,
