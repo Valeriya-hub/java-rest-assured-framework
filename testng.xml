@@ -12,7 +12,7 @@
         </packages>
     </test>
 
-    <test name="API Tests" parallel="methods" thread-count="4">
+    <test name="API Tests" parallel="methods" thread-count="2">
         <packages>
             <package name="tests.api"/>
         </packages>

@@ -48,7 +48,6 @@ public abstract class BaseTest {
      */
     private static final ThreadLocal<TestUser> CURRENT_USER = new ThreadLocal<>();
 
-    // Stateless, so it is safe to share between threads.
     protected final UserApiClient userApiClient = new UserApiClient();
 
     /**
@@ -114,9 +113,16 @@ public abstract class BaseTest {
         Configuration.pollingInterval = Config.uiPollingIntervalMs();
         Configuration.pageLoadTimeout = Config.pageLoadTimeoutMs();
 
-        // A CI runner has no graphical environment, so headless is required there.
-        // Locally the browser stays visible, which is easier for debugging.
-        Configuration.headless = System.getenv("CI") != null;
+        // Priority:
+        // 1. If `-Dheadless=true` or `-Dheadless=false` is passed via the Maven command line.
+        // 2. If running on a CI server (GitHub Actions).
+        // 3. Default for local execution — false (the browser opens visually).
+        String headlessProp = System.getProperty("headless");
+        if (headlessProp != null) {
+            Configuration.headless = Boolean.parseBoolean(headlessProp);
+        } else {
+            Configuration.headless = System.getenv("CI") != null;
+        }
 
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide().screenshots(true).savePageSource(false));
