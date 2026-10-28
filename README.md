@@ -83,7 +83,7 @@ mvn test -Dtest=AuthorizationTest
 mvn test -Dtest=AuthorizationTest#authorizedUserSeesUsernameAndProfileIcon
 ```
 
-## Run tests in Headless mode:
+### Run tests in Headless mode:
 ```bash
 mvn clean test -Dheadless=true
 ```
