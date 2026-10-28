@@ -107,22 +107,12 @@ public abstract class BaseTest {
     @BeforeMethod(alwaysRun = true)
     public void setUp() {
         Configuration.baseUrl = Config.uiBaseUrl();
-        Configuration.browser = "chrome";
-        Configuration.browserSize = "1920x1080";
+        Configuration.browser = Config.browser();
+        Configuration.browserSize = Config.browserSize();
         Configuration.timeout = Config.uiTimeoutMs();
         Configuration.pollingInterval = Config.uiPollingIntervalMs();
         Configuration.pageLoadTimeout = Config.pageLoadTimeoutMs();
-
-        // Priority:
-        // 1. If `-Dheadless=true` or `-Dheadless=false` is passed via the Maven command line.
-        // 2. If running on a CI server (GitHub Actions).
-        // 3. Default for local execution — false (the browser opens visually).
-        String headlessProp = System.getProperty("headless");
-        if (headlessProp != null) {
-            Configuration.headless = Boolean.parseBoolean(headlessProp);
-        } else {
-            Configuration.headless = System.getenv("CI") != null;
-        }
+        Configuration.headless = Config.isHeadless();
 
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide().screenshots(true).savePageSource(false));

@@ -79,4 +79,29 @@ public final class Config {
         }
         return value;
     }
+
+    public static String browser() {
+        return System.getProperty("browser", PROPERTIES.getProperty("browser", "chrome"));
+    }
+
+    public static String browserSize() {
+        return System.getProperty("browser.size", PROPERTIES.getProperty("browser.size", "1920x1080"));
+    }
+
+    /**
+     * Determines the headless mode configuration following the precedence hierarchy:
+     * 1. Command-line system property (-Dheadless=true/false) — highest priority for local debugging.
+     * 2. CI environment variable (GitHub Actions runtime) — ensures automatic headless execution in pipelines.
+     * 3. Fallback to properties file configuration (headless.enabled).
+     */
+    public static boolean isHeadless() {
+        String headlessProp = System.getProperty("headless");
+        if (headlessProp != null) {
+            return Boolean.parseBoolean(headlessProp);
+        }
+        if (System.getenv("CI") != null) {
+            return true;
+        }
+        return Boolean.parseBoolean(PROPERTIES.getProperty("headless.enabled", "false"));
+    }
 }
