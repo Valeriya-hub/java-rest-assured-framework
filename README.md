@@ -54,21 +54,29 @@ src/
 
 ## Configuration
 
-The project requires a `config.properties` file in `src/test/resources/` with the following properties:
+Base URLs, timeouts, and browser configurations are managed via `config-qa.properties` located in `src/test/resources/`.
 
 ```properties
-ui.base.url=https://demoqa.com
+# Base URLs
+base.url.ui=[https://demoqa.com](https://demoqa.com)
+base.url.api=[https://demoqa.com](https://demoqa.com)
+
+# UI Routes
 ui.path.books=/books
 ui.path.login=/login
 ui.path.profile=/profile
-api.base.url=https://demoqa.com
+
+# Browser & Execution Defaults
+browser=chrome
+browser.size=1920x1080
+headless.enabled=false
 ```
 
 Properties can also be overridden via system properties using `-D` flag.
 
 ## Running Tests
 
-### Run all tests:
+### Standard Local Execution (Chrome by Default):
 ```bash
 mvn clean test
 ```
@@ -86,6 +94,16 @@ mvn test -Dtest=AuthorizationTest#authorizedUserSeesUsernameAndProfileIcon
 ### Run tests in Headless mode:
 ```bash
 mvn clean test -Dheadless=true
+```
+
+### Run tests in Mozilla Firefox
+```bash
+mvn clean test -Dbrowser=firefox
+```
+
+### Run tests in Headless mode (Local or CI)
+```bash
+mvn clean test -Dbrowser=firefox -Dheadless=true
 ```
 
 ## Test Groups
@@ -176,6 +194,16 @@ Or generate a static report:
 allure generate allure-results --clean
 allure open
 ```
+
+## 🌐 CI/CD Pipeline & Cross-Browser Strategy
+
+The test suite is fully integrated into GitHub Actions (`.github/workflows/tests.yml`) to ensure continuous quality gates on every Push and Pull Request to `main`.
+
+### Key Pipeline Features:
+* **Matrix Strategy:** Executes the UI test suite in parallel across **Google Chrome** (Chromium) and **Mozilla Firefox** (Gecko) in headless mode.
+* **Race Condition Prevention:** The workflow is split into two isolated jobs:
+    1. `test`: Runs Maven test matrices in parallel and collects raw Allure result artifacts for each browser.
+    2. `report`: Aggregates Allure results from all browser runs into a single unified report and deploys it to GitHub Pages.
 
 ## Test Approach
 
