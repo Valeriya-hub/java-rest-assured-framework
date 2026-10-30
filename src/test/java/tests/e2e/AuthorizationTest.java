@@ -113,8 +113,8 @@ public class AuthorizationTest extends BaseTest {
     @Description("""
             Precondition: A new test user is created via API, user is authorized.
             UI: User clicks the Logout button on the Profile page.
-            Verification: User is redirected to the Login page, check that the 'token' 
-            cookie is cleared/empty. Re-open Profile page directly via URL. Verify that 
+            Verification: User is redirected to the Login page, check that the 'token'
+            cookie is cleared/empty. Re-open Profile page directly via URL. Verify that
             application shows unauthenticated state (warning message with Login and Register links).
             Verify that the 'token' cookie remains empty and session was not restored.
             """)
