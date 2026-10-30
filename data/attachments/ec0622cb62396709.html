@@ -1,0 +1,41 @@
+<div>Status code 500 </div>
+
+
+<h4>Body</h4>
+<div>
+    <pre class="preformated-text">
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;/&gt;
+    &lt;title&gt;Error&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;pre&gt;
+Error: WHERE parameter &quot;password&quot; has invalid &quot;undefined&quot; value      &lt;br clear=&quot;none&quot;/&gt;
+    at MySQLQueryGenerator.whereItemQuery (/usr/projects/demosite-new/node_modules/sequelize/lib/dialects/abstract/query-generator.js:1746:13)      &lt;br clear=&quot;none&quot;/&gt;
+    at /usr/projects/demosite-new/node_modules/sequelize/lib/dialects/abstract/query-generator.js:1737:25      &lt;br clear=&quot;none&quot;/&gt;
+    at Array.forEach (&amp;lt;anonymous&amp;gt;)      &lt;br clear=&quot;none&quot;/&gt;
+    at MySQLQueryGenerator.whereItemsQuery (/usr/projects/demosite-new/node_modules/sequelize/lib/dialects/abstract/query-generator.js:1735:35)      &lt;br clear=&quot;none&quot;/&gt;
+    at MySQLQueryGenerator.getWhereConditions (/usr/projects/demosite-new/node_modules/sequelize/lib/dialects/abstract/query-generator.js:2078:19)      &lt;br clear=&quot;none&quot;/&gt;
+    at MySQLQueryGenerator.selectQuery (/usr/projects/demosite-new/node_modules/sequelize/lib/dialects/abstract/query-generator.js:991:28)      &lt;br clear=&quot;none&quot;/&gt;
+    at MySQLQueryInterface.select (/usr/projects/demosite-new/node_modules/sequelize/lib/dialects/abstract/query-interface.js:407:59)      &lt;br clear=&quot;none&quot;/&gt;
+    at users.findAll (/usr/projects/demosite-new/node_modules/sequelize/lib/model.js:1140:47)      &lt;br clear=&quot;none&quot;/&gt;
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)      &lt;br clear=&quot;none&quot;/&gt;
+    at async users.findOne (/usr/projects/demosite-new/node_modules/sequelize/lib/model.js:1240:12)    &lt;/pre&gt;
+  &lt;/body&gt;
+&lt;/html&gt;    </pre>
+</div>
+
+<h4>Headers</h4>
+<div>
+        <div>Server: nginx/1.17.10 (Ubuntu)</div>
+        <div>X-Content-Type-Options: nosniff</div>
+        <div>Content-Security-Policy: default-src &#39;none&#39;</div>
+        <div>Connection: keep-alive</div>
+        <div>Content-Length: 1471</div>
+        <div>Date: Fri, 30 Oct 2026 12:09:34 GMT</div>
+        <div>Content-Type: text/html; charset=utf-8</div>
+        <div>X-Powered-By: Express</div>
+</div>
+
+
