@@ -41,7 +41,7 @@ public abstract class BaseTest {
 
     /**
      * The user of the test running on the current thread.
-     *
+     * <p>
      * TestNG uses ONE instance of a test class for all its methods, so instance fields
      * would be shared by tests that run in parallel. A ThreadLocal gives every running
      * test its own user. A thread runs one test at a time, and @BeforeMethod/@AfterMethod
@@ -63,7 +63,7 @@ public abstract class BaseTest {
 
     /**
      * Cleans target/allure-results before the run. If the directory does not exist
-     *  (first run, or already cleaned by another invocation), it simply returns.
+     * (first run, or already cleaned by another invocation), it simply returns.
      */
     private void cleanAllureResultsDirectory() {
         if (!Files.exists(ALLURE_RESULTS_DIR)) {
@@ -91,7 +91,7 @@ public abstract class BaseTest {
     /**
      * Registers global REST Assured filters: request/response logging via Log4j2
      * and attaching them to the Allure report.
-     *
+     * <p>
      * The guard is required: RestAssured.filters(...) ADDS filters to a static list
      * instead of replacing it. Without the guard every test class would add its own copy
      * and each request would be logged and attached N times.
@@ -149,7 +149,6 @@ public abstract class BaseTest {
     /**
      * Called explicitly by a test that needs a pre-created user.
      * The user is created via API; the login itself is still done through the UI in the test.
-
      */
     protected void createTestUserViaApi() {
         CredentialsRequest credentials = UserFactory.randomCredentials();
