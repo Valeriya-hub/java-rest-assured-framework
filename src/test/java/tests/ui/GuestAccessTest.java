@@ -12,7 +12,7 @@ public class GuestAccessTest extends BaseTest {
     @Story("Guest access")
     @Test(
             description = "Unauthorized user sees Login button",
-            groups = {"smoke", "ui"}
+            groups = {"smoke", "regression", "ui"}
     )
     @Description("""
             Precondition: user is unauthorized (no session).

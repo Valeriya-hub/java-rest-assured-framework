@@ -20,7 +20,7 @@ public class AuthorizationTest extends BaseTest {
     @Story("Login")
     @Test(
             description = "Authorized user sees their name and profile icon",
-            groups = {"smoke", "e2e"}
+            groups = {"smoke", "regression", "e2e"}
     )
     @Description("""
             Precondition: a new test user is created via API, user is authorized
@@ -108,7 +108,7 @@ public class AuthorizationTest extends BaseTest {
     @Story("Logout")
     @Test(
             description = "Authorized user can successfully log out",
-            groups = {"smoke", "ui"}
+            groups = {"smoke", "regression", "ui"}
     )
     @Description("""
             Precondition: A new test user is created via API, user is authorized.

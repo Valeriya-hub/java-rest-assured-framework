@@ -3,11 +3,14 @@ package config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.Set;
 
 public final class Config {
     private static final String ENV = System.getProperty("env", "qa");
     private static final Properties PROPERTIES = new Properties();
+    private static final Set<String> SUPPORTED_BROWSERS = Set.of("chrome", "firefox", "edge");
 
     static {
         String resourceName = "config-" + ENV + ".properties";
@@ -80,8 +83,19 @@ public final class Config {
         return value;
     }
 
+    public static String envName() {
+        return ENV;
+    }
+
     public static String browser() {
-        return System.getProperty("browser", PROPERTIES.getProperty("browser", "chrome"));
+        String value = System.getProperty("browser", PROPERTIES.getProperty("browser", "chrome"))
+                .trim()
+                .toLowerCase(Locale.ROOT);
+        if (!SUPPORTED_BROWSERS.contains(value)) {
+            throw new IllegalStateException(
+                    "Unsupported browser '" + value + "'. Supported: " + SUPPORTED_BROWSERS);
+        }
+        return value;
     }
 
     public static String browserSize() {

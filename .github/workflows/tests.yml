@@ -7,11 +7,16 @@ on:
     branches: [ main, master ]
 
 permissions:
-      contents: write
+  contents: write
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -24,8 +29,12 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run tests
-        run: mvn clean test
+      - name: Run tests (PR = smoke, push = full suite)
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            GROUPS_ARG="-Dgroups=smoke"
+          fi
+          mvn clean test -Dbrowser=chrome -Dheadless=true $GROUPS_ARG
 
       - name: Upload Allure results
         if: always()
@@ -48,9 +57,9 @@ jobs:
           retention-days: 7
 
       - name: Deploy Allure report to GitHub Pages
-        if: always()
+        if: always() && github.event_name == 'push'
         uses: peaceiris/actions-gh-pages@v4
         with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: target/allure-report
-            keep_files: false
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/allure-report
+          keep_files: false

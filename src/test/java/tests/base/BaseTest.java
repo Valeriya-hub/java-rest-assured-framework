@@ -6,6 +6,7 @@ import api.model.CredentialsResponse;
 import api.model.GenerateTokenResponse;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import config.AllureEnvironmentWriter;
 import config.Config;
 import config.LoggingConfig;
 import data.TestUser;
@@ -56,6 +57,7 @@ public abstract class BaseTest {
     @BeforeSuite(alwaysRun = true)
     public void suiteSetUp() {
         cleanAllureResultsDirectory();
+        AllureEnvironmentWriter.write(ALLURE_RESULTS_DIR);
         setupRestAssuredLogging();
     }
 
