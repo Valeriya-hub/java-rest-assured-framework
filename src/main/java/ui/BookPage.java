@@ -1,5 +1,6 @@
 package ui;
 
+import com.codeborne.selenide.ScrollIntoViewOptions;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverConditions;
 import config.Config;
@@ -30,7 +31,10 @@ public class BookPage extends BasePage<BookPage> {
 
     @Step("Add book to collection and confirm alert")
     public BookPage addBookToCollection() {
-        addToCollectionButton.click();
+        addToCollectionButton
+                .shouldBe(visible)
+                .scrollIntoView(ScrollIntoViewOptions.instant().block(ScrollIntoViewOptions.Block.center))
+                .click();
         acceptBookAddedAlert();
         return this;
     }

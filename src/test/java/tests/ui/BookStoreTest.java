@@ -15,7 +15,7 @@ public class BookStoreTest extends BaseTest {
     @Story("Books Page Layout & Controls")
     @Test(
             description = "Verify main elements of Books page are displayed",
-            groups = {"ui", "smoke"}
+            groups = {"ui", "regression", "smoke"}
     )
     @Description("""
             Preconditions: The user is not logged in, and the Book Store page is open.

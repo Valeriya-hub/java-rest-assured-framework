@@ -20,7 +20,7 @@ public class AuthorizationTest extends BaseTest {
     @Story("Login")
     @Test(
             description = "Authorized user sees their name and profile icon",
-            groups = {"smoke", "e2e"}
+            groups = {"smoke", "regression", "e2e"}
     )
     @Description("""
             Precondition: a new test user is created via API, user is authorized
@@ -108,13 +108,13 @@ public class AuthorizationTest extends BaseTest {
     @Story("Logout")
     @Test(
             description = "Authorized user can successfully log out",
-            groups = {"smoke", "ui"}
+            groups = {"smoke", "regression", "ui"}
     )
     @Description("""
             Precondition: A new test user is created via API, user is authorized.
             UI: User clicks the Logout button on the Profile page.
-            Verification: User is redirected to the Login page, check that the 'token' 
-            cookie is cleared/empty. Re-open Profile page directly via URL. Verify that 
+            Verification: User is redirected to the Login page, check that the 'token'
+            cookie is cleared/empty. Re-open Profile page directly via URL. Verify that
             application shows unauthenticated state (warning message with Login and Register links).
             Verify that the 'token' cookie remains empty and session was not restored.
             """)

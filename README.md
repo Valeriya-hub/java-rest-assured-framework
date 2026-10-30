@@ -1,5 +1,6 @@
 # Book Store Automation Tests
 [![Run Automation Tests](https://github.com/Valeriya-hub/java-rest-assured-framework/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/Valeriya-hub/java-rest-assured-framework/actions/workflows/tests.yml)
+[![Nightly Regression](https://github.com/Valeriya-hub/java-rest-assured-framework/actions/workflows/nightly.yml/badge.svg?branch=main)](https://github.com/Valeriya-hub/java-rest-assured-framework/actions/workflows/nightly.yml)
 ![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)
 ![Selenide](https://img.shields.io/badge/Selenide-7.5.1-blue)
 ![RestAssured](https://img.shields.io/badge/REST--Assured-5.5.0-green)
@@ -14,13 +15,13 @@ Latest Allure report: [https://valeriya-hub.github.io/java-rest-assured-framewor
 
 - **Java 21** - Programming language
 - **Maven** - Build tool and dependency management
-- **Selenide 7.5.1** - UI automation framework (wrapper around Selenium WebDriver)
+- **Selenide 7.17.0** - UI automation framework (wrapper around Selenium WebDriver)
 - **TestNG 7.10.2** - Test framework
 - **Rest Assured 5.5.0** - API testing library
 - **Allure 2.29.0** - Test reporting framework
-- **AssertJ 3.26.3** - Assertion library
+- **AssertJ 3.27.7** - Assertion library
 - **Lombok 1.18.34** - Code generation for boilerplate reduction
-- **Jackson 2.17.2** - JSON processing
+- **Jackson 2.22.4** - JSON processing
 
 ## Project Structure
 
@@ -118,6 +119,23 @@ mvn test -Dgroups=smoke,api
 # Exclude a group
 mvn test -Dgroups=regression -DexcludedGroups=e2e
 ```
+
+## Cross-browser execution
+
+Supported browsers: **Chrome** (default), **Firefox**, **Edge**.
+
+```bash
+mvn test -Dbrowser=firefox
+mvn test -Dbrowser=edge -Dheadless=true
+```
+
+| Trigger | Browsers | Scope |
+|---------|----------|-------|
+| Pull request | Chrome | `smoke` |
+| Push to `main` | Chrome | full suite + Allure report on GitHub Pages |
+| Nightly / manual | Chrome, Firefox, Edge (matrix) | `regression` (configurable) |
+
+The browser and environment are shown in the Allure report (Overview → Environment).
 ## Environment Configuration
 
 Base URLs and other environment-specific settings are externalized into
