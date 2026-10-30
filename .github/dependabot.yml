@@ -4,7 +4,32 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+
+    groups:
+      allure:
+        patterns:
+          - "io.qameta.allure:*"
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins:*"
+      maven-dependencies:
+          patterns:
+            - "*"
+    ignore:
+      - dependency-name: "io.qameta.allure:*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "org.apache.maven.plugins:maven-surefire-plugin"
+        versions:
+                - ">= 3.6.0"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+    groups:
+      actions:
+        patterns:
+          - "*"
