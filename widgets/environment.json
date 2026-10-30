@@ -1,1 +1,0 @@
-[{"values":["https://demoqa.com"],"name":"API.Base.URL"},{"values":["chrome"],"name":"Browser"},{"values":["1920x1080"],"name":"Browser.Size"},{"values":["qa"],"name":"Environment"},{"values":["true"],"name":"Headless"},{"values":["21.0.13"],"name":"Java"},{"values":["Linux"],"name":"OS"},{"values":["https://demoqa.com"],"name":"UI.Base.URL"}]
