@@ -136,6 +136,9 @@ mvn test -Dbrowser=edge -Dheadless=true
 | Nightly / manual | Chrome, Firefox, Edge (matrix) | `regression` (configurable) |
 
 The browser and environment are shown in the Allure report (Overview → Environment).
+
+> **Note on Edge in CI:** Edge run with `--no-sandbox` flag in the GitHub Actions Linux environment to bypass AppArmor security restrictions and container memory limits.
+
 ## Environment Configuration
 
 Base URLs and other environment-specific settings are externalized into

@@ -60,6 +60,18 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Allow Edge sandbox (AppArmor userns restriction)
+        if: matrix.browser == 'edge'
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
+      - name: Debug Edge startup
+        if: matrix.browser == 'edge'
+        continue-on-error: true
+        run: |
+          microsoft-edge --version
+          msedgedriver --version || true
+          microsoft-edge --headless=new --dump-dom about:blank 2>&1 | head -20 || true
+
       - name: Run tests
         env:
           BROWSER: ${{ matrix.browser }}

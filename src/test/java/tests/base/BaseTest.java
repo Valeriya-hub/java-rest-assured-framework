@@ -7,6 +7,7 @@ import api.model.GenerateTokenResponse;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import config.AllureEnvironmentWriter;
+import config.BrowserConfigurator;
 import config.Config;
 import config.LoggingConfig;
 import data.TestUser;
@@ -115,6 +116,7 @@ public abstract class BaseTest {
         Configuration.pollingInterval = Config.uiPollingIntervalMs();
         Configuration.pageLoadTimeout = Config.pageLoadTimeoutMs();
         Configuration.headless = Config.isHeadless();
+        BrowserConfigurator.apply();
 
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide().screenshots(true).savePageSource(false));
