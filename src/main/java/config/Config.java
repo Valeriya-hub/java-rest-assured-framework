@@ -11,6 +11,7 @@ public final class Config {
     private static final String ENV = System.getProperty("env", "qa");
     private static final Properties PROPERTIES = new Properties();
     private static final Set<String> SUPPORTED_BROWSERS = Set.of("chrome", "firefox", "edge");
+    private static final Set<String> PAGE_LOAD_STRATEGIES = Set.of("normal", "eager", "none");
 
     static {
         String resourceName = "config-" + ENV + ".properties";
@@ -32,22 +33,22 @@ public final class Config {
 
     /** Global timeout for waiting for elements (ms). Can be overridden with: -Dui.timeout.ms=10000 */
     public static long uiTimeoutMs() {
-        return Long.getLong("ui.timeout.ms", 8_000L);
+        return getLong("ui.timeout.ms");
     }
 
     /** Selenide polling interval (ms). */
     public static long uiPollingIntervalMs() {
-        return Long.getLong("ui.polling.ms", 200L);
+        return getLong("ui.polling.ms");
     }
 
     /** Page load timeout (ms). */
     public static long pageLoadTimeoutMs() {
-        return Long.getLong("ui.pageload.timeout.ms", 30_000L);
+        return getLong("ui.pageload.timeout.ms");
     }
 
     /** Only for genuinely long-running operations (file generation, heavy async processes). */
     public static Duration longOperationTimeout() {
-        return Duration.ofSeconds(20);
+        return Duration.ofSeconds(getLong("long.operation.timeout.sec"));
     }
 
     public static String uiBaseUrl() {
@@ -81,6 +82,15 @@ public final class Config {
                     "Property '" + key + "' is not set in config-" + ENV + ".properties, or via -D" + key);
         }
         return value;
+    }
+
+    private static long getLong(String key) {
+        String value = System.getProperty(key, PROPERTIES.getProperty(key));
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException(
+                    "Property '" + key + "' is not set in config-" + ENV + ".properties, or via -D" + key);
+        }
+        return Long.parseLong(value);
     }
 
     public static String envName() {
@@ -117,5 +127,26 @@ public final class Config {
             return true;
         }
         return Boolean.parseBoolean(PROPERTIES.getProperty("headless.enabled", "false"));
+    }
+
+    /**
+     * Page load strategy. "eager" returns control at DOMContentLoaded and does not wait for
+     * ads, trackers and fonts; Selenide then waits for the elements the test actually needs.
+     */
+    public static String pageLoadStrategy() {
+        String value = System.getProperty("ui.pageload.strategy",
+                        PROPERTIES.getProperty("ui.pageload.strategy", "eager"))
+                .trim().toLowerCase(Locale.ROOT);
+        if (!PAGE_LOAD_STRATEGIES.contains(value)) {
+            throw new IllegalStateException(
+                    "Unsupported page load strategy '" + value + "'. Supported: " + PAGE_LOAD_STRATEGIES);
+        }
+        return value;
+    }
+
+    /** Disables the Chromium sandbox (Chrome/Edge). Off by default, a CI-only fallback: -Dbrowser.no.sandbox=true */
+    public static boolean noSandbox() {
+        return Boolean.parseBoolean(System.getProperty("browser.no.sandbox",
+                PROPERTIES.getProperty("browser.no.sandbox", "false")));
     }
 }
