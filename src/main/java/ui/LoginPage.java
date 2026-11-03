@@ -35,13 +35,13 @@ public class LoginPage extends BasePage<LoginPage> {
 
     @Step("Enter password")
     public LoginPage typePassword(String password) {
-        passwordInput.setValue(password);
+        passwordInput.shouldBe(visible).setValue(password);
         return this;
     }
 
     @Step("Click Login button")
     public ProfilePage submitLogin() {
-        loginButton.click();
+        loginButton.shouldBe(visible, enabled).click();
         return new ProfilePage();
     }
 

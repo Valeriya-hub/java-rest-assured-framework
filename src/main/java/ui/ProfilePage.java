@@ -30,7 +30,7 @@ public class ProfilePage extends BasePage<ProfilePage> {
 
     @Step("Verify that profile page is opened")
     public ProfilePage shouldBeOpened() {
-        webdriver().shouldHave(urlContaining(Config.profileUrl()));
+        webdriver().shouldHave(urlContaining(Config.profileUrl()), Config.longOperationTimeout());
         return this;
     }
 
