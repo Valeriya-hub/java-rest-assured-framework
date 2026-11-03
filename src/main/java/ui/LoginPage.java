@@ -1,5 +1,6 @@
 package ui;
 
+import com.codeborne.selenide.ScrollIntoViewOptions;
 import com.codeborne.selenide.SelenideElement;
 import config.Config;
 import io.qameta.allure.Step;
@@ -35,13 +36,13 @@ public class LoginPage extends BasePage<LoginPage> {
 
     @Step("Enter password")
     public LoginPage typePassword(String password) {
-        passwordInput.setValue(password);
+        passwordInput.shouldBe(visible).setValue(password);
         return this;
     }
 
     @Step("Click Login button")
     public ProfilePage submitLogin() {
-        loginButton.click();
+        loginButton.shouldBe(visible, enabled).click();
         return new ProfilePage();
     }
 
@@ -61,13 +62,19 @@ public class LoginPage extends BasePage<LoginPage> {
 
     @Step("Click Login button")
     private LoginPage clickLogin() {
-        loginButton.click();
+        loginButton
+                .shouldBe(clickable)
+                .scrollIntoView(ScrollIntoViewOptions.instant().block(ScrollIntoViewOptions.Block.center))
+                .click();
         return this;
     }
 
     @Step("Verify invalid credentials error is displayed")
     public LoginPage shouldSeeInvalidCredentialsError() {
-        errorMessageLabel.shouldHave(
+        errorMessageLabel
+                .shouldBe(visible)
+                .scrollIntoView(ScrollIntoViewOptions.instant().block(ScrollIntoViewOptions.Block.center))
+        .shouldHave(
                 text(INVALID_CREDENTIALS)
                         .because("Appropriate message should be displayed for incorrect password")
         );
