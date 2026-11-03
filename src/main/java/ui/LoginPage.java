@@ -1,5 +1,6 @@
 package ui;
 
+import com.codeborne.selenide.ScrollIntoViewOptions;
 import com.codeborne.selenide.SelenideElement;
 import config.Config;
 import io.qameta.allure.Step;
@@ -67,7 +68,10 @@ public class LoginPage extends BasePage<LoginPage> {
 
     @Step("Verify invalid credentials error is displayed")
     public LoginPage shouldSeeInvalidCredentialsError() {
-        errorMessageLabel.shouldHave(
+        errorMessageLabel
+                .shouldBe(visible)
+                .scrollIntoView(ScrollIntoViewOptions.instant().block(ScrollIntoViewOptions.Block.center))
+        .shouldHave(
                 text(INVALID_CREDENTIALS)
                         .because("Appropriate message should be displayed for incorrect password")
         );
