@@ -62,7 +62,10 @@ public class LoginPage extends BasePage<LoginPage> {
 
     @Step("Click Login button")
     private LoginPage clickLogin() {
-        loginButton.click();
+        loginButton
+                .shouldBe(clickable)
+                .scrollIntoView(ScrollIntoViewOptions.instant().block(ScrollIntoViewOptions.Block.center))
+                .click();
         return this;
     }
 
