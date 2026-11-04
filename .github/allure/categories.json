@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Known product defects (demoqa)",
+    "matchedStatuses": ["skipped"]
+  },
+  {
+    "name": "Infrastructure / browser startup",
+    "matchedStatuses": ["failed", "broken"],
+    "messageRegex": ".*(SessionNotCreatedException|Navigation timed out|WebDriverException).*"
+  },
+  {
+    "name": "Product defects",
+    "matchedStatuses": ["failed"]
+  },
+  {
+    "name": "Test defects",
+    "matchedStatuses": ["broken"]
+  }
+]
