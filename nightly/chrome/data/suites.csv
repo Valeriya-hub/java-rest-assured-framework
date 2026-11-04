@@ -1,0 +1,39 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Wed Nov 04 10:45:25 UTC 2026","Wed Nov 04 10:45:29 UTC 2026","3447","Book Store Automation Suite","UI Tests","tests.ui.BookStoreTest","tests.ui.BookStoreTest","shouldVerifyBooksPageInitialState","Verify main elements of Books page are displayed","Preconditions: The user is not logged in, and the Book Store page is open.
+Verification of URL, title, books table, search, pagination and columns (Title, Author, Publisher)
+"
+"passed","Wed Nov 04 10:44:59 UTC 2026","Wed Nov 04 10:45:10 UTC 2026","11367","Book Store Automation Suite","E2E Tests","tests.e2e.AuthorizationTest","tests.e2e.AuthorizationTest","authorizedUserCanLogout","Authorized user can successfully log out","Precondition: A new test user is created via API, user is authorized.
+UI: User clicks the Logout button on the Profile page.
+Verification: User is redirected to the Login page, check that the 'token'
+cookie is cleared/empty. Re-open Profile page directly via URL. Verify that
+application shows unauthenticated state (warning message with Login and Register links).
+Verify that the 'token' cookie remains empty and session was not restored.
+"
+"passed","Wed Nov 04 10:45:29 UTC 2026","Wed Nov 04 10:45:34 UTC 2026","5229","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithValidCredentials","Create a user with valid credentials","Request: POST /Account/v1/User with a unique username and a valid password.
+Verification: status 201; the body contains a userID in UUID format
+and the username that was sent. The userID is stored for cleanup.
+"
+"passed","Wed Nov 04 10:45:12 UTC 2026","Wed Nov 04 10:45:22 UTC 2026","10203","Book Store Automation Suite","E2E Tests","tests.e2e.AuthorizationTest","tests.e2e.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Authorized user sees their name and profile icon","Precondition: a new test user is created via API, user is authorized
+(session is established). UI: Book Store page is opened.
+Verification: Login button is not visible on the page, user name on the page
+matches the one used for login.
+"
+"passed","Wed Nov 04 10:45:37 UTC 2026","Wed Nov 04 10:45:44 UTC 2026","6749","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithValidCredentials","Login with valid credentials","Precondition: a user is created via API.
+Request: POST /Account/v1/Login with the user's credentials.
+Verification: status 200; the body contains the userId of the created user,
+the username that was sent, a token and an expiration date in the future.
+"
+"passed","Wed Nov 04 10:45:25 UTC 2026","Wed Nov 04 10:45:28 UTC 2026","2964","Book Store Automation Suite","UI Tests","tests.ui.GuestAccessTest","tests.ui.GuestAccessTest","unauthorizedUserSeesLoginButton","Unauthorized user sees Login button","Precondition: user is unauthorized (no session).
+UI: Book Store page is opened.
+Verification: Login button is visible on the page.
+"
+"passed","Wed Nov 04 10:45:29 UTC 2026","Wed Nov 04 10:45:35 UTC 2026","6172","Book Store Automation Suite","API Tests","tests.api.GetUserApiTest","tests.api.GetUserApiTest","getUserInformationWithBook","Get user information with a book in the collection","Precondition: a user is created via API and one book is added to the collection.
+Request: GET /Account/v1/User/{userId} with the user's token.
+Verification: status 200; the body contains the username of the user and
+a books collection with exactly the added book (isbn, title, author, publisher).
+"
+"passed","Wed Nov 04 10:45:36 UTC 2026","Wed Nov 04 10:45:50 UTC 2026","14061","Book Store Automation Suite","API Tests","tests.api.GenerateTokenApiTest","tests.api.GenerateTokenApiTest","generateTokenWithValidCredentials","Generate a token with valid credentials","Precondition: a user is created via API.
+Request: POST /Account/v1/GenerateToken with the user's credentials.
+Verification: status 200; the body contains a token, status 'Success'
+and the result 'User authorized successfully.'.
+"
