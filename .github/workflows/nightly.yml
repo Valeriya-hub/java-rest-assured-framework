@@ -31,6 +31,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # On schedule the inputs context is empty, so the fallbacks below apply: all browsers.
         browser: ${{ fromJSON((inputs.browser == '' || inputs.browser == 'all') && '["chrome","firefox","edge"]' || format('["{0}"]', inputs.browser)) }}
 
     steps:
@@ -104,8 +105,8 @@ jobs:
   publish:
     name: Publish nightly reports
     needs: test
-    # Only from the default branch: manual runs from feature branches must not overwrite the public report.
-    if: ${{ !cancelled() && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+    # Only from main: manual runs from other branches must not overwrite the public report.
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -116,7 +117,7 @@ jobs:
 
     steps:
       - name: Download Allure reports
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           pattern: allure-report-*
           path: reports

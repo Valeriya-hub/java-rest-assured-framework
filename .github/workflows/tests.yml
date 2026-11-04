@@ -102,7 +102,7 @@ jobs:
           sparse-checkout: .github/pages
 
       - name: Download Allure report
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: allure-report
           path: report
