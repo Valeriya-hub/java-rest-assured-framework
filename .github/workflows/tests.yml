@@ -5,9 +5,10 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: tests-${{ github.ref }}
@@ -16,11 +17,13 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up JDK 21
         uses: actions/setup-java@v6
@@ -29,37 +32,97 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run tests (PR = smoke, push = full suite)
+      - name: Run tests (PR = smoke, push/manual = full suite)
         run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
+          GROUPS_ARG=""
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
             GROUPS_ARG="-Dgroups=smoke"
           fi
-          mvn clean test -Dbrowser=chrome -Dheadless=true $GROUPS_ARG
+          mvn -B -ntp clean test -Dbrowser=chrome -Dheadless=true $GROUPS_ARG
 
-      - name: Upload Allure results
-        if: always()
-        uses: actions/upload-artifact@v7
+      # History is only taken for pushes: PR runs are not published and must not affect trends.
+      - name: Checkout gh-pages (Allure history)
+        if: ${{ !cancelled() && github.event_name == 'push' }}
+        continue-on-error: true
+        uses: actions/checkout@v7
         with:
-          name: allure-results
-          path: target/allure-results
-          retention-days: 7
+          ref: gh-pages
+          path: gh-pages
+          persist-credentials: false
+
+      # Must run AFTER the tests: BaseTest cleans target/allure-results in @BeforeSuite.
+      - name: Prepare Allure history and categories
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p target/allure-results
+          cp .github/allure/categories.json target/allure-results/categories.json
+          if [ -d gh-pages/latest/history ]; then
+            cp -r gh-pages/latest/history target/allure-results/history
+          fi
 
       - name: Generate Allure report
-        if: always()
-        run: mvn allure:report
+        if: ${{ !cancelled() }}
+        run: mvn -B -ntp allure:report
 
       - name: Upload Allure report
-        if: always()
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7
         with:
           name: allure-report
           path: target/allure-report
+          if-no-files-found: warn
           retention-days: 7
 
-      - name: Deploy Allure report to GitHub Pages
-        if: always() && github.event_name == 'push'
+      - name: Upload Surefire reports (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: surefire-reports
+          path: target/surefire-reports
+          if-no-files-found: ignore
+          retention-days: 7
+
+  publish:
+    name: Publish report to GitHub Pages
+    needs: test
+    if: ${{ !cancelled() && github.event_name == 'push' && needs.test.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    concurrency:
+      group: gh-pages-deploy
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout (landing page only)
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/pages
+
+      - name: Download Allure report
+        uses: actions/download-artifact@v8
+        with:
+          name: allure-report
+          path: report
+
+      - name: Publish landing page
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target/allure-report
+          publish_dir: .github/pages
+          keep_files: true
+
+      - name: Publish Allure report to /latest/
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: report
+          destination_dir: latest
           keep_files: false
+
+      - name: Summary
+        run: |
+          echo "### Allure report" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/latest/" >> "$GITHUB_STEP_SUMMARY"
