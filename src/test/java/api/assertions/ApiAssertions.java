@@ -2,6 +2,7 @@ package api.assertions;
 
 import api.model.ErrorResponse;
 import config.constants.ApiError;
+import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import org.assertj.core.api.SoftAssertions;
 
@@ -76,7 +77,7 @@ public class ApiAssertions {
 
     /**
      * Verifies that a failed login did not authenticate anyone.
-     *
+     * <p>
      * Known deviation of the application under test: it reports a failed login with
      * HTTP 200 and an EMPTY body instead of an error status (see README, Findings).
      * The behaviour is pinned here, in one place, so the tests stay green and still notice
@@ -109,5 +110,14 @@ public class ApiAssertions {
                     .doesNotContainIgnoringCase("sequelize")
                     .doesNotContain("    at ");
         });
+    }
+
+    /**
+     * Verifies that the response body matches a JSON Schema from the test resources.
+     * The schema documents the contract (structure, required fields, types) in one reusable file.
+     */
+    public static void assertMatchesSchema(Response response, String schemaPathInClasspath) {
+        response.then().assertThat()
+                .body(JsonSchemaValidator.matchesJsonSchemaInClasspath(schemaPathInClasspath));
     }
 }
