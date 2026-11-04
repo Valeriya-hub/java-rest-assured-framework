@@ -52,12 +52,38 @@ jobs:
           BROWSER: ${{ matrix.browser }}
           TEST_GROUPS: ${{ inputs.groups || 'regression' }}
           TEST_ENV: ${{ inputs.env || 'qa' }}
-        run: >
-          mvn -B -ntp clean test
-          -Dbrowser="$BROWSER"
-          -Dgroups="$TEST_GROUPS"
-          -Denv="$TEST_ENV"
-          -Dheadless=true
+        run: |
+          EXTRA_ARGS=""
+          # Edge on the runner intermittently fails to start ("Chrome instance exited").
+          # Fallback: run without the Chromium sandbox and log the driver output for diagnosis.
+          if [ "$BROWSER" = "edge" ]; then
+            EXTRA_ARGS="-Dbrowser.no.sandbox=true -Dwebdriver.edge.verboseLogging=true -Dwebdriver.edge.logfile=target/msedgedriver.log"
+          fi
+          mvn -B -ntp clean test \
+            -Dbrowser="$BROWSER" \
+            -Dgroups="$TEST_GROUPS" \
+            -Denv="$TEST_ENV" \
+            -Dheadless=true \
+            $EXTRA_ARGS
+
+      - name: Edge diagnostics
+        if: ${{ failure() && matrix.browser == 'edge' }}
+        continue-on-error: true
+        run: |
+          echo "--- memory ---"; free -m
+          echo "--- /dev/shm ---"; df -h /dev/shm
+          echo "--- versions ---"; microsoft-edge --version; msedgedriver --version
+          echo "--- kernel log (apparmor / oom) ---"
+          sudo dmesg 2>/dev/null | grep -iE "apparmor|oom|killed process|segfault" | tail -20 || true
+
+      - name: Upload Edge driver log (on failure)
+        if: ${{ failure() && matrix.browser == 'edge' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: msedgedriver-log
+          path: target/msedgedriver.log
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Checkout gh-pages (Allure history)
         if: ${{ !cancelled() }}
@@ -116,6 +142,7 @@ jobs:
       cancel-in-progress: false
 
     steps:
+      # upload-artifact@v7 pairs with download-artifact@v8
       - name: Download Allure reports
         uses: actions/download-artifact@v8
         with:
@@ -132,8 +159,12 @@ jobs:
 
       # One step per browser: each publishes only its own subfolder, so a manual run
       # for a single browser does not erase the other browsers' reports.
+      # continue-on-error: a transient GitHub error on one push must not skip the others;
+      # the last step fails the job if any publish step failed.
       - name: Publish chrome
+        id: pub_chrome
         if: ${{ hashFiles('reports/chrome/**') != '' }}
+        continue-on-error: true
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -142,7 +173,9 @@ jobs:
           keep_files: false
 
       - name: Publish firefox
+        id: pub_firefox
         if: ${{ hashFiles('reports/firefox/**') != '' }}
+        continue-on-error: true
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -151,7 +184,9 @@ jobs:
           keep_files: false
 
       - name: Publish edge
+        id: pub_edge
         if: ${{ hashFiles('reports/edge/**') != '' }}
+        continue-on-error: true
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -160,6 +195,7 @@ jobs:
           keep_files: false
 
       - name: Summary
+        if: ${{ !cancelled() }}
         run: |
           BASE="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/nightly"
           {
@@ -168,3 +204,9 @@ jobs:
             echo "- $BASE/firefox/"
             echo "- $BASE/edge/"
           } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail if any publish step failed
+        if: ${{ !cancelled() && (steps.pub_chrome.outcome == 'failure' || steps.pub_firefox.outcome == 'failure' || steps.pub_edge.outcome == 'failure') }}
+        run: |
+          echo "At least one report failed to publish (see the steps above). Re-run failed jobs."
+          exit 1
