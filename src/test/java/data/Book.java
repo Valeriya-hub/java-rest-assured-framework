@@ -1,10 +1,12 @@
 package data;
 
+import java.util.List;
+
 /**
  * Immutable description of a book from the public demoqa BookStore catalog.
  * One object keeps title, author, publisher and ISBN together, so they can
  * never drift apart.
- *
+ * <p>
  * Also contains static reference books from the demoqa catalog that tests rely on.
  */
 public record Book(String title, String author, String publisher, String isbn) {
@@ -32,4 +34,12 @@ public record Book(String title, String author, String publisher, String isbn) {
             "Axel Rauschmayer",
             "O'Reilly Media",
             "9781449365035");
+
+    /**
+     * Returns the whole reference catalog in one place.
+     */
+    public static List<Book> all() {
+        return List.of(GIT_POCKET_GUIDE, LEARNING_JAVASCRIPT_DESIGN_PATTERNS,
+                DESIGNING_EVOLVABLE_WEB_APIS, SPEAKING_JAVASCRIPT);
+    }
 }

@@ -5,6 +5,7 @@ import config.Config;
 import io.qameta.allure.Step;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
 import java.util.List;
@@ -27,5 +28,13 @@ public class BookApiClient {
                 .post("/BookStore/v1/Books")
                 .then()
                 .statusCode(201);
+    }
+
+    @Step("API: Send get all books request")
+    public Response sendGetBooksRequest() {
+        return given()
+                .spec(spec)
+                .when()
+                .get("/BookStore/v1/Books");
     }
 }
