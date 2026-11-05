@@ -30,6 +30,10 @@ jobs:
     timeout-minutes: 20
     strategy:
       fail-fast: false
+      # Run browsers one after another: demoqa is a shared public backend, and three browsers
+      # hitting it at the same moment from GitHub runners made it slow (token generation ~18s)
+      # and caused login to hang. Stability matters more than nightly speed.
+      max-parallel: 1
       matrix:
         # On schedule the inputs context is empty, so the fallbacks below apply: all browsers.
         browser: ${{ fromJSON((inputs.browser == '' || inputs.browser == 'all') && '["chrome","firefox","edge"]' || format('["{0}"]', inputs.browser)) }}
