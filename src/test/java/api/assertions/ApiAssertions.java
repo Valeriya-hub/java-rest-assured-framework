@@ -120,4 +120,10 @@ public class ApiAssertions {
         response.then().assertThat()
                 .body(JsonSchemaValidator.matchesJsonSchemaInClasspath(schemaPathInClasspath));
     }
+
+    public static void assertJsonContentType(SoftAssertions softly, Response response) {
+        softly.assertThat(response.contentType())
+                .as("Content-Type")
+                .contains("application/json");
+    }
 }
