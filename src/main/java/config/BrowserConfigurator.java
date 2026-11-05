@@ -10,8 +10,10 @@ import java.util.logging.Level;
 
 public final class BrowserConfigurator {
 
-    // Capability name understood by chromedriver (and msedgedriver, which is Chromium-based)
-    private static final String LOGGING_PREFS_CAPABILITY = "goog:loggingPrefs";
+    // chromedriver reads the logging preferences from "goog:loggingPrefs",
+    // msedgedriver ignores it and reads them from "ms:loggingPrefs" instead.
+    private static final String CHROME_LOGGING_PREFS = "goog:loggingPrefs";
+    private static final String EDGE_LOGGING_PREFS = "ms:loggingPrefs";
 
     private BrowserConfigurator() {
     }
@@ -28,7 +30,7 @@ public final class BrowserConfigurator {
 
     private static ChromeOptions chromeOptions() {
         ChromeOptions options = new ChromeOptions();
-        options.setCapability(LOGGING_PREFS_CAPABILITY, loggingPreferences());
+        options.setCapability(CHROME_LOGGING_PREFS, loggingPreferences());
         if (Config.noSandbox()) {
             options.addArguments("--no-sandbox");
         }
@@ -37,7 +39,7 @@ public final class BrowserConfigurator {
 
     private static EdgeOptions edgeOptions() {
         EdgeOptions options = new EdgeOptions();
-        options.setCapability(LOGGING_PREFS_CAPABILITY, loggingPreferences());
+        options.setCapability(EDGE_LOGGING_PREFS, loggingPreferences());
         if (Config.noSandbox()) {
             options.addArguments("--no-sandbox");
         }
