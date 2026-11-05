@@ -12,7 +12,9 @@ import org.assertj.core.groups.Tuple;
 import org.testng.annotations.Test;
 import tests.base.BaseApiTest;
 
+import static api.assertions.ApiAssertions.assertJsonContentType;
 import static api.assertions.ApiAssertions.assertMatchesSchema;
+import static api.assertions.BookAssertions.assertValidBooksCollection;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -31,8 +33,10 @@ public class GetBooksApiTest extends BaseApiTest {
     @Description("""
             Request: GET /BookStore/v1/Books (a public endpoint, no token is needed).
             Verification: status 200 and a JSON content type; the body matches the JSON schema
-            (structure, required fields and their types); the books collection is not empty,
-            ISBNs are unique, and the books the tests rely on are present with the reference data.
+            (every book has isbn, title, subTitle, author, publish_date, publisher, pages,
+            description and website with the correct types); the books collection is not empty,
+            ISBNs are unique, subTitle, description and website of every book are not blank
+            and the website is a URL; the books the tests rely on are present with the reference data.
             """)
     public void getAllBooks() {
         Response response = bookApiClient.sendGetBooksRequest();
@@ -45,22 +49,13 @@ public class GetBooksApiTest extends BaseApiTest {
 
         BooksResponse body = response.as(BooksResponse.class);
 
-        // The books of the reference catalog (data.Books) must be in the response unchanged.
         Tuple[] referenceBooks = Book.all().stream()
                 .map(book -> tuple(book.isbn(), book.title(), book.author(), book.publisher()))
                 .toArray(Tuple[]::new);
 
         assertSoftly(softly -> {
-            softly.assertThat(response.contentType())
-                    .as("Content-Type")
-                    .contains("application/json");
-            softly.assertThat(body.books())
-                    .as("books collection")
-                    .isNotEmpty();
-            softly.assertThat(body.books())
-                    .extracting(BookResponse::isbn)
-                    .as("ISBNs of the books")
-                    .doesNotHaveDuplicates();
+            assertJsonContentType(softly, response);
+            assertValidBooksCollection(softly, body.books());
             softly.assertThat(body.books())
                     .extracting(BookResponse::isbn, BookResponse::title,
                             BookResponse::author, BookResponse::publisher)
