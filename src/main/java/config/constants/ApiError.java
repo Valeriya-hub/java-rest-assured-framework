@@ -18,4 +18,7 @@ public record ApiError(int status, String code, String message) {
 
     public static final ApiError USER_NOT_FOUND =
             new ApiError(401, "1207", "User not found!");
+
+    public static final ApiError BOOK_ISBN_NOT_AVAILABLE =
+            new ApiError(400, "1205", "ISBN supplied is not available in Books Collection!");
 }

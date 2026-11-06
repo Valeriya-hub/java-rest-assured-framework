@@ -37,4 +37,21 @@ public class BookApiClient {
                 .when()
                 .get("/BookStore/v1/Books");
     }
+
+    @Step("API: Send get book request, ISBN = {isbn}")
+    public Response sendGetBookRequest(String isbn) {
+        return given()
+                .spec(spec)
+                .queryParam("ISBN", isbn)
+                .when()
+                .get("/BookStore/v1/Book");
+    }
+
+    @Step("API: Send get book request without the ISBN parameter")
+    public Response sendGetBookWithoutIsbnRequest() {
+        return given()
+                .spec(spec)
+                .when()
+                .get("/BookStore/v1/Book");
+    }
 }
