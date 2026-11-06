@@ -75,6 +75,11 @@ public final class Config {
         return uiBaseUrl() + get("ui.path.books") + "?search=" + searchQuery;
     }
 
+    /** Lightweight page used only to give the browser a document on the site's domain before adding cookies. */
+    public static String cookieInitPath() {
+        return get("ui.path.cookie.init");
+    }
+
     private static String get(String key) {
         String value = System.getProperty(key, PROPERTIES.getProperty(key));
         if (value == null || value.isBlank()) {
