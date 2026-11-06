@@ -21,4 +21,13 @@ public record ApiError(int status, String code, String message) {
 
     public static final ApiError BOOK_ISBN_NOT_AVAILABLE =
             new ApiError(400, "1205", "ISBN supplied is not available in Books Collection!");
+
+    public static final ApiError USER_ID_NOT_CORRECT =
+            new ApiError(401, "1207", "User Id not correct!");
+
+    public static final ApiError ISBN_ALREADY_IN_COLLECTION =
+            new ApiError(400, "1210", "ISBN already present in the User's Collection!");
+
+    public static final ApiError COLLECTION_OF_BOOKS_REQUIRED =
+            new ApiError(400, "1207", "Collection of books required.");
 }

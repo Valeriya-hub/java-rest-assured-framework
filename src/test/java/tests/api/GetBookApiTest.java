@@ -11,10 +11,9 @@ import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 import tests.base.BaseApiTest;
+import tests.base.KnownIssue;
 
-import static api.assertions.ApiAssertions.assertApiError;
-import static api.assertions.ApiAssertions.assertJsonContentType;
-import static api.assertions.BookAssertions.assertMissingIsbnParameterKnownDeviation;
+import static api.assertions.ApiAssertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -77,19 +76,24 @@ public class GetBookApiTest extends BaseApiTest {
     @Feature("Book store API")
     @Story("Get book by ISBN - negative scenarios")
     @Test(
-            description = "Getting a book without the ISBN parameter (known defect: 500)",
+            description = "Getting a book without the ISBN parameter is rejected with a validation error (KNOWN ISSUE)",
             groups = {"api", "regression"}
     )
     @Description("""
             Request: GET /BookStore/v1/Book without the ISBN query parameter.
+            Verification (desired behaviour): the input is handled gracefully (no server error,
+            no internal details in the body) and rejected with the 'ISBN not available' error.
             
-            Known deviation: the server answers with 500 and an HTML error page instead of a 400
-            JSON error (see README, Findings). The behaviour is pinned, so the test notices
-            when it changes.
+            Known issue: the application crashes with HTTP 500 and returns a stack trace
+            (README, Findings #7). Until it is fixed the test is reported as skipped;
+            when the behaviour is fixed, the test fails to remind that the marker must be removed.
             """)
     public void getBookWithoutIsbnParameter() {
         Response response = bookApiClient.sendGetBookWithoutIsbnRequest();
 
-        assertMissingIsbnParameterKnownDeviation(response);
+        KnownIssue.expectFailure("README, Findings #7", () -> {
+            assertHandledGracefully(response);
+            assertApiError(response, ApiError.BOOK_ISBN_NOT_AVAILABLE);
+        });
     }
 }
