@@ -54,4 +54,18 @@ public class BookApiClient {
                 .when()
                 .get("/BookStore/v1/Book");
     }
+
+    @Step("API: Send add book request")
+    public Response sendAddBookRequest(String token, Object body) {
+        RequestSpecification request = given()
+                .spec(spec)
+                .contentType(ContentType.JSON);
+        if (token != null) {
+            request.header("Authorization", "Bearer " + token);
+        }
+        return request
+                .body(body)
+                .when()
+                .post("/BookStore/v1/Books");
+    }
 }
