@@ -78,6 +78,35 @@ public class AddBookApiTest extends BaseApiTest {
     @Feature("Book store API")
     @Story("Add book - negative scenarios")
     @Test(
+            description = "A user cannot add a book to the collection of another user",
+            groups = {"api", "regression"}
+    )
+    @Description("""
+        Precondition: user A is created via API and has an empty collection;
+        user B is a separate user with their own valid token.
+        Request: POST /BookStore/v1/Books with the token of user B, the userId of user A
+        and the ISBN of a reference book.
+        Verification: the request is rejected with status 401 and the 'User not authorized!' error (code 1200);
+        the collection of user A is still empty (nothing was added).
+        """)
+    public void addBookToAnotherUserCollection() {
+        createTestUserViaApi();
+        TestUser owner = testUser();
+        TestUser anotherUser = createExtraUser();
+
+        // The userId belongs to the owner, but the token belongs to another user.
+        Response response = bookApiClient.sendAddBookRequest(anotherUser.token(),
+                new AddBookRequest(owner.id(), List.of(new AddBookRequest.IsbnEntry(BOOK.isbn()))));
+
+        assertApiError(response, ApiError.USER_NOT_AUTHORIZED);
+        assertThat(userApiClient.getUserBookIsbns(owner.id(), owner.token()))
+                .as("The rejected request must not add a book to the collection of another user")
+                .isEmpty();
+    }
+
+    @Feature("Book store API")
+    @Story("Add book - negative scenarios")
+    @Test(
             description = "Adding a book without a token is rejected",
             groups = {"api", "smoke"}
     )

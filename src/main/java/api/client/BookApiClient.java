@@ -1,6 +1,7 @@
 package api.client;
 
 import api.model.AddBookRequest;
+import api.model.DeleteBookRequest;
 import config.Config;
 import io.qameta.allure.Step;
 import io.restassured.builder.RequestSpecBuilder;
@@ -67,5 +68,43 @@ public class BookApiClient {
                 .body(body)
                 .when()
                 .post("/BookStore/v1/Books");
+    }
+
+    @Step("API: Send delete book request")
+    public Response sendDeleteBookRequest(String token, DeleteBookRequest body) {
+        return authorizedJson(token)
+                .body(body)
+                .when()
+                .delete("/BookStore/v1/Book");
+    }
+
+    @Step("API: Send delete book request")
+    public Response sendDeleteBookRequest(String token, Object body) {
+        return authorizedJson(token)
+                .body(body)
+                .when()
+                .delete("/BookStore/v1/Book");
+    }
+
+    /**
+     * Precondition-style call: expects success (204). Use it when deleting a book
+     * is only test setup, not the behaviour under test.
+     */
+    @Step("API: Delete book {isbn} from the collection of user {userId}")
+    public void deleteBookFromUser(String userId, String token, String isbn) {
+        sendDeleteBookRequest(token, new DeleteBookRequest(userId, isbn))
+                .then()
+                .statusCode(204);
+    }
+
+    // A null token means "no Authorization header" (negative scenarios).
+    private RequestSpecification authorizedJson(String token) {
+        RequestSpecification request = given()
+                .spec(spec)
+                .contentType(ContentType.JSON);
+        if (token != null) {
+            request.header("Authorization", "Bearer " + token);
+        }
+        return request;
     }
 }

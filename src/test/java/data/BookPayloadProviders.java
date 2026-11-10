@@ -46,4 +46,29 @@ public class BookPayloadProviders {
                 {"non-existent userId", UUID.randomUUID().toString()}
         };
     }
+
+    /**
+     * Tokens that the API rejects with 401 and the 'User not authorized!' error.
+     * The first column only names the case in the test report; null means "no Authorization header".
+     */
+    @DataProvider(name = "unauthorizedTokens")
+    public static Object[][] unauthorizedTokens() {
+        return new Object[][]{
+                {"no Authorization header", null},
+                {"malformed token", "invalid.token.value"}
+        };
+    }
+
+    /**
+     * ISBNs that are not in the user's collection (the user owns only GIT_POCKET_GUIDE).
+     * The API rejects them with 400 and the 'ISBN not available in User's Collection' error.
+     */
+    @DataProvider(name = "isbnsNotInCollection")
+    public static Object[][] isbnsNotInCollection() {
+        return new Object[][]{
+                {"book exists in the catalog, but not in this collection", Book.SPEAKING_JAVASCRIPT.isbn()},
+                {"13 digits, but not in the catalog", "9780000000000"},
+                {"empty isbn value", ""}
+        };
+    }
 }

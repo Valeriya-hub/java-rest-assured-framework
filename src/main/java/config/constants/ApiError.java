@@ -30,4 +30,7 @@ public record ApiError(int status, String code, String message) {
 
     public static final ApiError COLLECTION_OF_BOOKS_REQUIRED =
             new ApiError(400, "1207", "Collection of books required.");
+
+    public static final ApiError ISBN_NOT_IN_COLLECTION =
+            new ApiError(400, "1206", "ISBN supplied is not available in User's Collection!");
 }
