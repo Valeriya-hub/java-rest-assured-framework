@@ -4,7 +4,7 @@
 ![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)
 ![Selenide](https://img.shields.io/badge/Selenide-7.17.0-blue)
 ![RestAssured](https://img.shields.io/badge/REST--Assured-5.5.0-green)
-![Allure](https://img.shields.io/badge/Allure-2.29.0-red?logo=qameta)
+![Allure](https://img.shields.io/badge/Allure-2.35.5-red?logo=qameta)
 
 This project contains automated tests for the Book Store application using a hybrid approach combining UI and API testing.
 
@@ -21,9 +21,8 @@ Reports include trend history and failure categories (product defects, test defe
 - **Selenide 7.17.0** - UI automation framework (wrapper around Selenium WebDriver)
 - **TestNG 7.10.2** - Test framework
 - **Rest Assured 5.5.0** - API testing library
-- **Allure 2.29.0** - Test reporting framework
+- **Allure 2.35.5** - Test reporting framework
 - **AssertJ 3.27.7** - Assertion library
-- **Lombok 1.18.34** - Code generation for boilerplate reduction
 - **Jackson 2.22.4** - JSON processing
 - **Log4j2** - request/response logging та GitHub Actions + Dependabot - CI and dependency updates.
 
@@ -45,7 +44,7 @@ java-rest-assured-framework/
 │   │   └── java/
 │   │       ├── api/
 │   │       │   ├── client/         # API clients (Rest Assured)
-│   │       │   └── model/          # POJO request/response models
+│   │       │   └── model/          # Request/response models (Java records)
 │   │       ├── auth/               # Session & token management
 │   │       ├── config/             # Configurations (ConfigReader, Browser, Logging)
 │   │       │   └── constants/      # Constants (API, UI, Auth)
@@ -73,6 +72,10 @@ java-rest-assured-framework/
 * **`GenerateTokenApiTest`**: Validates authorization token generation and response status codes for valid/invalid credentials.
 * **`GetUserApiTest`**: Checks fetching account details and user profile state using authorized API requests.
 * **`LoginApiTest`**: Verifies API-level authentication and proper payload contracts.
+* **`AddBookApiTest`**: Validates adding books to user collection, including required fields validation and error handling for invalid payloads.
+* **`DeleteBookApiTest`**: Verifies book removal from user collection, including validation of required parameters and error scenarios.
+* **`GetBookApiTest`**: Checks fetching individual book details by ISBN and error handling for missing parameters.
+* **`GetBooksApiTest`**: Validates retrieving the complete list of available books from the bookstore.
 
 ### UI Tests (`tests.ui`)
 * **`BookDetailsTest`**: Verifies book details view, correct metadata display, and UI element rendering on the book details page.
