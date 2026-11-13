@@ -13,7 +13,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <allure.version>2.29.0</allure.version>
-        <aspectj.version>1.9.22.1</aspectj.version>
+        <aspectj.version>1.9.27</aspectj.version>
         <log4j2.version>2.26.1</log4j2.version>
     </properties>
 
@@ -22,7 +22,7 @@
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>1.17.1</version>
+                <version>1.23.0</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>
@@ -52,12 +52,12 @@
         <dependency>
             <groupId>com.codeborne</groupId>
             <artifactId>selenide</artifactId>
-            <version>7.17.0</version>
+            <version>7.19.1</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.10.2</version>
+            <version>7.12.0</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>5.5.0</version>
+            <version>6.3.0</version>
         </dependency>
         <!-- Known CVEs in jackson-coreutils 2.0 (SSRF, resource consumption), no upstream fix.
      Accepted: test scope only, schemas loaded from classpath, no untrusted input.
@@ -82,7 +82,7 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-schema-validator</artifactId>
-            <version>5.5.0</version>
+            <version>6.3.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
