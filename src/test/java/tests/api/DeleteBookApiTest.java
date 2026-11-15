@@ -223,7 +223,7 @@ public class DeleteBookApiTest extends BaseApiTest {
             400 'ISBN supplied is not available in User's Collection!' (code 1206).
             
             Known issue: the application crashes with HTTP 500 and returns an HTML page with a stack trace
-            (README, Findings #12). Until it is fixed the test is reported as skipped;
+            (README, Findings #11). Until it is fixed the test is reported as skipped;
             when the behaviour is fixed, the test fails to remind that the marker must be removed.
             """)
     public void deleteBookWithoutIsbn() {
@@ -234,7 +234,7 @@ public class DeleteBookApiTest extends BaseApiTest {
         Response response = bookApiClient.sendDeleteBookRequest(user.token(),
                 Map.of("userId", user.id()));
 
-        KnownIssue.expectFailure("README, Findings #12", () -> {
+        KnownIssue.expectFailure("README, Findings #11", () -> {
             assertHandledGracefully(response);
             assertApiError(response, ApiError.ISBN_NOT_IN_COLLECTION);
         });
@@ -254,7 +254,7 @@ public class DeleteBookApiTest extends BaseApiTest {
             401 'User Id not correct!' (code 1207).
             
             Known issue: the application crashes with HTTP 500 and returns an HTML page with a stack trace
-            (README, Findings #13). Until it is fixed the test is reported as skipped;
+            (README, Findings #12). Until it is fixed the test is reported as skipped;
             when the behaviour is fixed, the test fails to remind that the marker must be removed.
             """)
     public void deleteBookWithoutUserId() {
@@ -265,7 +265,7 @@ public class DeleteBookApiTest extends BaseApiTest {
         Response response = bookApiClient.sendDeleteBookRequest(user.token(),
                 Map.of("isbn", BOOK.isbn()));
 
-        KnownIssue.expectFailure("README, Findings #13", () -> {
+        KnownIssue.expectFailure("README, Findings #12", () -> {
             assertHandledGracefully(response);
             assertApiError(response, ApiError.USER_ID_NOT_CORRECT);
         });
