@@ -232,8 +232,8 @@ public class BookStorePage extends BasePage<BookStorePage> {
     }
 
     @Step("Search for books by text '{text}' and wait until the filter is applied")
-    public BookStorePage searchAndWaitForFilter(String text) {
+    public void searchAndWaitForFilter(String text) {
         searchBookByTitle(text);
-        return shouldShowOnlyBooksContaining(text);
+        shouldShowOnlyBooksContaining(text);
     }
 }
