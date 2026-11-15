@@ -231,7 +231,7 @@ public class AddBookApiTest extends BaseApiTest {
             no internal details in the body) and rejected with the 'User Id not correct!' error.
             
             Known issue: the application crashes with HTTP 500 and returns a stack trace
-            (README, Findings #9). Until it is fixed the test is reported as skipped;
+            (README, Findings #8). Until it is fixed the test is reported as skipped;
             when the behaviour is fixed, the test fails to remind that the marker must be removed.
             """)
     public void addBookWithoutUserId() {
@@ -240,7 +240,7 @@ public class AddBookApiTest extends BaseApiTest {
         Response response = bookApiClient.sendAddBookRequest(testUser().token(),
                 Map.of("collectionOfIsbns", List.of(Map.of("isbn", BOOK.isbn()))));
 
-        KnownIssue.expectFailure("README, Findings #9", () -> {
+        KnownIssue.expectFailure("README, Findings #8", () -> {
             assertHandledGracefully(response);
             assertApiError(response, ApiError.USER_ID_NOT_CORRECT);
         });
@@ -259,7 +259,7 @@ public class AddBookApiTest extends BaseApiTest {
             no internal details in the body) and rejected with the 'Collection of books required.' error.
             
             Known issue: the application crashes with HTTP 500 and returns a stack trace
-            (README, Findings #10). Until it is fixed the test is reported as skipped;
+            (README, Findings #9). Until it is fixed the test is reported as skipped;
             when the behaviour is fixed, the test fails to remind that the marker must be removed.
             """)
     public void addBookWithoutCollectionOfIsbns() {
@@ -268,7 +268,7 @@ public class AddBookApiTest extends BaseApiTest {
         Response response = bookApiClient.sendAddBookRequest(testUser().token(),
                 Map.of("userId", testUser().id()));
 
-        KnownIssue.expectFailure("README, Findings #10", () -> {
+        KnownIssue.expectFailure("README, Findings #9", () -> {
             assertHandledGracefully(response);
             assertApiError(response, ApiError.COLLECTION_OF_BOOKS_REQUIRED);
         });

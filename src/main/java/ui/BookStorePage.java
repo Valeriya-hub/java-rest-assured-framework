@@ -7,6 +7,10 @@ import config.Config;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.codeborne.selenide.CollectionCondition.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -26,6 +30,7 @@ public class BookStorePage extends BasePage<BookStorePage> {
     private final ElementsCollection bookTitles = $$("table tbody tr td:nth-child(2) a");
     private final ElementsCollection bookAuthors = $$("table tbody tr td:nth-child(3)");
     private final ElementsCollection bookPublishers = $$("table tbody tr td:nth-child(4)");
+    private final ElementsCollection bookImages = $$("table tbody tr td:nth-child(1) img");
 
     private final SelenideElement previousButton = $x("//button[text()='Previous']");
     private final SelenideElement nextButton = $x("//button[text()='Next']");
@@ -199,5 +204,36 @@ public class BookStorePage extends BasePage<BookStorePage> {
     @Step("Verify that no books are displayed.")
     public void shouldShowNoBooks() {
         bookTitleLinks.shouldHave(size(0));
+    }
+
+    @Step("Collect cover image of each displayed book (title -> image src)")
+    public Map<String, String> getCoverSrcByTitle() {
+        bookRows.shouldHave(sizeGreaterThan(0)
+                .because("At least one book should be displayed in the table"));
+        int rowsCount = bookRows.size();
+        bookImages.shouldHave(size(rowsCount)
+                .because("Each of " + rowsCount + " rows must contain a cover image"));
+
+        List<String> titles = bookTitles.texts();
+        List<String> sources = bookImages.asFixedIterable().stream()
+                .map(image -> image.getAttribute("src"))
+                .toList();
+
+        if (titles.size() != sources.size()) {
+            throw new IllegalStateException("Table changed while reading: " + titles.size()
+                    + " titles vs " + sources.size() + " images");
+        }
+
+        Map<String, String> coverByTitle = new LinkedHashMap<>();
+        for (int i = 0; i < titles.size(); i++) {
+            coverByTitle.put(titles.get(i), sources.get(i));
+        }
+        return coverByTitle;
+    }
+
+    @Step("Search for books by text '{text}' and wait until the filter is applied")
+    public void searchAndWaitForFilter(String text) {
+        searchBookByTitle(text);
+        shouldShowOnlyBooksContaining(text);
     }
 }
