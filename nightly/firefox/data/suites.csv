@@ -1,20 +1,10 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Fri Nov 20 09:35:14 UTC 2026","Fri Nov 20 09:35:18 UTC 2026","3972","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookAlreadyInCollection","Adding a book that is already in the collection is rejected","Precondition: a user is created via API and the book is already added to the collection.
-Request: POST /BookStore/v1/Books with the same ISBN again.
-Verification: the request is rejected with status 400 and the
-'ISBN already present in the User's Collection!' error (code 1210).
-"
-"passed","Fri Nov 20 09:34:32 UTC 2026","Fri Nov 20 09:34:41 UTC 2026","8335","Book Store Automation Suite","E2E Tests","tests.e2e.AuthorizationTest","tests.e2e.AuthorizationTest","userCannotLoginWithWrongPassword","User cannot login with incorrect password","Precondition: a new test user is created via API, user is not authorized.
+"passed","Sat Nov 21 09:06:47 UTC 2026","Sat Nov 21 09:06:55 UTC 2026","7810","Book Store Automation Suite","E2E Tests","tests.e2e.AuthorizationTest","tests.e2e.AuthorizationTest","userCannotLoginWithWrongPassword","User cannot login with incorrect password","Precondition: a new test user is created via API, user is not authorized.
 UI: attempt to authorize with incorrect password is made.
 Verification: incorrect password message appears on the page.
 User remains on login page.
 "
-"passed","Fri Nov 20 09:36:11 UTC 2026","Fri Nov 20 09:36:18 UTC 2026","7555","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteAlreadyDeletedBook","Deleting the same book twice: the second request is rejected","Precondition: a user is created via API, the book is added and then deleted.
-Request: DELETE /BookStore/v1/Book with the same ISBN again.
-Verification: the request is rejected with status 400 and the
-'ISBN supplied is not available in User's Collection!' error (code 1206).
-"
-"skipped","Fri Nov 20 09:34:53 UTC 2026","Fri Nov 20 09:34:59 UTC 2026","6484","Book Store Automation Suite","UI Tests","tests.ui.BookCoverIntegrityTest","tests.ui.BookCoverIntegrityTest","coversAreKeptAfterSearchByPartialTitle","Covers stay with their books after searching by part of the title","Steps: remember the cover of every book in the full list -> search 'JavaScript'.
+"skipped","Sat Nov 21 09:07:08 UTC 2026","Sat Nov 21 09:07:17 UTC 2026","9301","Book Store Automation Suite","UI Tests","tests.ui.BookCoverIntegrityTest","tests.ui.BookCoverIntegrityTest","coversAreKeptAfterSearchByPartialTitle","Covers stay with their books after searching by part of the title","Steps: remember the cover of every book in the full list -> search 'JavaScript'.
 Expected: every found book keeps the cover it had in the full list.
 
 Known issue: covers are re-assigned by row, e.g. 'Learning JavaScript Design Patterns'
@@ -22,68 +12,44 @@ had the 'Silence' cover in the full list but shows 'Business Design' after the s
 (README, Findings #13). Until it is fixed the test is reported as skipped;
 when the behaviour is fixed, the test fails to remind that the marker must be removed.
 "
-"passed","Fri Nov 20 09:35:51 UTC 2026","Fri Nov 20 09:35:51 UTC 2026","377","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
+"passed","Sat Nov 21 09:08:19 UTC 2026","Sat Nov 21 09:08:21 UTC 2026","2198","Book Store Automation Suite","API Tests","tests.api.GetUserApiTest","tests.api.GetUserApiTest","getNonExistingUserIsRejected","Get information of a non-existing user is rejected","Precondition: a user is created via API.
+Request: GET /Account/v1/User/{userId} with a valid token and an id that does not exist.
+Verification: the request is rejected with 401, code 1207, 'User not found!'.
+
+Known deviation: 401 instead of 404 (README, Findings).
+"
+"passed","Sat Nov 21 09:08:24 UTC 2026","Sat Nov 21 09:08:25 UTC 2026","254","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
 Verification: the request is rejected with status 400 and the
 'UserName and Password required' error.
 "
-"passed","Fri Nov 20 09:35:26 UTC 2026","Fri Nov 20 09:35:29 UTC 2026","3281","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithUnavailableIsbn","Adding a book with an unavailable ISBN is rejected","Precondition: a user is created via API and has a token.
+"passed","Sat Nov 21 09:08:26 UTC 2026","Sat Nov 21 09:08:30 UTC 2026","4683","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookAlreadyInCollection","Adding a book that is already in the collection is rejected","Precondition: a user is created via API and the book is already added to the collection.
+Request: POST /BookStore/v1/Books with the same ISBN again.
+Verification: the request is rejected with status 400 and the
+'ISBN already present in the User's Collection!' error (code 1210).
+"
+"passed","Sat Nov 21 09:08:25 UTC 2026","Sat Nov 21 09:08:25 UTC 2026","261","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
+Verification: the request is rejected with status 400 and the
+'UserName and Password required' error.
+"
+"passed","Sat Nov 21 09:08:54 UTC 2026","Sat Nov 21 09:08:57 UTC 2026","3377","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithUnavailableIsbn","Adding a book with an unavailable ISBN is rejected","Precondition: a user is created via API and has a token.
 Request: POST /BookStore/v1/Books with a non-existent 13-digit ISBN, a malformed ISBN
 and an empty ISBN value.
 Verification: the request is rejected with status 400 and the
 'ISBN supplied is not available in Books Collection!' error (code 1205).
 "
-"passed","Fri Nov 20 09:35:51 UTC 2026","Fri Nov 20 09:35:51 UTC 2026","354","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
+"passed","Sat Nov 21 09:08:42 UTC 2026","Sat Nov 21 09:08:46 UTC 2026","4082","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithUnavailableIsbn","Adding a book with an unavailable ISBN is rejected","Precondition: a user is created via API and has a token.
+Request: POST /BookStore/v1/Books with a non-existent 13-digit ISBN, a malformed ISBN
+and an empty ISBN value.
 Verification: the request is rejected with status 400 and the
-'UserName and Password required' error.
+'ISBN supplied is not available in Books Collection!' error (code 1205).
 "
-"passed","Fri Nov 20 09:35:54 UTC 2026","Fri Nov 20 09:35:55 UTC 2026","929","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithEmptyValue","Login with an empty field value does not authenticate the user","Request: POST /Account/v1/Login with an empty string as userName and/or password.
-Verification: no authentication data is returned (empty body).
-
-Known deviation: unlike an absent field, an empty value is not rejected with a
-validation error; the application answers 200 (README, Findings).
+"passed","Sat Nov 21 09:05:51 UTC 2026","Sat Nov 21 09:06:21 UTC 2026","30013","Book Store Automation Suite","E2E Tests","tests.e2e.AddBookToCollectionTest","tests.e2e.AddBookToCollectionTest","userAddBookToCollection","User adds a book to collection","Precondition: user is created via API, auth cookies are injected into browser.
+UI: Profile is opened -> navigate to Book Store -> select book ->
+click 'Add To Collection' and close alert.
+Verification: via API (GET /Account/v1/User) verify that the ISBN of the added book
+appeared in the user's collection.
 "
-"passed","Fri Nov 20 09:35:07 UTC 2026","Fri Nov 20 09:35:13 UTC 2026","6097","Book Store Automation Suite","UI Tests","tests.ui.BookStoreTest","tests.ui.BookStoreTest","shouldVerifyBooksPageInitialState","Verify main elements of Books page are displayed","Preconditions: The user is not logged in, and the Book Store page is open.
-Verification of URL, title, books table, search, pagination and columns (Title, Author, Publisher)
-"
-"skipped","Fri Nov 20 09:35:44 UTC 2026","Fri Nov 20 09:35:45 UTC 2026","362","Book Store Automation Suite","API Tests","tests.api.GetBookApiTest","tests.api.GetBookApiTest","getBookWithoutIsbnParameter","Getting a book without the ISBN parameter is rejected with a validation error (KNOWN ISSUE)","Request: GET /BookStore/v1/Book without the ISBN query parameter.
-Verification (desired behaviour): the input is handled gracefully (no server error,
-no internal details in the body) and rejected with the 'ISBN not available' error.
-
-Known issue: the application crashes with HTTP 500 and returns a stack trace
-(README, Findings #7). Until it is fixed the test is reported as skipped;
-when the behaviour is fixed, the test fails to remind that the marker must be removed.
-"
-"passed","Fri Nov 20 09:36:26 UTC 2026","Fri Nov 20 09:36:32 UTC 2026","5566","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookNotInCollection","Deleting a book that is not in the collection is rejected","Precondition: a user is created via API and has one book in the collection.
-Request: DELETE /BookStore/v1/Book with an ISBN that is not in the collection:
-a catalog book the user does not own, a non-existent 13-digit ISBN and an empty ISBN value.
-Verification: the request is rejected with status 400 and the
-'ISBN supplied is not available in User's Collection!' error (code 1206);
-the user's collection is unchanged.
-"
-"passed","Fri Nov 20 09:36:08 UTC 2026","Fri Nov 20 09:36:11 UTC 2026","3273","Book Store Automation Suite","API Tests","tests.api.GetUserApiTest","tests.api.GetUserApiTest","getUserWithoutTokenIsRejected","Get user information without a token is rejected","Precondition: a user is created via API.
-Request: GET /Account/v1/User/{userId} without any authorization.
-Verification: the request is rejected with 401, code 1200, 'User not authorized!'.
-"
-"skipped","Fri Nov 20 09:35:57 UTC 2026","Fri Nov 20 09:35:58 UTC 2026","381","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithMissingField","Login without a required field is rejected with a validation error (KNOWN ISSUE)","Request: POST /Account/v1/Login with userName and/or password absent from the JSON body.
-Verification (desired behaviour): the input is handled gracefully (no server error,
-no internal details in the body) and rejected with the validation error.
-
-Known issue: the application crashes with HTTP 500 and returns a stack trace
-(README, Findings #5). Until it is fixed the test is reported as skipped;
-when the behaviour is fixed, the test fails to remind that the marker must be removed.
-"
-"passed","Fri Nov 20 09:35:51 UTC 2026","Fri Nov 20 09:35:51 UTC 2026","377","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
-Verification: the request is rejected with status 400 and the
-'UserName and Password required' error.
-"
-"passed","Fri Nov 20 09:36:20 UTC 2026","Fri Nov 20 09:36:25 UTC 2026","4934","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookNotInCollection","Deleting a book that is not in the collection is rejected","Precondition: a user is created via API and has one book in the collection.
-Request: DELETE /BookStore/v1/Book with an ISBN that is not in the collection:
-a catalog book the user does not own, a non-existent 13-digit ISBN and an empty ISBN value.
-Verification: the request is rejected with status 400 and the
-'ISBN supplied is not available in User's Collection!' error (code 1206);
-the user's collection is unchanged.
-"
-"skipped","Fri Nov 20 09:35:51 UTC 2026","Fri Nov 20 09:35:55 UTC 2026","3713","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginResponseDoesNotExposePassword","Login response does not expose the user's password (KNOWN ISSUE)","Precondition: a user is created via API.
+"skipped","Sat Nov 21 09:07:35 UTC 2026","Sat Nov 21 09:07:39 UTC 2026","3264","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginResponseDoesNotExposePassword","Login response does not expose the user's password (KNOWN ISSUE)","Precondition: a user is created via API.
 Request: POST /Account/v1/Login with the user's credentials.
 Verification (desired behaviour): the response body does not contain the user's password.
 
@@ -91,78 +57,14 @@ Known issue: the application returns the password in plain text (README, Finding
 Until it is fixed the test is reported as skipped; when it is fixed,
 the test fails to remind that the marker must be removed.
 "
-"passed","Fri Nov 20 09:35:40 UTC 2026","Fri Nov 20 09:35:43 UTC 2026","2776","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithUnavailableIsbn","Adding a book with an unavailable ISBN is rejected","Precondition: a user is created via API and has a token.
-Request: POST /BookStore/v1/Books with a non-existent 13-digit ISBN, a malformed ISBN
-and an empty ISBN value.
-Verification: the request is rejected with status 400 and the
-'ISBN supplied is not available in Books Collection!' error (code 1205).
-"
-"passed","Fri Nov 20 09:33:33 UTC 2026","Fri Nov 20 09:34:08 UTC 2026","35461","Book Store Automation Suite","E2E Tests","tests.e2e.AuthorizationTest","tests.e2e.AuthorizationTest","authorizedUserCanLogout","Authorized user can successfully log out","Precondition: A new test user is created via API, user is authorized.
+"passed","Sat Nov 21 09:06:23 UTC 2026","Sat Nov 21 09:06:29 UTC 2026","6702","Book Store Automation Suite","E2E Tests","tests.e2e.AuthorizationTest","tests.e2e.AuthorizationTest","authorizedUserCanLogout","Authorized user can successfully log out","Precondition: A new test user is created via API, user is authorized.
 UI: User clicks the Logout button on the Profile page.
 Verification: User is redirected to the Login page, check that the 'token'
 cookie is cleared/empty. Re-open Profile page directly via URL. Verify that
 application shows unauthenticated state (warning message with Login and Register links).
 Verify that the 'token' cookie remains empty and session was not restored.
 "
-"passed","Fri Nov 20 09:36:06 UTC 2026","Fri Nov 20 09:36:09 UTC 2026","3011","Book Store Automation Suite","API Tests","tests.api.GetUserApiTest","tests.api.GetUserApiTest","getNonExistingUserIsRejected","Get information of a non-existing user is rejected","Precondition: a user is created via API.
-Request: GET /Account/v1/User/{userId} with a valid token and an id that does not exist.
-Verification: the request is rejected with 401, code 1207, 'User not found!'.
-
-Known deviation: 401 instead of 404 (README, Findings).
-"
-"passed","Fri Nov 20 09:35:55 UTC 2026","Fri Nov 20 09:35:58 UTC 2026","3292","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithInvalidPassword","Login with an invalid password does not authenticate the user","Precondition: a user is created via API.
-Request: POST /Account/v1/Login with the correct username and a wrong password.
- Verification: no authentication data is returned (empty body).
-
-Known deviation: the application answers 200 instead of an error status (README, Findings).
-"
-"passed","Fri Nov 20 09:35:50 UTC 2026","Fri Nov 20 09:35:51 UTC 2026","374","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
-Verification: the request is rejected with status 400 and the
-'UserName and Password required' error.
-"
-"passed","Fri Nov 20 09:34:24 UTC 2026","Fri Nov 20 09:34:31 UTC 2026","7081","Book Store Automation Suite","E2E Tests","tests.e2e.AuthorizationTest","tests.e2e.AuthorizationTest","userCannotLoginWithEmptyPassword","User cannot login with empty password","Precondition: a new test user is created via API, user is not authorized.
-UI: attempt to authorize with empty password is made.
-Verification: The password input is highlighted with a red border.
-User remains on login page.
-"
-"passed","Fri Nov 20 09:35:50 UTC 2026","Fri Nov 20 09:35:51 UTC 2026","377","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
-Verification: the request is rejected with status 400 and the
-'UserName and Password required' error.
-"
-"passed","Fri Nov 20 09:34:50 UTC 2026","Fri Nov 20 09:34:57 UTC 2026","6804","Book Store Automation Suite","UI Tests","tests.ui.BookSearchTest","tests.ui.BookSearchTest","searchBookByFullTitle","Search for a book by its full title","Preconditions: The user is not logged in, and the Book Store page is open.
-UI: The full book title is entered into the search field.
-Verification: Only this book remains in the table; no other books are displayed.
-"
-"passed","Fri Nov 20 09:35:44 UTC 2026","Fri Nov 20 09:35:44 UTC 2026","389","Book Store Automation Suite","API Tests","tests.api.GetBookApiTest","tests.api.GetBookApiTest","getBookWithUnavailableIsbn","Getting a book with an unavailable ISBN is rejected","Request: GET /BookStore/v1/Book?ISBN=... with a non-existent 13-digit ISBN,
-a malformed ISBN and an empty ISBN.
-Verification: the request is rejected with status 400 and the
-'ISBN supplied is not available in Books Collection!' error (code 1205).
-"
-"passed","Fri Nov 20 09:35:32 UTC 2026","Fri Nov 20 09:35:35 UTC 2026","3369","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithUnavailableIsbn","Adding a book with an unavailable ISBN is rejected","Precondition: a user is created via API and has a token.
-Request: POST /BookStore/v1/Books with a non-existent 13-digit ISBN, a malformed ISBN
-and an empty ISBN value.
-Verification: the request is rejected with status 400 and the
-'ISBN supplied is not available in Books Collection!' error (code 1205).
-"
-"passed","Fri Nov 20 09:36:00 UTC 2026","Fri Nov 20 09:36:06 UTC 2026","5190","Book Store Automation Suite","API Tests","tests.api.GetUserApiTest","tests.api.GetUserApiTest","getNewUserInformationHasEmptyBooksCollection","Get information of a new user: the books collection is empty","Precondition: a user is created via API, no books are added.
-Request: GET /Account/v1/User/{userId} with the user's token.
-Verification: status 200; the body contains the username of the user
-and an empty books collection.
-"
-"passed","Fri Nov 20 09:35:18 UTC 2026","Fri Nov 20 09:35:23 UTC 2026","4494","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithEmptyCollection","Adding a book with an empty collection of ISBNs is rejected","Precondition: a user is created via API and has a token.
-Request: POST /BookStore/v1/Books with the userId and an empty collectionOfIsbns array.
-Verification: the request is rejected with status 400 and the
-'Collection of books required.' error (code 1207).
-"
-"skipped","Fri Nov 20 09:35:57 UTC 2026","Fri Nov 20 09:35:57 UTC 2026","380","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithMissingField","Login without a required field is rejected with a validation error (KNOWN ISSUE)","Request: POST /Account/v1/Login with userName and/or password absent from the JSON body.
-Verification (desired behaviour): the input is handled gracefully (no server error,
-no internal details in the body) and rejected with the validation error.
-
-Known issue: the application crashes with HTTP 500 and returns a stack trace
-(README, Findings #5). Until it is fixed the test is reported as skipped;
-when the behaviour is fixed, the test fails to remind that the marker must be removed.
-"
-"skipped","Fri Nov 20 09:35:40 UTC 2026","Fri Nov 20 09:35:43 UTC 2026","3231","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithoutUserId","Adding a book without the userId field is rejected with a validation error (KNOWN ISSUE)","Precondition: a user is created via API and has a token.
+"skipped","Sat Nov 21 09:08:51 UTC 2026","Sat Nov 21 09:08:54 UTC 2026","2693","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithoutUserId","Adding a book without the userId field is rejected with a validation error (KNOWN ISSUE)","Precondition: a user is created via API and has a token.
 Request: POST /BookStore/v1/Books without the 'userId' field in the body.
 Verification (desired behaviour): the input is handled gracefully (no server error,
 no internal details in the body) and rejected with the 'User Id not correct!' error.
@@ -171,122 +73,171 @@ Known issue: the application crashes with HTTP 500 and returns a stack trace
 (README, Findings #8). Until it is fixed the test is reported as skipped;
 when the behaviour is fixed, the test fails to remind that the marker must be removed.
 "
-"passed","Fri Nov 20 09:34:11 UTC 2026","Fri Nov 20 09:34:22 UTC 2026","11786","Book Store Automation Suite","E2E Tests","tests.e2e.AuthorizationTest","tests.e2e.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Authorized user sees their name and profile icon","Precondition: a new test user is created via API, user is authorized
-(session is established). UI: Book Store page is opened.
-Verification: Login button is not visible on the page, user name on the page
-matches the one used for login.
+"passed","Sat Nov 21 09:08:32 UTC 2026","Sat Nov 21 09:08:35 UTC 2026","2969","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithEmptyCollection","Adding a book with an empty collection of ISBNs is rejected","Precondition: a user is created via API and has a token.
+Request: POST /BookStore/v1/Books with the userId and an empty collectionOfIsbns array.
+Verification: the request is rejected with status 400 and the
+'Collection of books required.' error (code 1207).
 "
-"passed","Fri Nov 20 09:35:06 UTC 2026","Fri Nov 20 09:35:11 UTC 2026","5716","Book Store Automation Suite","UI Tests","tests.ui.BookSearchTest","tests.ui.BookSearchTest","searchNonExistingBook","Search with non-existing book","The user is not logged in; the Book Store page is open.
-UI: Non-existing book is entered into the search field.
-Verification: The result is empty.
+"passed","Sat Nov 21 09:08:36 UTC 2026","Sat Nov 21 09:08:39 UTC 2026","2895","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithIncorrectUserId","Adding a book with an incorrect userId is rejected","Precondition: a user is created via API and has a token, so only the userId is wrong.
+Request: POST /BookStore/v1/Books with an empty and with a non-existent userId.
+Verification: the request is rejected with status 401 and the 'User Id not correct!' error (code 1207).
 "
-"passed","Fri Nov 20 09:33:33 UTC 2026","Fri Nov 20 09:34:11 UTC 2026","37875","Book Store Automation Suite","E2E Tests","tests.e2e.DeleteBookFromCollectionTest","tests.e2e.DeleteBookFromCollectionTest","deleteBookFromCollection","Authorized user deletes a book from collection","Precondition: user is created via API, token is generated, 1 book is added to collection.
+"passed","Sat Nov 21 09:05:51 UTC 2026","Sat Nov 21 09:06:21 UTC 2026","30012","Book Store Automation Suite","E2E Tests","tests.e2e.DeleteBookFromCollectionTest","tests.e2e.DeleteBookFromCollectionTest","deleteBookFromCollection","Authorized user deletes a book from collection","Precondition: user is created via API, token is generated, 1 book is added to collection.
 UI: profile is opened via cookie injection, book is deleted via Trash icon
 with confirmation in modal window.
 Expected: book disappears from table on UI, and books array in GET /User becomes empty.
 "
-"passed","Fri Nov 20 09:35:51 UTC 2026","Fri Nov 20 09:35:53 UTC 2026","1373","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithEmptyValue","Login with an empty field value does not authenticate the user","Request: POST /Account/v1/Login with an empty string as userName and/or password.
-Verification: no authentication data is returned (empty body).
-
-Known deviation: unlike an absent field, an empty value is not rejected with a
-validation error; the application answers 200 (README, Findings).
-"
-"passed","Fri Nov 20 09:34:43 UTC 2026","Fri Nov 20 09:34:49 UTC 2026","6731","Book Store Automation Suite","UI Tests","tests.ui.BookDetailsTest","tests.ui.BookDetailsTest","shouldVerifyBooksDetails","Verify book details page content and URL","Preconditions: User is not logged in; the Book Store page is open.
-UI: Click on the book in the table.
-Verification: The page for that specific book opens (check URL); the title, author, publisher,
-a non-empty description, and ISBN are displayed.
-"
-"passed","Fri Nov 20 09:35:45 UTC 2026","Fri Nov 20 09:35:49 UTC 2026","4020","Book Store Automation Suite","API Tests","tests.api.GenerateTokenApiTest","tests.api.GenerateTokenApiTest","generateTokenWithInvalidPassword","Generating a token with an invalid password fails","Precondition: a user is created via API.
-Request: POST /Account/v1/GenerateToken with the correct username and a wrong password.
-Verification: authorization fails: status 'Failed', result 'User authorization failed.',
-and no token is issued.
-"
-"passed","Fri Nov 20 09:35:36 UTC 2026","Fri Nov 20 09:35:39 UTC 2026","2985","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithUnavailableIsbn","Adding a book with an unavailable ISBN is rejected","Precondition: a user is created via API and has a token.
-Request: POST /BookStore/v1/Books with a non-existent 13-digit ISBN, a malformed ISBN
-and an empty ISBN value.
-Verification: the request is rejected with status 400 and the
-'ISBN supplied is not available in Books Collection!' error (code 1205).
-"
-"passed","Fri Nov 20 09:35:44 UTC 2026","Fri Nov 20 09:35:44 UTC 2026","359","Book Store Automation Suite","API Tests","tests.api.GetBookApiTest","tests.api.GetBookApiTest","getBookWithUnavailableIsbn","Getting a book with an unavailable ISBN is rejected","Request: GET /BookStore/v1/Book?ISBN=... with a non-existent 13-digit ISBN,
-a malformed ISBN and an empty ISBN.
-Verification: the request is rejected with status 400 and the
-'ISBN supplied is not available in Books Collection!' error (code 1205).
-"
-"passed","Fri Nov 20 09:35:45 UTC 2026","Fri Nov 20 09:35:48 UTC 2026","3621","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithDuplicateUsername","Creating a user with an already taken username is rejected","Precondition: a user is created via API.
-Request: POST /Account/v1/User again with the same username.
-Verification: the request is rejected with the 'User exists' error
-(status, error code and message).
-"
-"passed","Fri Nov 20 09:35:00 UTC 2026","Fri Nov 20 09:35:06 UTC 2026","6151","Book Store Automation Suite","UI Tests","tests.ui.GuestAccessTest","tests.ui.GuestAccessTest","unauthorizedUserSeesLoginButton","Unauthorized user sees Login button","Precondition: user is unauthorized (no session).
-UI: Book Store page is opened.
-Verification: Login button is visible on the page.
-"
-"passed","Fri Nov 20 09:36:28 UTC 2026","Fri Nov 20 09:36:33 UTC 2026","5225","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookWithIncorrectUserId","Deleting a book with an incorrect userId is rejected","Precondition: a user is created via API, has a token and a book in the collection,
+"passed","Sat Nov 21 09:07:57 UTC 2026","Sat Nov 21 09:08:01 UTC 2026","3706","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookWithIncorrectUserId","Deleting a book with an incorrect userId is rejected","Precondition: a user is created via API, has a token and a book in the collection,
 so only the userId is wrong.
 Request: DELETE /BookStore/v1/Book with an empty and with a non-existent userId.
 Verification: the request is rejected with status 401 and the 'User Id not correct!' error (code 1207);
 the user's collection is unchanged.
 "
-"passed","Fri Nov 20 09:35:59 UTC 2026","Fri Nov 20 09:36:06 UTC 2026","6780","Book Store Automation Suite","API Tests","tests.api.GetUserApiTest","tests.api.GetUserApiTest","getAnotherUsersInformationIsRejected","A user cannot get the information of another user","Precondition: two users are created via API.
-Request: GET /Account/v1/User/{userId} with the token of the first user and the id of the second.
-Verification: the request is rejected with 401, code 1207, 'User not found!',
-and nothing about the second user is returned.
-
-Known deviation: 401 instead of 403 or 404 (README, Findings).
+"passed","Sat Nov 21 09:07:58 UTC 2026","Sat Nov 21 09:08:03 UTC 2026","4925","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookNotInCollection","Deleting a book that is not in the collection is rejected","Precondition: a user is created via API and has one book in the collection.
+Request: DELETE /BookStore/v1/Book with an ISBN that is not in the collection:
+a catalog book the user does not own, a non-existent 13-digit ISBN and an empty ISBN value.
+Verification: the request is rejected with status 400 and the
+'ISBN supplied is not available in User's Collection!' error (code 1206);
+the user's collection is unchanged.
 "
-"passed","Fri Nov 20 09:36:13 UTC 2026","Fri Nov 20 09:36:21 UTC 2026","7794","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookFromAnotherUserCollection","A user cannot delete a book from the collection of another user","Precondition: user A is created via API and has a book in the collection;
+"passed","Sat Nov 21 09:08:24 UTC 2026","Sat Nov 21 09:08:24 UTC 2026","261","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
+Verification: the request is rejected with status 400 and the
+'UserName and Password required' error.
+"
+"passed","Sat Nov 21 09:07:39 UTC 2026","Sat Nov 21 09:07:40 UTC 2026","1241","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithEmptyValue","Login with an empty field value does not authenticate the user","Request: POST /Account/v1/Login with an empty string as userName and/or password.
+Verification: no authentication data is returned (empty body).
+
+Known deviation: unlike an absent field, an empty value is not rejected with a
+validation error; the application answers 200 (README, Findings).
+"
+"passed","Sat Nov 21 09:07:06 UTC 2026","Sat Nov 21 09:07:15 UTC 2026","8119","Book Store Automation Suite","UI Tests","tests.ui.BookStoreTest","tests.ui.BookStoreTest","shouldVerifyBooksPageInitialState","Verify main elements of Books page are displayed","Preconditions: The user is not logged in, and the Book Store page is open.
+Verification of URL, title, books table, search, pagination and columns (Title, Author, Publisher)
+"
+"skipped","Sat Nov 21 09:06:57 UTC 2026","Sat Nov 21 09:07:07 UTC 2026","9654","Book Store Automation Suite","UI Tests","tests.ui.BookCoverIntegrityTest","tests.ui.BookCoverIntegrityTest","coverIsKeptAfterSearchByFullTitle","Cover image stays with its book after searching by full title","Known defect: covers are bound to grid rows (the site cycles through 4 images by row index).
+Steps: remember the cover of every book in the full list -> search several books by full title.
+Only books whose cover differs from the first row's cover are searched: a found book
+lands in row 1, so a book with the same cover as row 1 would pass even with the defect.
+Expected: the found book shows ITS OWN cover.
+Actual (defect): it shows the cover of row 1 (README, Findings #13).
+Until it is fixed the test is reported as skipped;
+when the behaviour is fixed, the test fails to remind that the marker must be removed.
+"
+"passed","Sat Nov 21 09:06:30 UTC 2026","Sat Nov 21 09:06:38 UTC 2026","7953","Book Store Automation Suite","E2E Tests","tests.e2e.AuthorizationTest","tests.e2e.AuthorizationTest","authorizedUserSeesUsernameAndProfileIcon","Authorized user sees their name and profile icon","Precondition: a new test user is created via API, user is authorized
+(session is established). UI: Book Store page is opened.
+Verification: Login button is not visible on the page, user name on the page
+matches the one used for login.
+"
+"passed","Sat Nov 21 09:08:14 UTC 2026","Sat Nov 21 09:08:17 UTC 2026","3411","Book Store Automation Suite","API Tests","tests.api.GetUserApiTest","tests.api.GetUserApiTest","getNewUserInformationHasEmptyBooksCollection","Get information of a new user: the books collection is empty","Precondition: a user is created via API, no books are added.
+Request: GET /Account/v1/User/{userId} with the user's token.
+Verification: status 200; the body contains the username of the user
+and an empty books collection.
+"
+"passed","Sat Nov 21 09:07:46 UTC 2026","Sat Nov 21 09:07:55 UTC 2026","8680","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookFromAnotherUserCollection","A user cannot delete a book from the collection of another user","Precondition: user A is created via API and has a book in the collection;
 user B is a separate user with their own valid token.
 Request: DELETE /BookStore/v1/Book with the token of user B, the userId of user A
 and the ISBN of the book of user A.
 Verification: the request is rejected with status 401 and the 'User not authorized!' error (code 1200);
 the book is still in the collection of user A (nothing was deleted).
 "
-"skipped","Fri Nov 20 09:36:39 UTC 2026","Fri Nov 20 09:36:42 UTC 2026","3614","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookWithoutUserId","Deleting a book without the userId field is rejected with a validation error (KNOWN ISSUE)","Precondition: a user is created via API, has a token and a book in the collection.
-Request: DELETE /BookStore/v1/Book with the isbn and without the 'userId' field in the body.
+"passed","Sat Nov 21 09:07:24 UTC 2026","Sat Nov 21 09:07:29 UTC 2026","4733","Book Store Automation Suite","UI Tests","tests.ui.BookSearchTest","tests.ui.BookSearchTest","searchBookByPartialText","Search by part of the title","The user is not logged in; the Book Store page is open.
+UI: Part of the title is entered into the search field.
+Verification: The result is not empty; every displayed book contains the entered text.
+"
+"skipped","Sat Nov 21 09:07:41 UTC 2026","Sat Nov 21 09:07:41 UTC 2026","274","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithMissingField","Login without a required field is rejected with a validation error (KNOWN ISSUE)","Request: POST /Account/v1/Login with userName and/or password absent from the JSON body.
 Verification (desired behaviour): the input is handled gracefully (no server error,
-no internal details in the body) and rejected with the same error as an empty userId:
-401 'User Id not correct!' (code 1207).
+no internal details in the body) and rejected with the validation error.
 
-Known issue: the application crashes with HTTP 500 and returns an HTML page with a stack trace
-(README, Findings #12). Until it is fixed the test is reported as skipped;
+Known issue: the application crashes with HTTP 500 and returns a stack trace
+(README, Findings #5). Until it is fixed the test is reported as skipped;
 when the behaviour is fixed, the test fails to remind that the marker must be removed.
 "
-"passed","Fri Nov 20 09:35:44 UTC 2026","Fri Nov 20 09:35:45 UTC 2026","377","Book Store Automation Suite","API Tests","tests.api.GetBookApiTest","tests.api.GetBookApiTest","getBookWithUnavailableIsbn","Getting a book with an unavailable ISBN is rejected","Request: GET /BookStore/v1/Book?ISBN=... with a non-existent 13-digit ISBN,
-a malformed ISBN and an empty ISBN.
+"passed","Sat Nov 21 09:08:13 UTC 2026","Sat Nov 21 09:08:18 UTC 2026","4505","Book Store Automation Suite","API Tests","tests.api.GetUserApiTest","tests.api.GetUserApiTest","getAnotherUsersInformationIsRejected","A user cannot get the information of another user","Precondition: two users are created via API.
+Request: GET /Account/v1/User/{userId} with the token of the first user and the id of the second.
+Verification: the request is rejected with 401, code 1207, 'User not found!',
+and nothing about the second user is returned.
+
+Known deviation: 401 instead of 403 or 404 (README, Findings).
+"
+"passed","Sat Nov 21 09:08:25 UTC 2026","Sat Nov 21 09:08:26 UTC 2026","259","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
+Verification: the request is rejected with status 400 and the
+'UserName and Password required' error.
+"
+"skipped","Sat Nov 21 09:07:41 UTC 2026","Sat Nov 21 09:07:42 UTC 2026","273","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithMissingField","Login without a required field is rejected with a validation error (KNOWN ISSUE)","Request: POST /Account/v1/Login with userName and/or password absent from the JSON body.
+Verification (desired behaviour): the input is handled gracefully (no server error,
+no internal details in the body) and rejected with the validation error.
+
+Known issue: the application crashes with HTTP 500 and returns a stack trace
+(README, Findings #5). Until it is fixed the test is reported as skipped;
+when the behaviour is fixed, the test fails to remind that the marker must be removed.
+"
+"passed","Sat Nov 21 09:06:40 UTC 2026","Sat Nov 21 09:06:45 UTC 2026","5622","Book Store Automation Suite","E2E Tests","tests.e2e.AuthorizationTest","tests.e2e.AuthorizationTest","userCannotLoginWithEmptyPassword","User cannot login with empty password","Precondition: a new test user is created via API, user is not authorized.
+UI: attempt to authorize with empty password is made.
+Verification: The password input is highlighted with a red border.
+User remains on login page.
+"
+"skipped","Sat Nov 21 09:07:42 UTC 2026","Sat Nov 21 09:07:42 UTC 2026","273","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithMissingField","Login without a required field is rejected with a validation error (KNOWN ISSUE)","Request: POST /Account/v1/Login with userName and/or password absent from the JSON body.
+Verification (desired behaviour): the input is handled gracefully (no server error,
+no internal details in the body) and rejected with the validation error.
+
+Known issue: the application crashes with HTTP 500 and returns a stack trace
+(README, Findings #5). Until it is fixed the test is reported as skipped;
+when the behaviour is fixed, the test fails to remind that the marker must be removed.
+"
+"passed","Sat Nov 21 09:08:47 UTC 2026","Sat Nov 21 09:08:52 UTC 2026","4233","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithUnavailableIsbn","Adding a book with an unavailable ISBN is rejected","Precondition: a user is created via API and has a token.
+Request: POST /BookStore/v1/Books with a non-existent 13-digit ISBN, a malformed ISBN
+and an empty ISBN value.
 Verification: the request is rejected with status 400 and the
 'ISBN supplied is not available in Books Collection!' error (code 1205).
 "
-"passed","Fri Nov 20 09:35:58 UTC 2026","Fri Nov 20 09:35:59 UTC 2026","945","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithNonExistingUser","Login with a non-existing user does not authenticate anyone","Request: POST /Account/v1/Login with credentials of a user that was never created.
+"passed","Sat Nov 21 09:07:40 UTC 2026","Sat Nov 21 09:07:41 UTC 2026","874","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithEmptyValue","Login with an empty field value does not authenticate the user","Request: POST /Account/v1/Login with an empty string as userName and/or password.
 Verification: no authentication data is returned (empty body).
 
-Known deviation: the application answers 200 instead of an error status (README, Findings).
+Known deviation: unlike an absent field, an empty value is not rejected with a
+validation error; the application answers 200 (README, Findings).
 "
-"passed","Fri Nov 20 09:36:23 UTC 2026","Fri Nov 20 09:36:27 UTC 2026","3980","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookWithIncorrectUserId","Deleting a book with an incorrect userId is rejected","Precondition: a user is created via API, has a token and a book in the collection,
+"passed","Sat Nov 21 09:08:02 UTC 2026","Sat Nov 21 09:08:07 UTC 2026","4920","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookWithIncorrectUserId","Deleting a book with an incorrect userId is rejected","Precondition: a user is created via API, has a token and a book in the collection,
 so only the userId is wrong.
 Request: DELETE /BookStore/v1/Book with an empty and with a non-existent userId.
 Verification: the request is rejected with status 401 and the 'User Id not correct!' error (code 1207);
 the user's collection is unchanged.
 "
-"passed","Fri Nov 20 09:35:24 UTC 2026","Fri Nov 20 09:35:27 UTC 2026","3145","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithIncorrectUserId","Adding a book with an incorrect userId is rejected","Precondition: a user is created via API and has a token, so only the userId is wrong.
-Request: POST /BookStore/v1/Books with an empty and with a non-existent userId.
-Verification: the request is rejected with status 401 and the 'User Id not correct!' error (code 1207).
+"passed","Sat Nov 21 09:07:34 UTC 2026","Sat Nov 21 09:07:35 UTC 2026","276","Book Store Automation Suite","API Tests","tests.api.GetBookApiTest","tests.api.GetBookApiTest","getBookWithUnavailableIsbn","Getting a book with an unavailable ISBN is rejected","Request: GET /BookStore/v1/Book?ISBN=... with a non-existent 13-digit ISBN,
+a malformed ISBN and an empty ISBN.
+Verification: the request is rejected with status 400 and the
+'ISBN supplied is not available in Books Collection!' error (code 1205).
 "
-"passed","Fri Nov 20 09:35:14 UTC 2026","Fri Nov 20 09:35:23 UTC 2026","9418","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookToAnotherUserCollection","A user cannot add a book to the collection of another user","Precondition: user A is created via API and has an empty collection;
-user B is a separate user with their own valid token.
-Request: POST /BookStore/v1/Books with the token of user B, the userId of user A
-and the ISBN of a reference book.
-Verification: the request is rejected with status 401 and the 'User not authorized!' error (code 1200);
-the collection of user A is still empty (nothing was added).
+"passed","Sat Nov 21 09:07:16 UTC 2026","Sat Nov 21 09:07:21 UTC 2026","5441","Book Store Automation Suite","UI Tests","tests.ui.GuestAccessTest","tests.ui.GuestAccessTest","unauthorizedUserSeesLoginButton","Unauthorized user sees Login button","Precondition: user is unauthorized (no session).
+UI: Book Store page is opened.
+Verification: Login button is visible on the page.
 "
-"passed","Fri Nov 20 09:35:50 UTC 2026","Fri Nov 20 09:35:50 UTC 2026","398","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithEmptyValue","Creating a user with an empty field value is rejected","Request: POST /Account/v1/User with an empty string as userName and/or password.
+"passed","Sat Nov 21 09:07:42 UTC 2026","Sat Nov 21 09:07:43 UTC 2026","1217","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithNonExistingUser","Login with a non-existing user does not authenticate anyone","Request: POST /Account/v1/Login with credentials of a user that was never created.
+Verification: no authentication data is returned (empty body).
+
+Known deviation: the application answers 200 instead of an error status (README, Findings).
+"
+"passed","Sat Nov 21 09:08:38 UTC 2026","Sat Nov 21 09:08:42 UTC 2026","3442","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithUnavailableIsbn","Adding a book with an unavailable ISBN is rejected","Precondition: a user is created via API and has a token.
+Request: POST /BookStore/v1/Books with a non-existent 13-digit ISBN, a malformed ISBN
+and an empty ISBN value.
+Verification: the request is rejected with status 400 and the
+'ISBN supplied is not available in Books Collection!' error (code 1205).
+"
+"passed","Sat Nov 21 09:08:04 UTC 2026","Sat Nov 21 09:08:08 UTC 2026","4101","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookNotInCollection","Deleting a book that is not in the collection is rejected","Precondition: a user is created via API and has one book in the collection.
+Request: DELETE /BookStore/v1/Book with an ISBN that is not in the collection:
+a catalog book the user does not own, a non-existent 13-digit ISBN and an empty ISBN value.
+Verification: the request is rejected with status 400 and the
+'ISBN supplied is not available in User's Collection!' error (code 1206);
+the user's collection is unchanged.
+"
+"passed","Sat Nov 21 09:08:23 UTC 2026","Sat Nov 21 09:08:25 UTC 2026","2484","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithDuplicateUsername","Creating a user with an already taken username is rejected","Precondition: a user is created via API.
+Request: POST /Account/v1/User again with the same username.
+Verification: the request is rejected with the 'User exists' error
+(status, error code and message).
+"
+"passed","Sat Nov 21 09:08:25 UTC 2026","Sat Nov 21 09:08:25 UTC 2026","259","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
 Verification: the request is rejected with status 400 and the
 'UserName and Password required' error.
 "
-"passed","Fri Nov 20 09:35:29 UTC 2026","Fri Nov 20 09:35:33 UTC 2026","3278","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithIncorrectUserId","Adding a book with an incorrect userId is rejected","Precondition: a user is created via API and has a token, so only the userId is wrong.
-Request: POST /BookStore/v1/Books with an empty and with a non-existent userId.
-Verification: the request is rejected with status 401 and the 'User Id not correct!' error (code 1207).
-"
-"skipped","Fri Nov 20 09:35:35 UTC 2026","Fri Nov 20 09:35:38 UTC 2026","3334","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithoutCollectionOfIsbns","Adding a book without the collectionOfIsbns field is rejected with a validation error (KNOWN ISSUE)","Precondition: a user is created via API and has a token.
+"skipped","Sat Nov 21 09:08:46 UTC 2026","Sat Nov 21 09:08:49 UTC 2026","2626","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithoutCollectionOfIsbns","Adding a book without the collectionOfIsbns field is rejected with a validation error (KNOWN ISSUE)","Precondition: a user is created via API and has a token.
 Request: POST /BookStore/v1/Books with the userId and without the 'collectionOfIsbns' field.
 Verification (desired behaviour): the input is handled gracefully (no server error,
 no internal details in the body) and rejected with the 'Collection of books required.' error.
@@ -295,7 +246,25 @@ Known issue: the application crashes with HTTP 500 and returns a stack trace
 (README, Findings #9). Until it is fixed the test is reported as skipped;
 when the behaviour is fixed, the test fails to remind that the marker must be removed.
 "
-"skipped","Fri Nov 20 09:36:34 UTC 2026","Fri Nov 20 09:36:38 UTC 2026","3782","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookWithoutIsbn","Deleting a book without the isbn field is rejected with a validation error (KNOWN ISSUE)","Precondition: a user is created via API, has a token and a book in the collection.
+"passed","Sat Nov 21 09:07:34 UTC 2026","Sat Nov 21 09:07:34 UTC 2026","470","Book Store Automation Suite","API Tests","tests.api.GetBookApiTest","tests.api.GetBookApiTest","getBookWithUnavailableIsbn","Getting a book with an unavailable ISBN is rejected","Request: GET /BookStore/v1/Book?ISBN=... with a non-existent 13-digit ISBN,
+a malformed ISBN and an empty ISBN.
+Verification: the request is rejected with status 400 and the
+'ISBN supplied is not available in Books Collection!' error (code 1205).
+"
+"passed","Sat Nov 21 09:06:57 UTC 2026","Sat Nov 21 09:07:06 UTC 2026","8404","Book Store Automation Suite","UI Tests","tests.ui.BookDetailsTest","tests.ui.BookDetailsTest","shouldVerifyBooksDetails","Verify book details page content and URL","Preconditions: User is not logged in; the Book Store page is open.
+UI: Click on the book in the table.
+Verification: The page for that specific book opens (check URL); the title, author, publisher,
+a non-empty description, and ISBN are displayed.
+"
+"skipped","Sat Nov 21 09:07:35 UTC 2026","Sat Nov 21 09:07:35 UTC 2026","531","Book Store Automation Suite","API Tests","tests.api.GetBookApiTest","tests.api.GetBookApiTest","getBookWithoutIsbnParameter","Getting a book without the ISBN parameter is rejected with a validation error (KNOWN ISSUE)","Request: GET /BookStore/v1/Book without the ISBN query parameter.
+Verification (desired behaviour): the input is handled gracefully (no server error,
+no internal details in the body) and rejected with the 'ISBN not available' error.
+
+Known issue: the application crashes with HTTP 500 and returns a stack trace
+(README, Findings #7). Until it is fixed the test is reported as skipped;
+when the behaviour is fixed, the test fails to remind that the marker must be removed.
+"
+"skipped","Sat Nov 21 09:08:08 UTC 2026","Sat Nov 21 09:08:13 UTC 2026","5055","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookWithoutIsbn","Deleting a book without the isbn field is rejected with a validation error (KNOWN ISSUE)","Precondition: a user is created via API, has a token and a book in the collection.
 Request: DELETE /BookStore/v1/Book with the userId and without the 'isbn' field in the body.
 Verification (desired behaviour): the input is handled gracefully (no server error,
 no internal details in the body) and rejected with the same error as an empty ISBN:
@@ -305,43 +274,74 @@ Known issue: the application crashes with HTTP 500 and returns an HTML page with
 (README, Findings #11). Until it is fixed the test is reported as skipped;
 when the behaviour is fixed, the test fails to remind that the marker must be removed.
 "
-"skipped","Fri Nov 20 09:34:43 UTC 2026","Fri Nov 20 09:34:52 UTC 2026","9403","Book Store Automation Suite","UI Tests","tests.ui.BookCoverIntegrityTest","tests.ui.BookCoverIntegrityTest","coverIsKeptAfterSearchByFullTitle","Cover image stays with its book after searching by full title","Known defect: covers are bound to grid rows (the site cycles through 4 images by row index).
-Steps: remember the cover of every book in the full list -> search several books by full title.
-Only books whose cover differs from the first row's cover are searched: a found book
-lands in row 1, so a book with the same cover as row 1 would pass even with the defect.
-Expected: the found book shows ITS OWN cover.
-Actual (defect): it shows the cover of row 1 (README, Findings #13).
-Until it is fixed the test is reported as skipped;
-when the behaviour is fixed, the test fails to remind that the marker must be removed.
-"
-"skipped","Fri Nov 20 09:35:57 UTC 2026","Fri Nov 20 09:35:57 UTC 2026","382","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithMissingField","Login without a required field is rejected with a validation error (KNOWN ISSUE)","Request: POST /Account/v1/Login with userName and/or password absent from the JSON body.
-Verification (desired behaviour): the input is handled gracefully (no server error,
-no internal details in the body) and rejected with the validation error.
+"passed","Sat Nov 21 09:07:38 UTC 2026","Sat Nov 21 09:07:39 UTC 2026","1100","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithEmptyValue","Login with an empty field value does not authenticate the user","Request: POST /Account/v1/Login with an empty string as userName and/or password.
+Verification: no authentication data is returned (empty body).
 
-Known issue: the application crashes with HTTP 500 and returns a stack trace
-(README, Findings #5). Until it is fixed the test is reported as skipped;
+Known deviation: unlike an absent field, an empty value is not rejected with a
+validation error; the application answers 200 (README, Findings).
+"
+"skipped","Sat Nov 21 09:08:09 UTC 2026","Sat Nov 21 09:08:13 UTC 2026","4116","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookWithoutUserId","Deleting a book without the userId field is rejected with a validation error (KNOWN ISSUE)","Precondition: a user is created via API, has a token and a book in the collection.
+Request: DELETE /BookStore/v1/Book with the isbn and without the 'userId' field in the body.
+Verification (desired behaviour): the input is handled gracefully (no server error,
+no internal details in the body) and rejected with the same error as an empty userId:
+401 'User Id not correct!' (code 1207).
+
+Known issue: the application crashes with HTTP 500 and returns an HTML page with a stack trace
+(README, Findings #12). Until it is fixed the test is reported as skipped;
 when the behaviour is fixed, the test fails to remind that the marker must be removed.
 "
-"passed","Fri Nov 20 09:34:58 UTC 2026","Fri Nov 20 09:35:05 UTC 2026","7055","Book Store Automation Suite","UI Tests","tests.ui.BookSearchTest","tests.ui.BookSearchTest","searchBookByPartialText","Search by part of the title","The user is not logged in; the Book Store page is open.
-UI: Part of the title is entered into the search field.
-Verification: The result is not empty; every displayed book contains the entered text.
+"passed","Sat Nov 21 09:07:29 UTC 2026","Sat Nov 21 09:07:33 UTC 2026","4091","Book Store Automation Suite","UI Tests","tests.ui.BookSearchTest","tests.ui.BookSearchTest","searchNonExistingBook","Search with non-existing book","The user is not logged in; the Book Store page is open.
+UI: Non-existing book is entered into the search field.
+Verification: The result is empty.
 "
-"passed","Fri Nov 20 09:36:33 UTC 2026","Fri Nov 20 09:36:38 UTC 2026","4797","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookNotInCollection","Deleting a book that is not in the collection is rejected","Precondition: a user is created via API and has one book in the collection.
+"passed","Sat Nov 21 09:08:25 UTC 2026","Sat Nov 21 09:08:25 UTC 2026","262","Book Store Automation Suite","API Tests","tests.api.CreateUserApiTest","tests.api.CreateUserApiTest","createUserWithMissingField","Creating a user without a required field is rejected","Request: POST /Account/v1/User with userName and/or password absent from the JSON body.
+Verification: the request is rejected with status 400 and the
+'UserName and Password required' error.
+"
+"passed","Sat Nov 21 09:07:34 UTC 2026","Sat Nov 21 09:07:37 UTC 2026","3057","Book Store Automation Suite","API Tests","tests.api.GenerateTokenApiTest","tests.api.GenerateTokenApiTest","generateTokenWithInvalidPassword","Generating a token with an invalid password fails","Precondition: a user is created via API.
+Request: POST /Account/v1/GenerateToken with the correct username and a wrong password.
+Verification: authorization fails: status 'Failed', result 'User authorization failed.',
+and no token is issued.
+"
+"passed","Sat Nov 21 09:08:19 UTC 2026","Sat Nov 21 09:08:22 UTC 2026","2655","Book Store Automation Suite","API Tests","tests.api.GetUserApiTest","tests.api.GetUserApiTest","getUserWithoutTokenIsRejected","Get user information without a token is rejected","Precondition: a user is created via API.
+Request: GET /Account/v1/User/{userId} without any authorization.
+Verification: the request is rejected with 401, code 1200, 'User not authorized!'.
+"
+"passed","Sat Nov 21 09:07:43 UTC 2026","Sat Nov 21 09:07:50 UTC 2026","6431","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteAlreadyDeletedBook","Deleting the same book twice: the second request is rejected","Precondition: a user is created via API, the book is added and then deleted.
+Request: DELETE /BookStore/v1/Book with the same ISBN again.
+Verification: the request is rejected with status 400 and the
+'ISBN supplied is not available in User's Collection!' error (code 1206).
+"
+"passed","Sat Nov 21 09:07:18 UTC 2026","Sat Nov 21 09:07:23 UTC 2026","5765","Book Store Automation Suite","UI Tests","tests.ui.BookSearchTest","tests.ui.BookSearchTest","searchBookByFullTitle","Search for a book by its full title","Preconditions: The user is not logged in, and the Book Store page is open.
+UI: The full book title is entered into the search field.
+Verification: Only this book remains in the table; no other books are displayed.
+"
+"passed","Sat Nov 21 09:07:41 UTC 2026","Sat Nov 21 09:07:44 UTC 2026","3117","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithInvalidPassword","Login with an invalid password does not authenticate the user","Precondition: a user is created via API.
+Request: POST /Account/v1/Login with the correct username and a wrong password.
+ Verification: no authentication data is returned (empty body).
+
+Known deviation: the application answers 200 instead of an error status (README, Findings).
+"
+"passed","Sat Nov 21 09:07:50 UTC 2026","Sat Nov 21 09:07:57 UTC 2026","6211","Book Store Automation Suite","API Tests","tests.api.DeleteBookApiTest","tests.api.DeleteBookApiTest","deleteBookNotInCollection","Deleting a book that is not in the collection is rejected","Precondition: a user is created via API and has one book in the collection.
 Request: DELETE /BookStore/v1/Book with an ISBN that is not in the collection:
 a catalog book the user does not own, a non-existent 13-digit ISBN and an empty ISBN value.
 Verification: the request is rejected with status 400 and the
 'ISBN supplied is not available in User's Collection!' error (code 1206);
 the user's collection is unchanged.
 "
-"passed","Fri Nov 20 09:35:53 UTC 2026","Fri Nov 20 09:35:54 UTC 2026","1276","Book Store Automation Suite","API Tests","tests.api.LoginApiTest","tests.api.LoginApiTest","loginWithEmptyValue","Login with an empty field value does not authenticate the user","Request: POST /Account/v1/Login with an empty string as userName and/or password.
-Verification: no authentication data is returned (empty body).
-
-Known deviation: unlike an absent field, an empty value is not rejected with a
-validation error; the application answers 200 (README, Findings).
+"passed","Sat Nov 21 09:07:35 UTC 2026","Sat Nov 21 09:07:35 UTC 2026","267","Book Store Automation Suite","API Tests","tests.api.GetBookApiTest","tests.api.GetBookApiTest","getBookWithUnavailableIsbn","Getting a book with an unavailable ISBN is rejected","Request: GET /BookStore/v1/Book?ISBN=... with a non-existent 13-digit ISBN,
+a malformed ISBN and an empty ISBN.
+Verification: the request is rejected with status 400 and the
+'ISBN supplied is not available in Books Collection!' error (code 1205).
 "
-"passed","Fri Nov 20 09:34:12 UTC 2026","Fri Nov 20 09:34:24 UTC 2026","11735","Book Store Automation Suite","E2E Tests","tests.e2e.AddBookToCollectionTest","tests.e2e.AddBookToCollectionTest","userAddBookToCollection","User adds a book to collection","Precondition: user is created via API, auth cookies are injected into browser.
-UI: Profile is opened -> navigate to Book Store -> select book ->
-click 'Add To Collection' and close alert.
-Verification: via API (GET /Account/v1/User) verify that the ISBN of the added book
-appeared in the user's collection.
+"passed","Sat Nov 21 09:08:42 UTC 2026","Sat Nov 21 09:08:44 UTC 2026","2527","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookWithIncorrectUserId","Adding a book with an incorrect userId is rejected","Precondition: a user is created via API and has a token, so only the userId is wrong.
+Request: POST /BookStore/v1/Books with an empty and with a non-existent userId.
+Verification: the request is rejected with status 401 and the 'User Id not correct!' error (code 1207).
+"
+"passed","Sat Nov 21 09:08:27 UTC 2026","Sat Nov 21 09:08:36 UTC 2026","9017","Book Store Automation Suite","API Tests","tests.api.AddBookApiTest","tests.api.AddBookApiTest","addBookToAnotherUserCollection","A user cannot add a book to the collection of another user","Precondition: user A is created via API and has an empty collection;
+user B is a separate user with their own valid token.
+Request: POST /BookStore/v1/Books with the token of user B, the userId of user A
+and the ISBN of a reference book.
+Verification: the request is rejected with status 401 and the 'User not authorized!' error (code 1200);
+the collection of user A is still empty (nothing was added).
 "
