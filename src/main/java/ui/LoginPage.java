@@ -72,11 +72,12 @@ public class LoginPage extends BasePage<LoginPage> {
     @Step("Verify invalid credentials error is displayed")
     public LoginPage shouldSeeInvalidCredentialsError() {
         errorMessageLabel
-                .shouldBe(visible)
+                .shouldBe(visible.because("Error message appears only after the server answers the login request"),
+                        Config.longOperationTimeout())
                 .scrollIntoView(ScrollIntoViewOptions.instant().block(ScrollIntoViewOptions.Block.center))
-        .shouldHave(
-                text(INVALID_CREDENTIALS)
-                        .because("Appropriate message should be displayed for incorrect password")
+                .shouldHave(
+                        text(INVALID_CREDENTIALS)
+                                .because("Appropriate message should be displayed for incorrect password")
         );
         return this;
     }

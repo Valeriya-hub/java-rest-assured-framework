@@ -1,5 +1,10 @@
 <suite name="Book Store Automation Suite" verbose="1">
 
+    <listeners>
+        <!-- Retries a test once, only for browser infrastructure failures (see InfraRetryAnalyzer) -->
+        <listener class-name="listener.RetryTransformer"/>
+    </listeners>
+
     <test name="E2E Tests" parallel="classes" thread-count="2">
         <packages>
             <package name="tests.e2e"/>

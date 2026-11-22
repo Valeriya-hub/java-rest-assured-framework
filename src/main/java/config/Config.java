@@ -46,7 +46,11 @@ public final class Config {
         return getLong("ui.pageload.timeout.ms");
     }
 
-    /** Only for genuinely long-running operations (file generation, heavy async processes). */
+    /**
+     * Timeout for genuinely long-running operations (file generation, heavy async processes)
+     * and slower responses from the shared DemoQA backend (post-login redirect, alert after
+     * adding a book, login error messages).
+     */
     public static Duration longOperationTimeout() {
         return Duration.ofSeconds(getLong("long.operation.timeout.sec"));
     }

@@ -18,6 +18,7 @@ import org.testng.ITestResult;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  * - current URL;
  * - browser console logs (if driver supports them);
  * - names of cookies present in the browser (shows whether the login reached the point of setting the token);
- * - network log of the demoqa Account API calls (Chromium only, needs the performance log capability).
+ * - network log of the demoqa API calls (Account, BookStore) (Chromium only, needs the performance log capability).
  * <p>
  * Complements io.qameta.allure.selenide.AllureSelenide (which logs each
  * Selenide step), not duplicates it — here the state is captured EXACTLY at the
@@ -40,8 +41,9 @@ public class AllureAttachmentListener implements ITestListener {
     private static final Logger log = LogManager.getLogger(AllureAttachmentListener.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    // Only requests to this API are written to the network attachment, everything else is noise
-    private static final String AUTH_API_PATH = "/Account/v1/";
+    // Only requests to these demoqa API groups are written to the network attachment, everything else is noise:
+    // Account - login/user calls, BookStore - add/delete book calls (the UI waits for their answers)
+    private static final List<String> API_PATHS = List.of("/Account/v1/", "/BookStore/v1/");
 
     @Override
     public void onTestFailure(ITestResult result) {
@@ -52,7 +54,7 @@ public class AllureAttachmentListener implements ITestListener {
                 attachCurrentUrl();
                 attachBrowserConsoleLogs();
                 attachCookieNames();
-                attachAuthNetworkLog();
+                attachApiNetworkLog();
             } catch (Exception e) {
                 log.error("Failed to attach diagnostic data for test '{}': {}",
                         result.getName(), e.getMessage(), e);
@@ -112,13 +114,13 @@ public class AllureAttachmentListener implements ITestListener {
     }
 
     /**
-     * Writes request / response status / failure of the Account API calls with timestamps,
+     * Writes request / response status / failure of the demoqa API calls with timestamps,
      * so the difference between REQUEST and RESPONSE lines shows the server latency.
      * Works on Chromium (Chrome, Edge) only and only if the performance log is enabled
      * in the browser capabilities. Otherwise the attachment says that it is unavailable.
      */
-    @Attachment(value = "Network log: Account API (Chromium only)", type = "text/plain")
-    private String attachAuthNetworkLog() {
+    @Attachment(value = "Network log: demoqa API (Chromium only)", type = "text/plain")
+    private String attachApiNetworkLog() {
         try {
             WebDriver driver = WebDriverRunner.getWebDriver();
             Map<String, String> urlByRequestId = new HashMap<>();
@@ -133,7 +135,7 @@ public class AllureAttachmentListener implements ITestListener {
                 switch (message.path("method").asText()) {
                     case "Network.requestWillBeSent" -> {
                         String url = params.path("request").path("url").asText();
-                        if (url.contains(AUTH_API_PATH)) {
+                        if (API_PATHS.stream().anyMatch(url::contains)) {
                             urlByRequestId.put(requestId, url);
                             out.append(time).append(" REQUEST  ")
                                     .append(params.path("request").path("method").asText())
@@ -161,7 +163,7 @@ public class AllureAttachmentListener implements ITestListener {
                     }
                 }
             }
-            return out.isEmpty() ? "No Account API calls found in the performance log" : out.toString();
+            return out.isEmpty() ? "No demoqa API calls found in the performance log" : out.toString();
         } catch (Exception e) {
             // Firefox has no performance log; Chromium has none if the capability is not enabled
             return "Network log unavailable: " + e.getMessage();
