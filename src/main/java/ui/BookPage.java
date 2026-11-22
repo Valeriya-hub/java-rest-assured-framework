@@ -5,6 +5,7 @@ import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverConditions;
 import config.Config;
 import io.qameta.allure.Step;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -46,6 +47,11 @@ public class BookPage extends BasePage<BookPage> {
      */
     @Step("Accept the browser alert about the added book")
     private void acceptBookAddedAlert() {
+        // The alert appears only after the server answers the "add book" request,
+        // which can be slow on the shared demoqa backend, so wait longer than the default timeout.
+        Wait().withTimeout(Config.longOperationTimeout())
+                .withMessage("Alert about the added book did not appear")
+                .until(ExpectedConditions.alertIsPresent());
         confirm(BOOK_ADDED_ALERT);
     }
 

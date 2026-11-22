@@ -61,7 +61,9 @@ jobs:
           # Edge on the runner intermittently fails to start ("Chrome instance exited").
           # Fallback: run without the Chromium sandbox and log the driver output for diagnosis.
           if [ "$BROWSER" = "edge" ]; then
-            EXTRA_ARGS="-Dbrowser.no.sandbox=true -Dwebdriver.edge.verboseLogging=true -Dwebdriver.edge.logfile=target/msedgedriver.log"
+            # INFO level keeps only key events (InitSession, Navigate with timing); appendLog stops parallel
+            # sessions from overwriting each other in one file
+            EXTRA_ARGS="-Dbrowser.no.sandbox=true -Dwebdriver.edge.loglevel=INFO -Dwebdriver.edge.appendLog=true -Dwebdriver.edge.logfile=target/msedgedriver.log"
           fi
           mvn -B -ntp clean test \
             -Dbrowser="$BROWSER" \
@@ -77,8 +79,10 @@ jobs:
           echo "--- memory ---"; free -m
           echo "--- /dev/shm ---"; df -h /dev/shm
           echo "--- versions ---"; microsoft-edge --version; msedgedriver --version
-          echo "--- kernel log (apparmor / oom) ---"
-          sudo dmesg 2>/dev/null | grep -iE "apparmor|oom|killed process|segfault" | tail -20 || true
+          echo "--- cpu ---"; nproc
+          echo "--- kernel log (oom / segfault / apparmor DENIED) ---"
+          # AUDIT lines are filtered out: they are just Edge launches and flood the tail
+          sudo dmesg 2>/dev/null | grep -iE "oom|killed process|segfault|apparmor=\"DENIED\"" | tail -50 || true
 
       - name: Upload Edge driver log (on failure)
         if: ${{ failure() && matrix.browser == 'edge' }}
